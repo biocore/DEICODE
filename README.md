@@ -1,7 +1,7 @@
 # DEICODE
 ## Discovery of Environmental Influences through Convex Optimized Decomposition by Ecotypes (DEICODE) 
 
-By decomposing the sparse data into its dense low-rank component trends can be discorved from enviornmental cgnages between sample groups.
+By decomposing the sparse data into its dense low-rank component trends can be discovered from environmental changes between sample groups.
 
 This project is a demonstration of this method in 16S rRNA sequencing data. 
 
@@ -18,29 +18,29 @@ The eigenvectors and eigenvalues of a covariance (or correlation) matrix represe
 
 #### Why would you use PCA in 16S analysis 
 
-* Dimentionality Reduction and visualization in 3D
+* Dimensionality Reduction and visualization in 3D
 
-16S rRNA analysis begins by processing raw seaquencing reads into a matrix called and OTU table that is high dimentional and by using PCA the data can be visaluzed in 3 dimentions or less.
+16S rRNA analysis begins by processing raw sequencing reads into a matrix called and OTU table that is high dimensional and by using PCA the data can be visualized in 3 dimensions or less.
 
 * Extract what bacteria are cauing variance between samples directly from PCA visualization 
 
-From PCA graphs you can view which bacteria are contributing most to the chnages along an axis in your graph. This means unlike the conventional PCoA, in PCA your axis has meaning!
+From PCA graphs you can view which bacteria are contributing most to the changes along an axis in your graph. This means unlike the conventional PCoA, in PCA your axis has meaning!
 
 * Support vector machines (SVMs) can be used to quickly determine the best column from metadata (i.e pH from map.txt)
 
-If you can perfrom PCA is can be used as input for SVMs, a very poerful tool as metadata continues to grow in size. 
+If you can perform PCA is can be used as input for SVMs, a very powerful tool as metadata continues to grow in size. 
 
 #### Why has no one used this before?
 
 ##### There are lots of reasons (more than what is listed)
 
 * OTU tables consist of m rows of OTUs each representing a potential microbe and n columns of samples where m is much greater than n. 
-* OTU tables are very sparse, meaning they contain alot of zeros 
+* OTU tables are very sparse, meaning they contain a lot of zeros 
 * Compositionality sum constraints skew variance-covariance measurements preventing the use of multivariate analysis that rely on multivariate normality. 
 
-#### The Solution Convex Optomized Decomposition!
+#### The Solution Convex Optimized Decomposition!
 
-By using the l1 and nuclear norm we can decompose the matrix into its low-rank and sparse compoenents and then use the low-rank matrix for PCA. This is simillar to reucing noise in an image, allowing you to see the trends.
+By using the l1 and nuclear norm we can decompose the matrix into its low-rank and sparse components and then use the low-rank matrix for PCA. This is similar to reducing noise in an image, allowing you to see the trends.
 
 i.e. 
 
@@ -48,7 +48,7 @@ i.e.
 
 Where we can used the picture in the middle to determine trends, here the rank is three and the pattern is a checker board with a grey and white side. 
 
-This allows us to visualize the data using PCA, use SVM to determine the best classifier from metadata, and we can extract what bacteria are cuasing variance between your groups determined by SVM. 
+This allows us to visualize the data using PCA, use SVM to determine the best classifier from metadata, and we can extract what bacteria are causing variance between your groups determined by SVM. 
 
 ### Check out the example jupyter notebooks above by just opening them in your browser on git hub.  email cameronmartino at gmail dot com for concerns or questions
 
@@ -150,4 +150,3 @@ Source decomposition code and algorithm is from https://github.com/dganguli/robu
 Soil and Human microbiome examples of use in biological data written by cameron martino 
 
 for issues please contact cameronmartino at gmail dot com 
-
