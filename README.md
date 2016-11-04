@@ -1,11 +1,59 @@
 # DEICODE
 ## Discovery of Environmental Influences through Convex Optimized Decomposition by Ecotypes (DEICODE) 
 
-
 By decomposing the sparse data into its dense low-rank component trends can be discorved from enviornmental cgnages between sample groups.
 
 This project is a demonstration of this method in 16S rRNA sequencing data. 
 
+## Introduction to matrix decomposition and motivation for its application to 16S analysis 
+
+#### What is PCA
+* Standardize the data.
+* Obtain the Eigenvectors and Eigenvalues from the covariance matrix or correlation matrix, or perform Singular Vector Decomposition.
+* Sort eigenvalues in descending order and choose the k eigenvectors that correspond to the k largest eigenvalues where k is the number of dimensions of the new feature subspace (k < d).
+* Construct the projection matrix W from the selected k eigenvectors.
+* Transform the original dataset X via W to obtain a k-dimensional feature subspace Y.
+
+The eigenvectors and eigenvalues of a covariance (or correlation) matrix represent the "core" of a PCA: The eigenvectors (principal components) determine the directions of the new feature space, and the eigenvalues determine their magnitude. In other words, the eigenvalues explain the variance of the data along the new feature axes.
+
+#### Why would you use PCA in 16S analysis 
+
+* Dimentionality Reduction and visualization in 3D
+
+16S rRNA analysis begins by processing raw seaquencing reads into a matrix called and OTU table that is high dimentional and by using PCA the data can be visaluzed in 3 dimentions or less.
+
+* Extract what bacteria are cauing variance between samples directly from PCA visualization 
+
+From PCA graphs you can view which bacteria are contributing most to the chnages along an axis in your graph. This means unlike the conventional PCoA, in PCA your axis has meaning!
+
+* Support vector machines (SVMs) can be used to quickly determine the best column from metadata (i.e pH from map.txt)
+
+If you can perfrom PCA is can be used as input for SVMs, a very poerful tool as metadata continues to grow in size. 
+
+#### Why has no one used this before?
+
+##### There are lots of reasons (more than what is listed)
+
+* OTU tables consist of m rows of OTUs each representing a potential microbe and n columns of samples where m is much greater than n. 
+* OTU tables are very sparse, meaning they contain alot of zeros 
+* Compositionality sum constraints skew variance-covariance measurements preventing the use of multivariate analysis that rely on multivariate normality. 
+
+#### The Solution Convex Optomized Decomposition!
+
+By using the l1 and nuclear norm we can decompose the matrix into its low-rank and sparse compoenents and then use the low-rank matrix for PCA. This is simillar to reucing noise in an image, allowing you to see the trends.
+
+i.e. 
+
+![alt tag](https://github.com/cjm007/DEICODE/blob/master/etc/decomp.png)
+
+Where we can used the picture in the middle to determine trends, here the rank is three and the pattern is a checker board with a grey and white side. 
+
+This allows us to visualize the data using PCA, use SVM to determine the best classifier from metadata, and we can extract what bacteria are cuasing variance between your groups determined by SVM. 
+
+### Check out the example jupyter notebooks above by just opening them in your browser on git hub.  email cameronmartino at gmail dot com for concerns or questions
+
+#
+#
 ## Installation
 
 cd usr../DEICODE
