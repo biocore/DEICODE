@@ -8,7 +8,7 @@ This project is a demonstration of this method in 16S rRNA sequencing data.
 
 ## Installation
 
-cd usr../DEIECODE
+cd usr../DEICODE
 
 chmod +x setup.sh
 
@@ -16,7 +16,7 @@ chmod +x setup.sh
 
 ## Examples
 
-cd usr.../DEIECODE 
+cd usr.../DEICODE 
 
 source activate COD_env 
 
@@ -27,7 +27,7 @@ A browser window will open, then open notebooks to view examples from paper. Shi
 
 ## Usage
 
-cd usr.../DEIECODE 
+cd usr.../DEICODE 
 
 source activate COD_env 
 
