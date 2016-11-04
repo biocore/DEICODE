@@ -41,7 +41,9 @@ usage: DEIECODE.py [-h] -i INPUT_DIR -m MAP -o OUTPUT [-d DECOMPIT]
                    [-b BACTNUM] [-c CLASSNUM] [-t TAXAUSE] [-s MAPSTART]
 
 -i Path to a .biom file with taxanomic metadata 
+
 -m Path to Qiime style tab delimeted metadata (http://qiime.org/documentation/file_formats.html)
+
 -o Output directory for visualization and csv file results 
 
 
