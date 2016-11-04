@@ -68,7 +68,26 @@ Where we can used the picture in the middle to determine trends, here the rank i
 
 This allows us to visualize the data using PCA, use SVM to determine the best classifier from metadata, and we can extract what bacteria are causing variance between your groups determined by SVM. 
 
-### Check out the example jupyter notebooks above by just opening them in your browser on git hub.  email cameronmartino at gmail dot com for concerns or questions
+### email cameronmartino at gmail dot com for concerns or questions
+
+
+## Examples
+
+### 88 Soils - https://github.com/cjm007/DEICODE/blob/master/88Soils.ipynb
+### Crohns - https://github.com/cjm007/DEICODE/blob/master/Crohn_example.ipynb
+
+or 
+
+after installation: 
+
+cd usr.../DEICODE 
+
+source activate DEICODE_env 
+
+jupyter notebook 
+
+A browser window will open, then open notebooks to view examples from paper. Shift-enter to run cells. 
+
 
 #
 #
@@ -79,17 +98,6 @@ cd usr../DEICODE
 chmod +x setup.sh
 
 ./setup.sh
-
-## Examples
-
-cd usr.../DEICODE 
-
-source activate DEICODE_env 
-
-jupyter notebook 
-
-A browser window will open, then open notebooks to view examples from paper. Shift-enter to run cells. 
-
 
 ## Usage
 
