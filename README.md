@@ -68,9 +68,6 @@ Where we can used the picture in the middle to determine trends, here the rank i
 
 This allows us to visualize the data using PCA, use SVM to determine the best classifier from metadata, and we can extract what bacteria are causing variance between your groups determined by SVM. 
 
-### email cameronmartino at gmail dot com for concerns or questions
-
-
 ## Examples
 
 ### 88 Soils - https://github.com/cjm007/DEICODE/blob/master/88Soils.ipynb
@@ -175,4 +172,5 @@ Source decomposition code and algorithm is from https://github.com/dganguli/robu
 
 Soil and Human microbiome examples of use in biological data written by cameron martino 
 
-for issues please contact cameronmartino at gmail dot com 
+### email cameronmartino at gmail dot com for concerns or questions
+
