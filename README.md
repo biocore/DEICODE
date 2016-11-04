@@ -38,6 +38,10 @@ If you can perform PCA is can be used as input for SVMs, a very powerful tool as
 * OTU tables are very sparse, meaning they contain a lot of zeros 
 * Compositionality sum constraints skew variance-covariance measurements preventing the use of multivariate analysis that rely on multivariate normality. 
 
+* Mainly the sparsity of OTU tables causes "outliers" in the data which can easily skew PCA analysis. 
+
+![alt tag](https://github.com/cjm007/DEICODE/blob/master/etc/pca_vs_outlier.png)
+
 #### The Solution Convex Optimized Decomposition!
 
 By using the l1 and nuclear norm we can decompose the matrix into its low-rank and sparse components and then use the low-rank matrix for PCA. This is similar to reducing noise in an image, allowing you to see the trends.
