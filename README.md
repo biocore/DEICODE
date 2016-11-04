@@ -1,5 +1,5 @@
 # DEICODE
-## Discovery of Environmental Influences through Convex Optimized Decomposition by Ecotypes (DEIECODE) 
+## Discovery of Environmental Influences through Convex Optimized Decomposition by Ecotypes (DEICODE) 
 
 
 By decomposing the sparse data into its dense low-rank component trends can be discorved from enviornmental cgnages between sample groups.
