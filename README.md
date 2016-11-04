@@ -18,7 +18,7 @@ chmod +x setup.sh
 
 cd usr.../DEICODE 
 
-source activate COD_env 
+source activate DEICODE_env 
 
 jupyter notebook 
 
@@ -29,7 +29,7 @@ A browser window will open, then open notebooks to view examples from paper. Shi
 
 cd usr.../DEICODE 
 
-source activate COD_env 
+source activate DEICODE_env 
 
 ./DEICODE.py [-h] -i INPUT_DIR -m MAP -o OUTPUT [-d DECOMPIT]
                    [-b BACTNUM] [-c CLASSNUM] [-t TAXAUSE] [-s MAPSTART]
