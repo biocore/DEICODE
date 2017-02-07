@@ -49,19 +49,17 @@ usage: DEICODE.py [-h] -i INPUT_OTU -m MAP -o OUTPUT [-l LOW_RANK_METHOD]
                   [-d DECOMPIT] [-b BACTNUM] [-c CLASSNUM] [-t TAXAUSE]
                   [-s MAPSTART]
 
-Multivariate analysis of 16S data through DEICODE
-
-  -h, --help            show this help message and exit
-
  required arguments:
  
   -i INPUT_OTU, --Input_OTU INPUT_OTU
                         Path to .biom table i.e. home/usr/input/otu.biom (taxa
                         should be included in metadata)
+                        
   -m MAP, --map MAP     Path to Qiime style metadata i.e.
                         home/usr/input/map.txt
+                        
   -o OUTPUT, --output OUTPUT
-                        Output directory
+
                         
  optional arguments:
  
@@ -70,22 +68,27 @@ Multivariate analysis of 16S data through DEICODE
                         IterativeSVD) (options = NNM (Nuclear Norm
                         Minimization), SoftImpute,IterativeSVD, MICE, KNN,
                         WPCA, or EMPCA)
+                        
   -d DECOMPIT, --decompit DECOMPIT
                         How many iterations to complete in decomposition
                         (deafault=100) (options = any integer)
+                        
   -b BACTNUM, --bactnum BACTNUM
                         Number of bacteria to extract from PCA axis
                         (default=12) (options = any integer)
+                        
   -c CLASSNUM, --classnum CLASSNUM
                         Number of highest scoring classifiers to use in
                         analysis (default=2) (options = any integer greater
                         than 1 and less than the umber of columns in the
                         mapping file)
+                        
   -t TAXAUSE, --taxause TAXAUSE
                         What level of taxonomy to extract from PCA axis
                         (deafult=genus) (options = phylum, class, order,
                         family, genus, species or None if you do not have
                         incorporated taxaonomy)
+                        
   -s MAPSTART, --mapstart MAPSTART
                         What column to start analysis on in mapping file,
                         (i.e. skipping barcode sequences) (deafult=3) (options
