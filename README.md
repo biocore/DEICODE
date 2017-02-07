@@ -10,18 +10,10 @@ This project is a demonstration of this method in 16S rRNA sequencing data.
 ### 88 Soils - https://github.com/cjm007/DEICODE/blob/master/88Soils.ipynb
 ### Crohns - https://github.com/cjm007/DEICODE/blob/master/Crohn_example.ipynb
 
-or 
+## Benchmarking Examples
 
-after installation: 
-
-cd usr.../DEICODE 
-
-source activate DEICODE_env 
-
-jupyter notebook 
-
-A browser window will open, then open notebooks to view examples from paper. Shift-enter to run cells. 
-
+### 88 Soils - coming soon
+### Crohns - coming soon
 
 ## Installation
 
