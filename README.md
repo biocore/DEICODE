@@ -1,70 +1,9 @@
 # DEICODE
 ## Discovery of Environmental Influences through Convex Optimized Decomposition by Ecotypes (DEICODE) 
 
-By decomposing the sparse data into its dense low-rank component trends can be discovered from environmental changes between sample groups.
+Through matrix completion methods trends can be discovered from environmental changes between sample groups.
 
 This project is a demonstration of this method in 16S rRNA sequencing data. 
-
-## Introduction to matrix decomposition and motivation for its application to 16S analysis 
-
-### What is PCA
-* Standardize the data.
-* Obtain the Eigenvectors and Eigenvalues from the covariance matrix or correlation matrix, or perform Singular Vector Decomposition.
-* Sort eigenvalues in descending order and choose the k eigenvectors that correspond to the k largest eigenvalues where k is the number of dimensions of the new feature subspace (k < d).
-* Construct the projection matrix W from the selected k eigenvectors.
-* Transform the original dataset X via W to obtain a k-dimensional feature subspace Y.
-
-The eigenvectors and eigenvalues of a covariance (or correlation) matrix represent the "core" of a PCA: The eigenvectors (principal components) determine the directions of the new feature space, and the eigenvalues determine their magnitude. In other words, the eigenvalues explain the variance of the data along the new feature axes.
-
-### What is PCoA
-
-* It is similar in spirit to PCA but it takes a dissimilarity as input! A dissimilarity matrix shows the distance between every possible pair of objects.
-
-* Is a set of data analysis techniques that display the structure of (complex) distance-like data (a dissimilarity matrix!) in a high dimensional space into a lower dimensional space without too much loss of information.
-
-* The goal of MDS is to faithfully represent these distances with the lowest possible dimensional space.
-
-http://www.sequentix.de/gelquest/help/principal_coordinates_analysis.htm
-
-### Why would you use PCA in 16S analysis 
-
-* Dimensionality Reduction and visualization in 3D
-
-16S rRNA analysis begins by processing raw sequencing reads into a matrix called and OTU table that is high dimensional and by using PCA the data can be visualized in 3 dimensions or less.
-
-* Extract what bacteria are cauing variance between samples directly from PCA visualization 
-
-From PCA graphs you can view which bacteria are contributing most to the changes along an axis in your graph. This means unlike the conventional PCoA, in PCA your axis has meaning!
-
-* Support vector machines (SVMs) can be used to quickly determine the best column from metadata (i.e pH from map.txt)
-
-If you can perform PCA is can be used as input for SVMs, a very powerful tool as metadata continues to grow in size. 
-
-### Why is PCoA used instead of PCA in 16S analysis.
-
-#### There are lots of reasons (more than what is listed)
-
-* Mainly the sparsity of OTU tables causes "outliers" in the data which can easily skew PCA analysis. This Does not happen using PCoA because the distances are not sprase.
-
-![alt tag](https://github.com/cjm007/DEICODE/blob/master/etc/pca_vs_outlier.png)
-
-##### Sub-note why do OTU tables have outliers:
-
-* OTU tables consist of m rows of OTUs each representing a potential microbe and n columns of samples where m is much greater than n. 
-* OTU tables are very sparse, meaning they contain a lot of zeros 
-* Compositionality sum constraints skew variance-covariance measurements preventing the use of multivariate analysis that rely on multivariate normality. 
-
-### The Solution low-rank matrix completion!
-
-By using the l1 and nuclear norm we can decompose the matrix into its low-rank and sparse components and then use the low-rank matrix for PCA. This is similar to reducing noise in an image, allowing you to see the trends.
-
-i.e. 
-
-![alt tag](https://github.com/cjm007/DEICODE/blob/master/etc/decomp.png)
-
-Where we can used the picture in the middle to determine trends, here the rank is three and the pattern is a checker board with a grey and white side. 
-
-This allows us to visualize the data using PCA, use SVM to determine the best classifier from metadata, and we can extract what bacteria are causing variance between your groups determined by SVM. 
 
 ## Examples Using Nuclear Norm Rank Minimization
 
