@@ -23,8 +23,6 @@ jupyter notebook
 A browser window will open, then open notebooks to view examples from paper. Shift-enter to run cells. 
 
 
-#
-#
 ## Installation
 
 cd usr../DEICODE
