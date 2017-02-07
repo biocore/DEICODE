@@ -39,9 +39,9 @@ cd usr.../DEICODE
 
 source activate DEICODE_env 
 
-./DEICODE.py [-h] -i INPUT_DIR -m MAP -o OUTPUT [-d DECOMPIT]
-                   [-b BACTNUM] [-c CLASSNUM] [-t TAXAUSE] [-s MAPSTART]
-
+./DEICODE.py [-h] -i INPUT_OTU -m MAP -o OUTPUT [-l LOW_RANK_METHOD]
+                  [-d DECOMPIT] [-b BACTNUM] [-c CLASSNUM] [-t TAXAUSE]
+                  [-s MAPSTART]
 
 ### Commands 
 
