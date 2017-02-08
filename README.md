@@ -7,12 +7,12 @@ This project is a demonstration of this method in 16S rRNA sequencing data.
 
 ## Examples Using Nuclear Norm Rank Minimization
 
-### 88 Soils - https://github.com/cjm007/DEICODE/blob/master/88Soils.ipynb
-### Crohns - https://github.com/cjm007/DEICODE/blob/master/Crohn_example.ipynb
+### [88 Soils DEICODE Method Example](https://github.com/cjm007/DEICODE/blob/master/88Soils.ipynb)
+### [Crohns DEICODE Method Example](https://github.com/cjm007/DEICODE/blob/master/Crohn_example.ipynb)
 
 ## Benchmarking Examples
 
-### 88 Soils - coming soon
+### [88 Soils Imputation Benchmarking](https://github.com/cjm007/DEICODE/blob/master/Imputation_88Soils_benchmarking.ipynb)
 ### Crohns - coming soon
 
 ## Installation
