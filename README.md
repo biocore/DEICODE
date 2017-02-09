@@ -84,17 +84,14 @@ usage: DEICODE.py [-h] -i INPUT_OTU -m MAP -o OUTPUT [-l LOW_RANK_METHOD]
                         (i.e. skipping barcode sequences) (deafult=3) (options
                         = any integer greater than 1 and less than the umber
                         of columns in the mapping file)
-## Contributing
 
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
 
 ## Credits
 
-Source decomposition code and algorithm is from https://github.com/dganguli/robust-pca
+
+Source Imputation: https://github.com/hammerlab/fancyimpute
+Source WPCA/EMPCA: https://github.com/jakevdp/wpca
+Source decompostion Soil and Crohn example: https://github.com/dganguli/robust-pca
 
 Soil and Human microbiome examples of use in biological data written by cameron martino 
 
