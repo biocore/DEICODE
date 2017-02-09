@@ -93,7 +93,6 @@ Source Imputation: https://github.com/hammerlab/fancyimpute
 Source WPCA/EMPCA: https://github.com/jakevdp/wpca
 Source decompostion Soil and Crohn example: https://github.com/dganguli/robust-pca
 
-Soil and Human microbiome examples of use in biological data written by cameron martino 
 
 ### email cameronmartino at gmail dot com for concerns or questions
 
