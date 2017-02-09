@@ -89,10 +89,6 @@ usage: DEICODE.py [-h] -i INPUT_OTU -m MAP -o OUTPUT [-l LOW_RANK_METHOD]
 ## Credits
 
 
-Source Imputation: https://github.com/hammerlab/fancyimpute
-Source WPCA/EMPCA: https://github.com/jakevdp/wpca
-Source decompostion Soil and Crohn example: https://github.com/dganguli/robust-pca
-
-
-### email cameronmartino at gmail dot com for concerns or questions
-
+- Source Imputation: https://github.com/hammerlab/fancyimpute
+- Source WPCA/EMPCA: https://github.com/jakevdp/wpca
+- Source decompostion Soil and Crohn example: https://github.com/dganguli/robust-pca
