@@ -13,7 +13,6 @@ This project is a demonstration of this method in 16S rRNA sequencing data.
 ## Benchmarking Examples
 
 ### [88 Soils Imputation Benchmarking](https://github.com/cjm007/DEICODE/blob/master/Imputation_88Soils_benchmarking.ipynb)
-### Crohns - coming soon
 
 ## Installation
 
