@@ -4,9 +4,18 @@
 from __future__ import division
 #parsing command line
 import argparse
+import os
 #low rank methods (new)
 from wpca import WPCA, EMPCA
-from fancyimpute import BiScaler, KNN, NuclearNormMinimization, SoftImpute, IterativeSVD, MICE
+try:
+    from fancyimpute import BiScaler, NuclearNormMinimization, SoftImpute, IterativeSVD, MatrixFactorization
+except:
+    print("could not import MatrixFactorization from fancy impute check version: cannot run MatrixFactorization")
+    from fancyimpute import BiScaler, KNN, NuclearNormMinimization, SoftImpute, IterativeSVD
+
+
+
+from skbio.stats.composition import ilr
 #pcoa
 from skbio import DistanceMatrix
 from skbio.stats.ordination import pcoa
@@ -22,11 +31,11 @@ from sklearn import svm
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 import mpl_toolkits.mplot3d.axes3d as p3
-from sklearn.cluster import AgglomerativeClustering
-from sklearn.neighbors import kneighbors_graph
-from sklearn.metrics.cluster import completeness_score
-from sklearn.metrics.cluster import silhouette_score
 from sklearn.multiclass import OneVsOneClassifier
+from sklearn.model_selection import GridSearchCV
+from sklearn.neural_network import MLPClassifier
+from sklearn.neural_network import MLPRegressor
+from sklearn.preprocessing import StandardScaler
 #visual
 from Impute_vis import PCA_niche
 import seaborn as sns
@@ -48,16 +57,29 @@ import warnings
 
 __author__ = 'Cameron_Martino, cameronmartino at gmail dot com'
 
-parser = argparse.ArgumentParser(description='Multivariate analysis of 16S data through DEICODE\n\n')
-parser.add_argument('-i','--Input_OTU', help='Path to .biom table i.e. home/usr/input/otu.biom (taxa should be included in metadata)',required=True)
-parser.add_argument('-m','--map', help='Path to Qiime style metadata i.e. home/usr/input/map.txt',required=True)
-parser.add_argument('-o','--output',help='Output directory', required=True)
-parser.add_argument('-l','--low_rank_method',type=str,default="IterativeSVD",help='Specify a low rank method to use (default is IterativeSVD) (options = NNM (Nuclear Norm Minimization), SoftImpute,IterativeSVD, MICE, KNN, WPCA, or EMPCA)', required=False)
-parser.add_argument("-d", "--decompit",type=int,default=1000,help="How many iterations to complete in decomposition (deafault=1000) (options = any integer or None)", required=False)
-parser.add_argument("-b", "--bactnum",type=int,default=10,help="Number of bacteria to extract from PCA axis (default=12) (options = any integer)", required=False)
-parser.add_argument("-c", "--classnum",type=int,default=3,help="Number of highest scoring classifiers to use in analysis (default=2) (options = any integer greater than 1 and less than the umber of columns in the mapping file)", required=False)
-parser.add_argument("-t", "--taxause",type=str,default='genus',help="What level of taxonomy to extract from PCA axis (deafult=genus) (options = phylum, class, order, family, genus, species or None if you do not have incorporated taxaonomy)", required=False)
-parser.add_argument("-s", "--mapstart",type=int,default=3,help="What column to start analysis on in mapping file, (i.e. skipping barcode sequences) (deafult=3) (options = any integer greater than 1 and less than the umber of columns in the mapping file)", required=False)
+parser = argparse.ArgumentParser()
+
+parser._action_groups.pop()
+required = parser.add_argument_group('Required arguments')
+optional = parser.add_argument_group('Optional arguments')
+
+required.add_argument('-i','--Input_OTU', help='Path to .biom table i.e. home/usr/input/otu.biom (taxa should be included in metadata)',required=True)
+required.add_argument('-m','--map', help='Path to Qiime style metadata i.e. home/usr/input/map.txt',required=True)
+required.add_argument('-o','--output',help='Output directory', required=True)
+
+optional.add_argument('-l',"--low_rank_method",type=str,default="SoftImpute",help='Specify a low rank method to use (default is SoftImpute) (options = NNM (Nuclear Norm Minimization), SoftImpute,IterativeSVD, MatrixFactorization, can also use WPCA, or EMPCA for imputation)', required=False)
+optional.add_argument("-d", "--decompit",type=int,default=200,help="How many iterations to complete in decomposition (default=100) (options = any integer or None)", required=False)
+optional.add_argument("-b", "--bactnum",type=int,default=10,help="Number of bacteria to extract from PCA axis (default=12) (options = any integer)", required=False)
+optional.add_argument("-c", "--classnum",type=int,default=3,help="Number of highest scoring classifiers to use in analysis (default=2) (options = any integer greater than 1 and less than the umber of columns in the mapping file)", required=False)
+optional.add_argument("-t", "--taxause",type=str,default='genus',help="What level of taxonomy to extract from PCA axis (default=genus) (options = phylum, class, order, family, genus, species or None if you do not have incorporated taxaonomy)", required=False)
+optional.add_argument("-s", "--mapstart",type=int,default=3,help="What column to start analysis on in mapping file, (i.e. skipping barcode sequences) (default=3) (options = any integer greater than 1 and less than the umber of columns in the mapping file)", required=False)
+optional.add_argument("-f", "--feature",type=bool,default=True,help="Set to False if you would like to turn off feature selection (default=True, warning: on large datastes this will signficantly slow down run time)", required=False)
+optional.add_argument("-w_zero", "--w_zero",type=int,default=0,help="Zero value used for weighted PCA (default=0)", required=False)
+optional.add_argument("-w_low", "--w_low",type=int,default=.001,help="Low value used for weighted PCA (default .001)", required=False)
+optional.add_argument("-w_high", "--w_high",type=int,default=10,help="High value used for weighted PCA (default 10)", required=False)
+optional.add_argument("-n", "--ncomp",type=int,default=3,help="Number of Principle Components to Use in Feature Selection (default=3)", required=False)
+optional.add_argument("-fm", "--fmethod",type=str,default="WPCA",help="Method to use for feature selection (default=WPCA)", required=False)
+
 args = parser.parse_args()
 
 print("\n\nInput biom file is: %s"%(args.Input_OTU))
@@ -77,6 +99,21 @@ bactnum_for_pca=args.bactnum
 classnum_to_analy=args.classnum
 taxause_name=args.taxause
 mapstart_num=args.mapstart
+
+select_features=args.feature
+zerow=args.w_zero
+minw=args.w_low
+maxw=args.w_high
+component=args.ncomp
+feature_method=args.fmethod
+
+
+try:
+    os.stat(out)
+except:
+    print("specified output folder does not exsist: making it now")
+    os.mkdir(out)
+
 
 if taxause_name == "phylum":
     txlvl=2
@@ -105,11 +142,11 @@ def convert_biom_to_pandas(table): # covert biom
     return feature_table, taxonomy
 
 def pw_distances(counts, ids=None, metric="braycurtis"):
-
+    
     num_samples = len(counts)
     if ids is not None and num_samples != len(ids):
         raise ValueError("Number of rows in counts must be equal to number of provided ""ids.")
-
+    
     distances = pdist(counts, metric)
     return DistanceMatrix(squareform(distances, force='tomatrix', checks=False), ids)
 
@@ -117,32 +154,15 @@ def pw_distances(counts, ids=None, metric="braycurtis"):
 ########################### metadata classification ##########################################################
 
 print('\n Importing Metadata for analysis \n')
-
 #Mapping import
 mappingdf= pd.read_table('%s'%map_file, index_col=0)
 mappingdf=mappingdf.replace(np.nan,'Unknown', regex=True)
-samplenames = mappingdf.index.values.tolist()
-samplenames = map(str, samplenames)
-
-#encode pre preoccessing from mapping
-encoded_mapping={} #save coded and uncoded
-le = preprocessing.LabelEncoder() # encoder prepreocessing
-
-classifiers_meta=mappingdf.columns.values.tolist() # classifier names
-for metatmp in classifiers_meta[mapstart_num:]: # run each classifier
-    le.fit(list(set(list(mappingdf[metatmp]))))
-    encoded = le.transform(list(mappingdf[metatmp]))
-    not_encoded = le.inverse_transform(encoded)
-    encoded_mapping[metatmp]=[encoded,not_encoded]
-
 print('\n Done')
 
 ############################# import otu information ###################################################
 
 
-print('\nImporting .biom table for analysis \n')
-
-
+print('\n Importing .biom table for analysis \n')
 #BIOM
 
 #load table
@@ -153,7 +173,6 @@ table.filter(read_filter, axis='observation')
 otu, taxonomy = convert_biom_to_pandas(table)
 otu=otu.T
 otu=otu.replace(np.nan,0, regex=True)
-
 
 #add taxa names
 taxa_names=list(taxonomy['taxonomy'])
@@ -166,78 +185,95 @@ for q in range(len(otu.index.values)):
 otu['new_index']=otus_index
 otu = otu.set_index('new_index')
 
-
 #set taxa names ro level specified by user
 if txlvl==42:
-    # Generate "fake" OTU names for table
     tax_index=otus_index
 else:
-    for t in taxa_names: # taxa level split and join
+    for t in taxa_names:
         tax_index.append(";".join(t.split(";")[:txlvl]))
 
-#check matching
+
+#### match and save data #####
+
 otu, mappingdf = match(otu.T, mappingdf)
 otu=otu.T
 
-# save data and names from data frame
+#remove otus with sum to zero after matching files
+
+otu= otu.loc[(otu.sum(axis=1) != 0)]
+
+# save data, names and classifiers from data frame
 index = otu.index.values.tolist()
 data = otu.as_matrix()
 ids = otu.columns.values.tolist()
 ids = list(map(str, ids))
 
-print('\n Done')
+#encode pre preoccessing from mapping
+
+samplenames = mappingdf.index.values.tolist()
+samplenames = map(str, samplenames)
+
+encoded_mapping={} #save coded and uncoded
+le = preprocessing.LabelEncoder() # encoder prepreocessing
+classifiers_meta=mappingdf.columns.values.tolist() # classifier names
+for metatmp in classifiers_meta[mapstart_num:]: # run each classifier
+    le.fit(list(set(list(mappingdf[metatmp]))))
+    encoded = le.transform(list(mappingdf[metatmp]))
+    not_encoded = le.inverse_transform(encoded)
+    encoded_mapping[metatmp]=[encoded,not_encoded]
+
+#size
+
+print("Number of samples %i"%(int(min(data.shape))))
+print("Number of OTUs %i"%(int(max(data.shape))))
+print("\n Done")
 
 
 ############################# Low-Rank Matrix Imputations ###################################################
 
 
-print('\n Running Low-Rank Matrix Imputation \n')
+print("\n Running Low-Rank Matrix Imputation \n")
 
 
 
-
-if lr_method=="WPCA" or lr_method=="EMPCA": # WPCA or EMPCA specified
+if lr_method=="WPCA" or lr_method=="EMPCA": # Impute by WPCA or EMPCA
     
     otum=data.T.copy() # make copy for imputation
-    #WPCA and EMPCA
     weight = otum.copy()
+    
     for i in range(len(otum)):
         for j in range(len(otum[i])):
             if otum[i][j]==0:
-                weight[i][j]=1
+                weight[i][j]=zerow  # weight unknown values as having almost infinite variance (we don't know if they should exist or not) would be infinite if we know we didnt find what did exisit
             else:
-                weight[i][j]=10000
+                weight[i][j]= (otum[i][j]-minw)/(maxw-minw) # weight low freq otus have having higher possible error and higher frequency as having lower err
 
     if lr_method=="EMPCA":
-        print("Running EMPCA")
+        print(" Running EMPCA")
         low_rank_matrix = EMPCA(n_components=3).fit_reconstruct(otum,weight).T
     else:
-        print("Running WPCA")
+        print(" Running WPCA")
         low_rank_matrix = WPCA(n_components=3).fit_reconstruct(otum,weight).T
 
 else:
     
     otum=data.copy() # make copy for imputation
-    # Fancy Impute
-    # make zero unknown
     otum=otum.astype(np.float64)
+    #test
     otum[otum == 0] = np.nan #make unknown nan
-    # fancy impute methods (SoftImpute,IterativeSVD, MICE, KNN)
-    if lr_method=='KNN':
-        print("Running KNN")
-        low_rank_matrix=KNN(k=12,orientation="rows",use_argpartition=True,print_interval=100,min_value=0,max_value=(np.amax(otum)/10),normalizer=None,verbose=True).complete(otum)
+    
+    if lr_method=='MatrixFactorization':
+        print(" Running MatrixFactorization")
+        low_rank_matrix=MatrixFactorization().complete(otum)
     elif lr_method=='IterativeSVD':
-        print("Running Iterative SVD")
-        low_rank_matrix=IterativeSVD(convergence_threshold=0.00001,max_iters=iteration_used,gradual_rank_increase=False,svd_algorithm="arpack",init_fill_method="zero",min_value=1e-10,max_value=(np.amax(otum)),verbose=True).complete(otum)
-    elif lr_method=='MICE':
-        print("Running MICE")
-        low_rank_matrix=MICE(visit_sequence='monotone',n_imputations=100,n_burn_in=40,n_pmm_neighbors=40,impute_type='col',n_nearest_columns=np.infty,init_fill_method="mean",min_value=0,max_value=(np.amax(otum)),verbose=True).complete(otum)
+        print(" Running Iterative SVD")
+        low_rank_matrix=IterativeSVD(rank=min(otum.shape),max_iters=iteration_used,convergence_threshold=0.000001).complete(otum)
     elif lr_method=="NNM":
-        print("Running Nuclear Norm Minimization")
-        low_rank_matrix=NuclearNormMinimization(min_value=0,max_value=(np.amax(otum))).complete(otum)
+        print(" Running Nuclear Norm Minimization")
+        low_rank_matrix=NuclearNormMinimization().complete(otum)
     else:
-        print("Running Soft Impute")
-        low_rank_matrix=SoftImpute(shrinkage_value=None,convergence_threshold=0.0001,max_iters=iteration_used,n_power_iterations=1,init_fill_method="zero",min_value=0,max_value=(np.amax(otum)),normalizer=None,verbose=True).complete(otum)
+        print(" Running Soft Impute")
+        low_rank_matrix=SoftImpute(max_rank=min(otum.shape),max_iters=iteration_used,convergence_threshold=0.000001,min_value=0,max_value=(np.amax(otum))).complete(otum)
 
 print('\nDone')
 
@@ -245,15 +281,20 @@ print('\nDone')
 
 print('\n Testing Cummultive Cumulative Explained Variance for PCA \n')
 
-
-X=low_rank_matrix.copy() # low rank matrix to run SVM on
-
-pca_model=PCA(n_components=3) #PCA
-X_reduced_var = pca_model.fit_transform(X) #transform
+# plot cumulative explained variance from weighted PCA
+X=low_rank_matrix.copy()
+weight = X.copy()
+for i in range(len(X)):
+    for j in range(len(X[i])):
+        if X[i][j]==0:
+            weight[i][j]=zerow  # weight unknown values as having almost infinite variance (we don't know if they should exist or not) would be infinite if we know we didnt find what did exisit
+        else:
+            weight[i][j]= (X[i][j]-minw)/(maxw-minw) # weight low freq otus have having higher possible error and higher frequency as having lower err
+pca_model=WPCA(n_components=3) #PCA
+X_reduced_var = pca_model.fit_transform(X,weight) #transform
 pccompdf = pd.DataFrame(pca_model.components_,columns=otu.columns,index = ['PC-1','PC-2','PC-3']).T #get wieghts
 var_exp=pca_model.explained_variance_ratio_
 cum_var_exp = np.cumsum(pca_model.explained_variance_ratio_)
-#plot cummulitave variance
 with plt.style.context('seaborn-whitegrid'):
     plt.figure(figsize=(6,4))
     plt.bar(range(3), var_exp, alpha=0.5, align='center',
@@ -263,83 +304,150 @@ with plt.style.context('seaborn-whitegrid'):
     plt.ylabel('Explained variance ratio')
     plt.xlabel('Principal components')
     plt.legend(loc='best')
-    plt.savefig('%s/explained_variance.png'%(out),bbox_to_anchor=(2.2, 1.0), dpi=300, bbox_inches='tight')
-    plt.tight_layout()
-#plot distribution
-g = sns.jointplot(x="PC-1", y="PC-2", data=pccompdf, kind="kde", color="m")
-g.plot_joint(plt.scatter, c="w", s=30, linewidth=1, marker="+")
-g.ax_joint.collections[0].set_alpha(0)
-g.set_axis_labels("$PC-1$", "$PC-2$")
-g.savefig('%s/PCA_dist.png'%(out),dpi=300)
-
+plt.tight_layout()
+plt.savefig('%s/explained_variance.png'%(out),bbox_to_anchor=(2.2, 1.0), dpi=300, bbox_inches='tight')
 print('\nDone: PCA Evaluation Graphs in Output')
 
+
+#start machine learning
 print('\nRunning Support vector machines \n')
 
-sv={} # save scores for each classifier
+# feature selection method
+if select_features == True:
+    if feature_method=="WPCA":
+        feature_clf = WPCA(n_components=component)
+    else:
+        feature_clf = EMPCA(n_components=component)
 
+sv={} # save scores for each classifier
 for metatmp in classifiers_meta[mapstart_num:]: # run each classifier
     
-    print("   Running Classifier: %s"%str(metatmp))
-
-if len(set(encoded_mapping[metatmp][0]))<=1: # can not learn classifiers with one label
-        print("   Wanring: Skipping Classifier: %s, All classifiers must have more than one label!"%str(metatmp))
+    
+    print("   Running Classifier: %s with %i classes"%(str(metatmp),len(set(encoded_mapping[metatmp][0]))))
+    
+    if len(set(encoded_mapping[metatmp][0]))<=1: # can not learn classifiers with one label
+        print("    Warning: Skipping Catagory: %s, All catagory must have more than one label!"%str(metatmp))
         continue
-
+    
     if len(set(encoded_mapping[metatmp][0]))==2: # if only two possible classifications use support vector classfier
-
+        
+        print("    Running Support Vector Classifier")
         Y=encoded_mapping[metatmp][0]
-        X_train, X_test, y_train, y_test = train_test_split(X.T, Y, test_size=0.2, random_state=0)
-        pca = PCA(n_components=3)
-        pca.fit(X_train)
-        X_t_train = pca.transform(X_train)
-        X_t_test = pca.transform(X_test)
-        clf = svm.SVC(class_weight='balanced',random_state=0)
-        clf.fit(X_t_train, y_train)
-        sv[metatmp] = clf.score(X_t_test, y_test)
+        
+        #split
+        try:
+            X_train, X_test, y_train, y_test = train_test_split(X.T,Y,test_size=0.2,stratify=Y,random_state=0)
+        except:
+            print("    Warning: only one entry for one label of this catagory: skipping %s"%(str(metatmp)))
+            continue
+        
+        if select_features == True:
+            weights=X_train.copy()
+            for i in range(len(weights)):
+                for j in range(len(weights[i])):
+                    if X_train[i][j]==0:
+                        weights[i][j]=zerow
+                    else:
+                        weights[i][j]= (X_train[i][j]-minw)/(maxw-minw)
+            
+            feature_clf.fit(X_train,weights)
+            X_t_train = feature_clf.transform(X_train)
+            X_t_test = feature_clf.transform(X_test)
+            clfb = svm.SVC(random_state=0)
+            clfb.fit(X_t_train, y_train)
+            sv[metatmp] = clfb.score(X_t_test, y_test)
+            print("    Coef: %f"%(sv[metatmp]))
+        else:
+            clfb = svm.SVC(random_state=0)
+            clfb.fit(X_train, y_train)
+            sv[metatmp] = clfb.score(X_test, y_test)
 
-    if len(set(encoded_mapping[metatmp][0]))>2 and 10>len(set(encoded_mapping[metatmp][0])): # if not continuous but more than two use linear support vector classifier
-
+    if len(set(encoded_mapping[metatmp][0]))>2 and all(isinstance(item, str) for item in encoded_mapping[metatmp][1]): # if not quantity and class is not boolian
+    
+        print("    Running One vs. One Linear Support Vector Classifier")
         Y=encoded_mapping[metatmp][0]
-        X_train, X_test, y_train, y_test = train_test_split(X.T, Y, test_size=0.2, random_state=0)
-        pca = PCA(n_components=3)
-        pca.fit(X_train)
-        X_t_train = pca.transform(X_train)
-        X_t_test = pca.transform(X_test)
-        clf = OneVsOneClassifier(svm.LinearSVC(random_state=0,class_weight='balanced'))
-        clf.fit(X_t_train, y_train)
-        sv[metatmp] = clf.score(X_t_test, y_test)
+        try:
+            X_train, X_test, y_train, y_test = train_test_split(X.T,Y,test_size=0.2,stratify=Y,random_state=0)
+        except:
+            print("    Warning: only one entry for on member of this class: skipping")
+            continue
+        if select_features == True:
+            
+            # feature selection
+            weights=X_train.copy()
+            for i in range(len(weights)):
+                for j in range(len(weights[i])):
+                    if X_train[i][j]==0:
+                        weights[i][j]=zerow
+                    else:
+                        weights[i][j]= (X_train[i][j]-minw)/(maxw-minw)
 
-    else: # if continuous classifier use regression
-	
+
+            feature_clf.fit(X_train,weights)
+            X_t_train = feature_clf.transform(X_train)
+            X_t_test = feature_clf.transform(X_test)
+            clfm = OneVsOneClassifier(svm.LinearSVC(random_state=0,class_weight="balanced")) # one vs one for imblanced data sets
+            clfm.fit(X_t_train, y_train)
+            sv[metatmp] = clfm.score(X_t_test, y_test)
+            print("    Coef: %f"%(sv[metatmp]))
+        
+        else:
+            clfm = OneVsOneClassifier(svm.LinearSVC(random_state=0,class_weight="balanced")) # one vs one for imblanced data sets
+            clfm.fit(X_train, y_train)
+            sv[metatmp] = clfm.score(X_test, y_test)
+
+    else: # if qauntity
+        
+        print("    Running Support Vector Regression")
         Y=encoded_mapping[metatmp][0]
-        X_train, X_test, y_train, y_test = train_test_split(X.T, Y, test_size=0.2, random_state=0)
-        pca = PCA(n_components=3)
-        pca.fit(X_train)
-        X_t_train = pca.transform(X_train)
-        X_t_test = pca.transform(X_test)
-        clf = svm.SVR()
-        clf.fit(X_t_train, y_train)
-        sv[metatmp] = clf.score(X_t_test, y_test)
+            
+        #split
+        try:
+            X_train, X_test, y_train, y_test = train_test_split(X.T,Y,test_size=0.2,stratify=Y,random_state=0)
+        except:
+            print("    Warning: only one entry for on member of this class: skipping")
+            continue
+        
+        if select_features == True:
+            
+            # feature selection
+            weights=X_train.copy()
+            for i in range(len(weights)):
+                for j in range(len(weights[i])):
+                    if X_train[i][j]==0:
+                        weights[i][j]=zerow
+                    else:
+                        weights[i][j]= (X_train[i][j]-minw)/(maxw-minw)
+            
+            feature_clf.fit(X_train,weights)
+            X_t_train = feature_clf.transform(X_train)
+            X_t_test = feature_clf.transform(X_test)
+            clfr = GridSearchCV(svm.SVR(kernel='rbf',gamma=0.1),cv=5,param_grid={"C": [1e0, 1e1, 1e2, 1e3],"gamma": np.logspace(-2, 2, 5)}, n_jobs=-1) # grid search for optimized perams, paral for speed
+            clfr.fit(X_t_train, y_train)
+            sv[metatmp] = clfr.score(X_t_test, y_test)
+            print("Coef: %f"%(sv[metatmp]))
+        else:
+            #learn
+            clfr = GridSearchCV(svm.SVR(kernel='rbf',gamma=0.1),cv=5,param_grid={"C": [1e0, 1e1, 1e2, 1e3],"gamma": np.logspace(-2, 2, 5)}, n_jobs=-1) # grid search for optimized perams, paral for speed
+            clfr.fit(X_train, y_train)
+            sv[metatmp] = clfr.score(X_test, y_test)
 
 
-############ Convert dict to dataframe and choose colors ##################################
-
-
+#Convert dict to dataframe and choose colors
 print('\n Saving Classifier Scores and Visualizations for each classifier Based on SVM R-Squared \n')
-
 scores = pd.DataFrame(list(sv.items()))
 scores=scores.set_index(scores[0])
 scores = scores.drop([0], 1)
 scores.columns = ['Scores']
+scores.sort_values(['Scores'], ascending = [False], inplace = True)
+scores.to_csv('%s/metadata_scores.csv'%(out), sep='\t')
+mybest_classer_list = scores.index.values.tolist()
 bmap = brewer2mpl.get_map('Set3','qualitative',12,reverse=True)
 colors = bmap.mpl_colors
-scores.sort_values(['Scores'], ascending = [False], inplace = True)
-scores.to_csv('%s/metadata_scores.csv'%out, sep='\t')
-mybest_classer_list = scores.index.values.tolist()
+print('\nDone: Ranked Classifier Scores in Output')
 
-rint('\nDone: Ranked Classifier Scores in Output')
 
+### visualize ###
 
 for bestclassifier in mybest_classer_list[:classnum_to_analy]:
     
