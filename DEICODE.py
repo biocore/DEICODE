@@ -13,9 +13,6 @@ except:
     print("could not import MatrixFactorization from fancy impute check version: cannot run MatrixFactorization")
     from fancyimpute import BiScaler, KNN, NuclearNormMinimization, SoftImpute, IterativeSVD
 
-
-
-from skbio.stats.composition import ilr
 #pcoa
 from skbio import DistanceMatrix
 from skbio.stats.ordination import pcoa
