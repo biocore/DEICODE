@@ -1,4 +1,4 @@
-name: DEICODE_env
+name: DEICODE
 channels:
 - !!python/unicode
   'etetoolkit'
@@ -438,5 +438,5 @@ dependencies:
   - rope-py3k==0.9.4.post1
   - tables==3.2.3.1
   - wpca==0.1
-prefix: !!python/unicode '/Users/cameronmartino/anaconda/envs/DEICODE_env'
+prefix: !!python/unicode '/Users/cameronmartino/anaconda/envs/DEICODE'
 
