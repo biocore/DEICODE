@@ -7,12 +7,6 @@ import argparse
 import os
 #low rank methods (new)
 from wpca import WPCA, EMPCA
-try:
-    from fancyimpute import BiScaler, NuclearNormMinimization, SoftImpute, IterativeSVD, MatrixFactorization
-except:
-    print("could not import MatrixFactorization from fancy impute check version: cannot run MatrixFactorization")
-    from fancyimpute import BiScaler, KNN, NuclearNormMinimization, SoftImpute, IterativeSVD
-
 #pcoa
 from skbio import DistanceMatrix
 from skbio.stats.ordination import pcoa
@@ -91,6 +85,16 @@ in_biom=args.Input_OTU
 out=args.output
 map_file=args.map
 lr_method=args.low_rank_method
+
+try:
+    from fancyimpute import BiScaler, NuclearNormMinimization, SoftImpute, IterativeSVD, MatrixFactorization
+except:
+    print("could not import MatrixFactorization from fancy impute check version: cannot run MatrixFactorization")
+    from fancyimpute import BiScaler, KNN, NuclearNormMinimization, SoftImpute, IterativeSVD
+    if lr_method=="MatrixFactorization":
+	import sys 
+	sys.exit('Please choose another method, MatrixFactorization will only run on OSX')
+
 iteration_used=args.decompit
 bactnum_for_pca=args.bactnum
 classnum_to_analy=args.classnum
