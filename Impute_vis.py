@@ -67,7 +67,7 @@ class PCA_niche(object):
         index_std=[]
         for niche in list(grouped_nichesetdict.keys()):
             for bact_var in highest_var_bact[:bact_to_show]:
-                out_niche_linked.setdefault(niche, []).append(plot_var_otu_grouped[bact_var][niche]['mean'])
+                out_niche_linked.setdefault(niche, []).append(plot_var_otu_grouped[bact_var][niche]['max'])
                 out_niche_linked.setdefault(niche, []).append(plot_var_otu_grouped[bact_var][niche]['std'])
         for bact_var in highest_var_bact[:bact_to_show]:
             index_rename.append('%s_mean'%bact_var)
@@ -94,8 +94,8 @@ class PCA_niche(object):
             out_niche_linkeddf.T[index_mean].plot(kind='bar',width=.78, yerr=out_niche_linkeddf.T[index_std].values.T, alpha = 0.92,error_kw=dict(elinewidth=1,capsize=2,barsabove=True,ecolor='k',ms=1, mew=1),rot=0,colormap="Set3",sharey=True,fontsize=15,ax=ax1)
             ax1.legend(loc=2,prop={'size':16},bbox_to_anchor=(1.0, 1.0))
             Y=encoded_mapping[niche_plot][0].tolist()
-            ax2.scatter(X_reduced2[:, 0], X_reduced2[:, 1], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
-            p=ax2.scatter(X_reduced2[:, 0], X_reduced2[:, 1], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
+            ax2.scatter(X_reduced2[:, 0], X_reduced2[:, 1], c=list(encoded_mapping[bact_var][0]),cmap=plt.cm.cool,s=200)
+            p=ax2.scatter(X_reduced2[:, 0], X_reduced2[:, 1], c=list(encoded_mapping[bact_var][0]),cmap=plt.cm.cool,s=200)
             fig.colorbar(p,orientation='horizontal')
             # Set common labels
             ax1.set_xlabel(('Mean Frequency in %s Niche'%niche_plot))
