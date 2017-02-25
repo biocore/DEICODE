@@ -26,6 +26,8 @@ chmod +x setup.sh
 
 cd usr../DEICODE
 
+source activate DEICODE_env
+
 ./DEICODE.py -i data/88_soils.biom  -m data/soil_map.txt -o test_output
 
 ## Usage
