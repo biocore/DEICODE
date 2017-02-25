@@ -36,6 +36,7 @@ import brewer2mpl
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 #other util
+import sys
 from gneiss.util import match
 import scipy
 import pandas as pd
@@ -92,7 +93,6 @@ except:
     print("MatrixFactorization not available on this platform, please choose another method.")
     from fancyimpute import BiScaler, KNN, NuclearNormMinimization, SoftImpute, IterativeSVD
     if lr_method=="MatrixFactorization":
-        import sys 
         sys.exit('Please choose another method, MatrixFactorization will not run')
 
 iteration_used=args.decompit
@@ -158,28 +158,44 @@ print('\n Importing Metadata for analysis \n')
 #Mapping import
 mappingdf= pd.read_table('%s'%map_file, index_col=0)
 mappingdf=mappingdf.replace(np.nan,'Unknown', regex=True)
+if min(mappingdf.shape)<=1:
+    sys.exit('Import error from mapping or metadata (less than two samples or features): please check your metadata is tab delimited format')
 print('\n Done')
 
 ############################# import otu information ###################################################
 
 
 print('\n Importing .biom table for analysis \n')
-#BIOM
 
-#load table
-table = load_table('%s'%in_biom)
-read_filter = lambda val, id_, md: sum(val) > 0
-table.filter(read_filter, axis='sample')
-table.filter(read_filter, axis='observation')
-otu, taxonomy = convert_biom_to_pandas(table)
-otu=otu.T
-otu=otu.replace(np.nan,0, regex=True)
+try:
+    filename=in_biom.split('/')[-1]
+except:
+    filename=in_biom
 
-#add taxa names
-taxa_names=list(taxonomy['taxonomy'])
+if filename.split('.')[-1]=="biom":
+    #BIOM
+    #load table
+    table = load_table('%s'%in_biom)
+    read_filter = lambda val, id_, md: sum(val) > 0
+    table.filter(read_filter, axis='sample')
+    table.filter(read_filter, axis='observation')
+    otu, taxonomy = convert_biom_to_pandas(table)
+    otu=otu.T
+    otu=otu.replace(np.nan,0, regex=True)
+    #add taxa names
+    taxa_names=list(taxonomy['taxonomy'])
+elif filename.split('.')[-1]=="csv" or filename.split('.')[-1]=="tsv" or filename.split('.')[-1]=="txt":
+    #csv
+    otu=pd.read_table('%s'%in_biom, index_col=0)
+    taxa_names=list(otu.index.values)
+    otu=otu.replace(np.nan,0, regex=True)
+    if min(otu.shape)<=1:
+        sys.exit('Import error less than two samples or features: please check that your data is tab delimited or in biom file format')
+else:
+    sys.exit('Import error: please check that your data is one of the following file formats (.csv,.biom,.txt,.tsv)')
+
+#add unque taxa names for pca/machine leanring (save taxa name for later)
 tax_index=[]
-
-#add unque taxa names for now
 otus_index=[]
 for q in range(len(otu.index.values)):
     otus_index.append("OTU_%s"%str(q))
@@ -474,6 +490,7 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
         ax.set_zlabel("PC3", fontsize=10)
         ax.w_zaxis.set_ticklabels([])
         plt.colorbar(p)
+        fig.set_tight_layout(True)
         plt.savefig('%s/%s_pcoa.png'%(out,bestclassifier), dpi=300)
         plt.close('all')
 
@@ -525,6 +542,7 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
         ax.w_yaxis.set_ticklabels([])
         ax.set_zlabel("PC3", fontsize=10)
         ax.w_zaxis.set_ticklabels([])
+        fig.set_tight_layout(True)
         fig.savefig('%s/%s_pcoa.png'%(out,bestclassifier), dpi=300)
 
 
@@ -549,6 +567,7 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
         ax.set_zlabel("PC3", fontsize=10)
         ax.w_zaxis.set_ticklabels([])
         plt.colorbar(p)
+        fig.set_tight_layout(True)
         plt.savefig('%s/%s_pca.png'%(out,bestclassifier), dpi=300)
         plt.close('all')
 
@@ -572,6 +591,7 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
         ax.w_yaxis.set_ticklabels([])
         ax.set_zlabel("Pc3", fontsize=10)
         ax.w_zaxis.set_ticklabels([])
+        fig.set_tight_layout(True)
         fig.savefig('%s/%s_pca.png'%(out,bestclassifier), dpi=300)
 
 

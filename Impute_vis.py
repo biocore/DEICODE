@@ -38,8 +38,7 @@ class PCA_niche(object):
         highest_var_bact=list(pccompdf.index.values) # re order table by wieghts
         
         plot_var_otuch=plot_var_otuch.T
-        plot_var_otuch['new_index']=highest_var_bact
-        plot_var_otuch = plot_var_otuch.set_index('new_index')
+        plot_var_otuch=plot_var_otuch.reindex(highest_var_bact)
         plot_var_otuch=plot_var_otuch.T
         plot_var_otu, mapping_plot_var_otu = match(plot_var_otuch, mappingdf)
         mapping_plot_var_otu["IDs"]=list(mapping_plot_var_otu.index.values)
@@ -94,8 +93,8 @@ class PCA_niche(object):
             out_niche_linkeddf.T[index_mean].plot(kind='bar',width=.78, yerr=out_niche_linkeddf.T[index_std].values.T, alpha = 0.92,error_kw=dict(elinewidth=1,capsize=2,barsabove=True,ecolor='k',ms=1, mew=1),rot=0,colormap="Set3",sharey=True,fontsize=15,ax=ax1)
             ax1.legend(loc=2,prop={'size':16},bbox_to_anchor=(1.0, 1.0))
             Y=encoded_mapping[niche_plot][0].tolist()
-            ax2.scatter(X_reduced2[:, 0], X_reduced2[:, 1], c=list(encoded_mapping[bact_var][0]),cmap=plt.cm.cool,s=200)
-            p=ax2.scatter(X_reduced2[:, 0], X_reduced2[:, 1], c=list(encoded_mapping[bact_var][0]),cmap=plt.cm.cool,s=200)
+            ax2.scatter(X_reduced2[:, 0], X_reduced2[:, 1], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
+            p=ax2.scatter(X_reduced2[:, 0], X_reduced2[:, 1], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
             fig.colorbar(p,orientation='horizontal')
             # Set common labels
             ax1.set_xlabel(('Mean Frequency in %s Niche'%niche_plot))
