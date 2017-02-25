@@ -22,6 +22,12 @@ chmod +x setup.sh
 
 ./setup.sh
 
+## Test:
+
+cd usr../DEICODE
+
+./DEICODE.py -i data/88_soils.biom  -m data/soil_map.txt -o test_output
+
 ## Usage
 
 cd usr.../DEICODE 
