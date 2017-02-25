@@ -92,8 +92,8 @@ except:
     print("could not import MatrixFactorization from fancy impute check version: cannot run MatrixFactorization")
     from fancyimpute import BiScaler, KNN, NuclearNormMinimization, SoftImpute, IterativeSVD
     if lr_method=="MatrixFactorization":
-	import sys 
-	sys.exit('Please choose another method, MatrixFactorization will only run on OSX')
+        import sys 
+        sys.exit('Please choose another method, MatrixFactorization will only run on OSX')
 
 iteration_used=args.decompit
 bactnum_for_pca=args.bactnum
@@ -404,7 +404,7 @@ for metatmp in classifiers_meta[mapstart_num:]: # run each classifier
             
         #split
         try:
-            X_train, X_test, y_train, y_test = train_test_split(X.T,Y,test_size=0.2,stratify=Y,random_state=0)
+            X_train, X_test, y_train, y_test = train_test_split(X.T,Y,test_size=0.2,random_state=0)
         except:
             print("    Warning: only one entry for on member of this class: skipping")
             continue
