@@ -22,7 +22,7 @@ chmod +x setup.sh
 
 ./setup.sh
 
-## Test:
+## Test
 
 cd usr../DEICODE
 
