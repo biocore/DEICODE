@@ -89,11 +89,11 @@ lr_method=args.low_rank_method
 try:
     from fancyimpute import BiScaler, NuclearNormMinimization, SoftImpute, IterativeSVD, MatrixFactorization
 except:
-    print("could not import MatrixFactorization from fancy impute check version: cannot run MatrixFactorization")
+    print("MatrixFactorization not available on this platform, please choose another method.")
     from fancyimpute import BiScaler, KNN, NuclearNormMinimization, SoftImpute, IterativeSVD
     if lr_method=="MatrixFactorization":
         import sys 
-        sys.exit('Please choose another method, MatrixFactorization will only run on OSX')
+        sys.exit('Please choose another method, MatrixFactorization will not run')
 
 iteration_used=args.decompit
 bactnum_for_pca=args.bactnum
