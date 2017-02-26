@@ -5,7 +5,7 @@ Through matrix completion methods trends can be discovered from environmental ch
 
 This project is a demonstration of this method in 16S rRNA sequencing data. 
 
-## Nuclear Norm Rank Minimization Completion Benchmarking
+## Matrix Completion Examples
 
 ### [88 Soils DEICODE Method Example](https://github.com/cjm007/DEICODE/blob/master/88Soils.ipynb)
 ### [Crohns DEICODE Method Example](https://github.com/cjm007/DEICODE/blob/master/Crohn_example.ipynb)
