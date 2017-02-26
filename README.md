@@ -7,8 +7,12 @@ This project is a demonstration of this method in 16S rRNA sequencing data.
 
 ## Matrix Completion Examples
 
-### [88 Soils DEICODE Method Example](https://github.com/cjm007/DEICODE/blob/master/88Soils.ipynb)
-### [Crohns DEICODE Method Example](https://github.com/cjm007/DEICODE/blob/master/Crohn_example.ipynb)
+### [Crohns Nuclear Norm Minimization Case Study ](https://github.com/cjm007/DEICODE/blob/master/Crohn_example_nuclear_norm.ipynb)
+
+### [88 Soils DEICODE method example](https://github.com/cjm007/DEICODE/blob/master/88Soils_example.ipynb)
+
+### [Amerindians DEICODE method example](https://github.com/cjm007/DEICODE/blob/master/Amerindians_example.ipynb)
+
 
 ## Benchmarking Compltion Methods
 
