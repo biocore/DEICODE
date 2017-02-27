@@ -58,13 +58,12 @@ optional = parser.add_argument_group('Optional arguments')
 required.add_argument('-i','--Input_OTU', help='Path to .biom table i.e. home/usr/input/otu.biom (taxa should be included in metadata)',required=True)
 required.add_argument('-m','--map', help='Path to Qiime style metadata i.e. home/usr/input/map.txt',required=True)
 required.add_argument('-o','--output',help='Output directory', required=True)
-
 optional.add_argument('-l',"--low_rank_method",type=str,default="SoftImpute",help='Specify a low rank method to use (default is SoftImpute) (options = NNM (Nuclear Norm Minimization), SoftImpute,IterativeSVD, MatrixFactorization, can also use WPCA, or EMPCA for imputation)', required=False)
 optional.add_argument("-d", "--decompit",type=int,default=200,help="How many iterations to complete in decomposition (default=100) (options = any integer or None)", required=False)
 optional.add_argument("-b", "--bactnum",type=int,default=10,help="Number of bacteria to extract from PCA axis (default=12) (options = any integer)", required=False)
 optional.add_argument("-c", "--classnum",type=int,default=3,help="Number of highest scoring classifiers to use in analysis (default=2) (options = any integer greater than 1 and less than the umber of columns in the mapping file)", required=False)
 optional.add_argument("-t", "--taxause",type=str,default='genus',help="What level of taxonomy to extract from PCA axis (default=genus) (options = phylum, class, order, family, genus, species or None if you do not have incorporated taxaonomy)", required=False)
-optional.add_argument("-s", "--mapstart",type=int,default=3,help="What column to start analysis on in mapping file, (i.e. skipping barcode sequences) (default=3) (options = any integer greater than 1 and less than the umber of columns in the mapping file)", required=False)
+optional.add_argument("-s", "--mapstart",type=int,default=0,help="What column to start analysis on in mapping file, (i.e. skipping barcode sequences) (default=0) (options = any integer greater than or equal to 0 and less than the umber of columns in the mapping file)", required=False)
 optional.add_argument("-f", "--feature",type=bool,default=True,help="Set to False if you would like to turn off feature selection (default=True, warning: on large datastes this will signficantly slow down run time)", required=False)
 optional.add_argument("-w_zero", "--w_zero",type=int,default=0,help="Zero value used for weighted PCA (default=0)", required=False)
 optional.add_argument("-w_low", "--w_low",type=int,default=.001,help="Low value used for weighted PCA (default .001)", required=False)
@@ -117,17 +116,17 @@ except:
 
 
 if taxause_name == "phylum":
-    txlvl=2
+    txlvl=1
 elif taxause_name == "class":
-    txlvl=3
+    txlvl=2
 elif taxause_name == "order":
-    txlvl=4
+    txlvl=3
 elif taxause_name == "family":
-    txlvl=5
+    txlvl=4
 elif taxause_name == "genus":
-    txlvl=6
+    txlvl=5
 elif taxause_name == "species":
-    txlvl=7
+    txlvl=6
 elif taxause_name == "none" or taxause_name == "None":
     txlvl=42
 
@@ -230,7 +229,8 @@ ids = list(map(str, ids))
 samplenames = mappingdf.index.values.tolist()
 samplenames = map(str, samplenames)
 
-encoded_mapping={} #save coded and uncoded
+encoded_mapping={} #save coded and uncoded as dict
+encoded_mappingdf=mappingdf.copy() # encoded dataframe
 le = preprocessing.LabelEncoder() # encoder prepreocessing
 classifiers_meta=mappingdf.columns.values.tolist() # classifier names
 for metatmp in classifiers_meta[mapstart_num:]: # run each classifier
@@ -238,6 +238,7 @@ for metatmp in classifiers_meta[mapstart_num:]: # run each classifier
     encoded = le.transform(list(mappingdf[metatmp]))
     not_encoded = le.inverse_transform(encoded)
     encoded_mapping[metatmp]=[encoded,not_encoded]
+    encoded_mappingdf[metatmp]=encoded #encoded dataframe
 
 #size
 
@@ -251,20 +252,18 @@ print("\n Done")
 
 print("\n Running Low-Rank Matrix Imputation \n")
 
+otum=data.T.copy() # make copy for imputation
+weight = otum.copy()
+for i in range(len(otum)):
+    for j in range(len(otum[i])):
+        if otum[i][j]==0:
+            weight[i][j]=zerow  # weight unknown values as having almost infinite variance (we don't know if they should exist or not) would be infinite if we know we didnt find what did exisit
+        else:
+            weight[i][j]= (otum[i][j]-minw)/(maxw-minw) # weight low freq otus have having higher possible error and higher frequency as having lower err
+
 
 
 if lr_method=="WPCA" or lr_method=="EMPCA": # Impute by WPCA or EMPCA
-    
-    otum=data.T.copy() # make copy for imputation
-    weight = otum.copy()
-    
-    for i in range(len(otum)):
-        for j in range(len(otum[i])):
-            if otum[i][j]==0:
-                weight[i][j]=zerow  # weight unknown values as having almost infinite variance (we don't know if they should exist or not) would be infinite if we know we didnt find what did exisit
-            else:
-                weight[i][j]= (otum[i][j]-minw)/(maxw-minw) # weight low freq otus have having higher possible error and higher frequency as having lower err
-
     if lr_method=="EMPCA":
         print(" Running EMPCA")
         low_rank_matrix = EMPCA(n_components=3).fit_reconstruct(otum,weight).T
@@ -296,7 +295,7 @@ print('\nDone')
 
 ############################# SVM , based on data composition and determine best classifier ###################################################
 
-print('\n Testing Cummultive Cumulative Explained Variance for PCA \n')
+print('\nTesting Cummultive Cumulative Explained Variance for PCA \n')
 
 # plot cumulative explained variance from weighted PCA
 X=low_rank_matrix.copy()
@@ -321,13 +320,10 @@ with plt.style.context('seaborn-whitegrid'):
     plt.ylabel('Explained variance ratio')
     plt.xlabel('Principal components')
     plt.legend(loc='best')
-plt.tight_layout()
+#plt.tight_layout()
 plt.savefig('%s/explained_variance.png'%(out),bbox_to_anchor=(2.2, 1.0), dpi=300, bbox_inches='tight')
-print('\nDone: PCA Evaluation Graphs in Output')
 
 
-#start machine learning
-print('\nRunning Support vector machines \n')
 
 # feature selection method
 if select_features == True:
@@ -336,40 +332,55 @@ if select_features == True:
     else:
         feature_clf = EMPCA(n_components=component)
 
+
+# split data
+X_train, X_test, y_train_all, y_test_all = train_test_split(X.T,np.array(encoded_mappingdf.as_matrix()),test_size=0.2,random_state=0)
+
+#feature selection
+if select_features == True:
+    print("\nRunning Weighted PCA for Feature Selection and Dimensionality Reduction \n")
+    weights=X_train.copy()
+    for i in range(len(weights)):
+        for j in range(len(weights[i])):
+            if X_train[i][j]==0:
+                weights[i][j]=zerow
+            else:
+                weights[i][j]= (X_train[i][j]-minw)/(maxw-minw)
+
+    feature_clf.fit(X_train,weights)
+    X_t_train = feature_clf.transform(X_train)
+    X_t_test = feature_clf.transform(X_test)
+
+#start machine learning
+print('\nRunning Support vector machines \n')
+
 sv={} # save scores for each classifier
+split_tmp=mapstart_num
 for metatmp in classifiers_meta[mapstart_num:]: # run each classifier
     
+    check_tmp=0
+    for check_occurance in list(set(encoded_mapping[metatmp][1])):
+        if all(isinstance(item, str) for item in encoded_mapping[metatmp][1]) and check_tmp==0:
+            if list(encoded_mapping[metatmp][1]).count(check_occurance) <=1:
+                check_tmp+=1
+                print("    Warning: Skipping Catagory: %s contains labels that occurs only once, will cause spurious results."%(str(metatmp)))
+                continue
+
+    y_train=y_train_all.T[split_tmp]
+    y_test=y_test_all.T[split_tmp]
+    split_tmp+=1
     
     print("   Running Classifier: %s with %i classes"%(str(metatmp),len(set(encoded_mapping[metatmp][0]))))
     
     if len(set(encoded_mapping[metatmp][0]))<=1: # can not learn classifiers with one label
-        print("    Warning: Skipping Catagory: %s, All catagory must have more than one label!"%str(metatmp))
+        print("    Warning: Skipping Catagory: %s,  Catagory must have more than one label!"%str(metatmp))
         continue
     
     if len(set(encoded_mapping[metatmp][0]))==2: # if only two possible classifications use support vector classfier
         
         print("    Running Support Vector Classifier")
-        Y=encoded_mapping[metatmp][0]
-        
-        #split
-        try:
-            X_train, X_test, y_train, y_test = train_test_split(X.T,Y,test_size=0.2,stratify=Y,random_state=0)
-        except:
-            print("    Warning: only one entry for one label of this catagory: skipping %s"%(str(metatmp)))
-            continue
-        
+
         if select_features == True:
-            weights=X_train.copy()
-            for i in range(len(weights)):
-                for j in range(len(weights[i])):
-                    if X_train[i][j]==0:
-                        weights[i][j]=zerow
-                    else:
-                        weights[i][j]= (X_train[i][j]-minw)/(maxw-minw)
-            
-            feature_clf.fit(X_train,weights)
-            X_t_train = feature_clf.transform(X_train)
-            X_t_test = feature_clf.transform(X_test)
             clfb = svm.SVC(random_state=0)
             clfb.fit(X_t_train, y_train)
             sv[metatmp] = clfb.score(X_t_test, y_test)
@@ -382,27 +393,11 @@ for metatmp in classifiers_meta[mapstart_num:]: # run each classifier
     if len(set(encoded_mapping[metatmp][0]))>2 and all(isinstance(item, str) for item in encoded_mapping[metatmp][1]): # if not quantity and class is not boolian
     
         print("    Running One vs. One Linear Support Vector Classifier")
-        Y=encoded_mapping[metatmp][0]
-        try:
-            X_train, X_test, y_train, y_test = train_test_split(X.T,Y,test_size=0.2,stratify=Y,random_state=0)
-        except:
-            print("    Warning: only one entry for on member of this class: skipping")
-            continue
+
+
         if select_features == True:
             
             # feature selection
-            weights=X_train.copy()
-            for i in range(len(weights)):
-                for j in range(len(weights[i])):
-                    if X_train[i][j]==0:
-                        weights[i][j]=zerow
-                    else:
-                        weights[i][j]= (X_train[i][j]-minw)/(maxw-minw)
-
-
-            feature_clf.fit(X_train,weights)
-            X_t_train = feature_clf.transform(X_train)
-            X_t_test = feature_clf.transform(X_test)
             clfm = OneVsOneClassifier(svm.LinearSVC(random_state=0,class_weight="balanced")) # one vs one for imblanced data sets
             clfm.fit(X_t_train, y_train)
             sv[metatmp] = clfm.score(X_t_test, y_test)
@@ -416,42 +411,23 @@ for metatmp in classifiers_meta[mapstart_num:]: # run each classifier
     else: # if qauntity
         
         print("    Running Support Vector Regression")
-        Y=encoded_mapping[metatmp][0]
-            
-        #split
-        try:
-            X_train, X_test, y_train, y_test = train_test_split(X.T,Y,test_size=0.2,random_state=0)
-        except:
-            print("    Warning: only one entry for on member of this class: skipping")
-            continue
-        
         if select_features == True:
             
-            # feature selection
-            weights=X_train.copy()
-            for i in range(len(weights)):
-                for j in range(len(weights[i])):
-                    if X_train[i][j]==0:
-                        weights[i][j]=zerow
-                    else:
-                        weights[i][j]= (X_train[i][j]-minw)/(maxw-minw)
-            
-            feature_clf.fit(X_train,weights)
             X_t_train = feature_clf.transform(X_train)
             X_t_test = feature_clf.transform(X_test)
-            clfr = GridSearchCV(svm.SVR(kernel='rbf',gamma=0.1),cv=5,param_grid={"C": [1e0, 1e1, 1e2, 1e3],"gamma": np.logspace(-2, 2, 5)}, n_jobs=-1) # grid search for optimized perams, paral for speed
+            clfr = GridSearchCV(svm.SVR(kernel='rbf'),cv=5,param_grid={"C": [1e0, 1e1, 1e2, 1e3],"gamma": np.logspace(-2, 2, 5)}, n_jobs=-1) # grid search for optimized perams
             clfr.fit(X_t_train, y_train)
             sv[metatmp] = clfr.score(X_t_test, y_test)
-            print("Coef: %f"%(sv[metatmp]))
+            print("    Coef: %f"%(sv[metatmp]))
         else:
             #learn
-            clfr = GridSearchCV(svm.SVR(kernel='rbf',gamma=0.1),cv=5,param_grid={"C": [1e0, 1e1, 1e2, 1e3],"gamma": np.logspace(-2, 2, 5)}, n_jobs=-1) # grid search for optimized perams, paral for speed
+            clfr = GridSearchCV(svm.SVR(kernel='rbf',gamma=0.1),cv=5,param_grid={"C": [1e0, 1e1, 1e2, 1e3],"gamma": np.logspace(-2, 2, 5)}, n_jobs=-1) # grid search for optimized perams
             clfr.fit(X_train, y_train)
             sv[metatmp] = clfr.score(X_test, y_test)
 
 
 #Convert dict to dataframe and choose colors
-print('\n Saving Classifier Scores and Visualizations for each classifier Based on SVM R-Squared \n')
+print('\nSaving Classifier Scores and Visualizations for each classifier Based on SVM R-Squared \n')
 scores = pd.DataFrame(list(sv.items()))
 scores=scores.set_index(scores[0])
 scores = scores.drop([0], 1)
@@ -461,8 +437,8 @@ scores.to_csv('%s/metadata_scores.csv'%(out), sep='\t')
 mybest_classer_list = scores.index.values.tolist()
 bmap = brewer2mpl.get_map('Set3','qualitative',12,reverse=True)
 colors = bmap.mpl_colors
-print('\nDone: Ranked Classifier Scores in Output')
 
+print('\nSaving Visualization\n')
 
 ### visualize ###
 
@@ -471,24 +447,23 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
     # bray-curtis PCOA comparison to PCA
     
     #  continuous data with color bar
-    if len(set(encoded_mapping[bestclassifier][0])) > 12:
-        Y=encoded_mapping[bestclassifier][1].tolist()
+    
+    if len(set(encoded_mapping[bestclassifier][0])) > 20 and ( all(isinstance(item, int) for item in encoded_mapping[bestclassifier][1]) or all(isinstance(item, float) for item in encoded_mapping[bestclassifier][1])):
+        
         X=data.T
-        fig = plt.figure(2, figsize=(10, 8))
-        ax = Axes3D(fig,elev=-150, azim=110)
+        Y=encoded_mapping[bestclassifier][1].tolist()
+        fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(25, 15),sharey=False)
         bc_dm=pw_distances(X, ids)
         ord_results=pcoa(bc_dm)
         X_reduced = ord_results.samples.as_matrix()
-        ax.scatter(X_reduced[:, 0], X_reduced[:, 1], X_reduced[:, 2], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
-        p=ax.scatter(X_reduced[:, 0], X_reduced[:, 1], X_reduced[:, 2], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
+        ax.scatter(X_reduced[:, 0], X_reduced[:, 1], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
+        p=ax.scatter(X_reduced[:, 0], X_reduced[:, 1], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
         ax.set_title("PCA on Origonal Matrix: colored by pH")
         ax.set_axis_bgcolor('white')
         ax.set_xlabel("PC1", fontsize=10)
-        ax.w_xaxis.set_ticklabels([])
+        ax.set_xticklabels([])
         ax.set_ylabel("PC2", fontsize=10)
-        ax.w_yaxis.set_ticklabels([])
-        ax.set_zlabel("PC3", fontsize=10)
-        ax.w_zaxis.set_ticklabels([])
+        ax.set_yticklabels([])
         plt.colorbar(p)
         fig.set_tight_layout(True)
         plt.savefig('%s/%s_pcoa.png'%(out,bestclassifier), dpi=300)
@@ -497,15 +472,15 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
         # non-continuous data PCOA with legend
         
     else:
-        Y=encoded_mapping[bestclassifier][1].tolist()
+        
         X =data.T
+        Y=encoded_mapping[bestclassifier][1].tolist()
         bc_dm=pw_distances(X, ids)
         ord_results=pcoa(bc_dm)
         X_reduced = ord_results.samples.as_matrix()
         bmap7 = brewer2mpl.get_map('Set1','qualitative',9,reverse=True)
         colors = bmap7.mpl_colors
-        fig = plt.figure()
-        ax = Axes3D(fig, elev=-135, azim=230)
+        fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(25, 15),sharey=False)
         handles, labels = ax.get_legend_handles_labels()
         ax.legend(handles, labels)
         scatter_proxy=[]
@@ -533,15 +508,13 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
         else:
             numrows=int(len(k))
 
-        ax.legend(scatter_proxy, k, numpoints = 1,bbox_to_anchor=(0., .89, 1., .102), loc=3, ncol=numrows,fontsize = 'large', labelspacing=.1, borderaxespad=0.)
-        ax.scatter(X_reduced[:, 0], X_reduced[:, 1], X_reduced[:, 2], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.Set1_r,s=150)
+        ax.legend(scatter_proxy, k, numpoints = 1,bbox_to_anchor=(0., .89, 1., .102), loc=3, ncol=numrows, labelspacing=.1, borderaxespad=0.,prop={'size':25})
+        ax.scatter(X_reduced[:, 0], X_reduced[:, 1], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.Set1_r,s=150)
         ax.set_axis_bgcolor('white')
         ax.set_xlabel("PC1", fontsize=10)
-        ax.w_xaxis.set_ticklabels([])
+        ax.set_xticklabels([])
         ax.set_ylabel("PC2", fontsize=10)
-        ax.w_yaxis.set_ticklabels([])
-        ax.set_zlabel("PC3", fontsize=10)
-        ax.w_zaxis.set_ticklabels([])
+        ax.set_yticklabels([])
         fig.set_tight_layout(True)
         fig.savefig('%s/%s_pcoa.png'%(out,bestclassifier), dpi=300)
 
@@ -551,21 +524,19 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
 
 	#discr
     if len(set(encoded_mapping[bestclassifier][1])) > 12:
+        
+        X=low_rank_matrix.T
         Y=encoded_mapping[bestclassifier][1].tolist()
-        X =low_rank_matrix.T
-        fig = plt.figure(2, figsize=(10, 8))
-        ax = Axes3D(fig,elev=-150, azim=110)
-        X_reduced = PCA(n_components=3).fit_transform(X)
-        ax.scatter(X_reduced[:, 0], X_reduced[:, 1], X_reduced[:, 2], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
-        p=ax.scatter(X_reduced[:, 0], X_reduced[:, 1], X_reduced[:, 2], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
+        fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(25, 15),sharey=False)
+        X_reduced = feature_clf.fit_transform(X)
+        ax.scatter(X_reduced[:, 0], X_reduced[:, 1], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
+        p=ax.scatter(X_reduced[:, 0], X_reduced[:, 1], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
         ax.set_title("PCA on Origonal Matrix: colored by pH")
         ax.set_axis_bgcolor('white')
         ax.set_xlabel("PC1", fontsize=10)
-        ax.w_xaxis.set_ticklabels([])
+        ax.set_xticklabels([])
         ax.set_ylabel("PC2", fontsize=10)
-        ax.w_yaxis.set_ticklabels([])
-        ax.set_zlabel("PC3", fontsize=10)
-        ax.w_zaxis.set_ticklabels([])
+        ax.set_yticklabels([])
         plt.colorbar(p)
         fig.set_tight_layout(True)
         plt.savefig('%s/%s_pca.png'%(out,bestclassifier), dpi=300)
@@ -575,22 +546,19 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
     else:
         Y=encoded_mapping[bestclassifier][1].tolist()
         X =low_rank_matrix.T
-        X_reduced = PCA(n_components=3).fit_transform(X)
+        X_reduced = feature_clf.fit_transform(X)
         bmap7 = brewer2mpl.get_map('Set1','qualitative',9,reverse=True)
         colors = bmap7.mpl_colors
-        fig = plt.figure()
-        ax = Axes3D(fig, elev=-135, azim=230)
+        fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(25, 15),sharey=False)
         handles, labels = ax.get_legend_handles_labels()
         ax.legend(handles, labels)
-        ax.legend(scatter_proxy, k, numpoints = 1,bbox_to_anchor=(0., .89, 1., .102), loc=3, ncol=numrows,fontsize = 'large', labelspacing=.01, borderaxespad=0.)
-        ax.scatter(X_reduced[:, 0], X_reduced[:, 1], X_reduced[:, 2], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.Set1_r,s=150)
+        ax.legend(scatter_proxy, k, numpoints = 1,bbox_to_anchor=(0., .89, 1., .102), loc=3, ncol=numrows, labelspacing=.01, borderaxespad=0.,prop={'size':25})
+        ax.scatter(X_reduced[:, 0], X_reduced[:, 1], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.Set1_r,s=150)
         ax.set_axis_bgcolor('white')
         ax.set_xlabel("PC1", fontsize=10)
-        ax.w_xaxis.set_ticklabels([])
+        ax.set_xticklabels([])
         ax.set_ylabel("PC2", fontsize=10)
-        ax.w_yaxis.set_ticklabels([])
-        ax.set_zlabel("Pc3", fontsize=10)
-        ax.w_zaxis.set_ticklabels([])
+        ax.set_yticklabels([])
         fig.set_tight_layout(True)
         fig.savefig('%s/%s_pca.png'%(out,bestclassifier), dpi=300)
 
@@ -608,11 +576,11 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
         else:
             cont=False
         # Extract information from imputed PCA axis
-        out_niche_linkeddf,observed_table_sfi,index_mean,index_std,highest_var_bact,pccompdf = PCA_niche.niche_visual(otu,low_rank_matrix,tax_index,bactnum_for_pca,bestclassifier,pc,mappingdf)
+        out_niche_linkeddf,observed_table_sfi,index_mean,index_std,highest_var_bact,pccompdf = PCA_niche.niche_visual(otu,low_rank_matrix,tax_index,bactnum_for_pca,bestclassifier,pc,mappingdf,weight)
         out_niche_linkeddf.to_csv('%s/skin_plot_%s.csv'%(out,pc), sep='\t')
         pccompdf.to_csv('%s/most_variance_bact_%s.csv'%(out,pc), sep='\t')
         # Visualize the data
-        plt = PCA_niche.plot_niche(out_niche_linkeddf,observed_table_sfi,mappingdf,encoded_mapping,bestclassifier,pc,index_mean,index_std,le,cont)
+        plt = PCA_niche.plot_niche(out_niche_linkeddf,observed_table_sfi,mappingdf,encoded_mapping,bestclassifier,pc,index_mean,index_std,le,cont,weight)
         plt.savefig('%s/%s_bacteria_extarcted_axis_%s.png'%(out,bestclassifier,pc),bbox_to_anchor=(1.0, 1.0), dpi=300, bbox_inches='tight')
 
 plt.close("all")
