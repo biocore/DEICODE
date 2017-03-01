@@ -290,7 +290,7 @@ print('\nDone')
 
 print('\nTesting Cummultive Cumulative Explained Variance for WPCA \n')
 
-if lr_method!="EMPCA" or lr_method!="WPCA":
+if lr_method=="EMPCA" or lr_method=="WPCA":
 
     X_reduced_var = imputem.fit_transform(low_rank_matrix.copy(),weight) #transform
     pccompdf = pd.DataFrame(imputem.components_,columns=otu.columns,index = ['PC-1','PC-2','PC-3']).T #get wieghts
