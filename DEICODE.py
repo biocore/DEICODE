@@ -360,7 +360,7 @@ for metatmp in classifiers_meta[mapstart_num:]: # run each classifier
         print("    Warning: Skipping Catagory: %s,  Catagory must have more than one label!"%str(metatmp))
         continue
     
-    if len(set(encoded_mapping[metatmp][0]))==2: # if only two possible classifications use support vector classfier
+    elif len(set(encoded_mapping[metatmp][0]))==2: # if only two possible classifications use support vector classfier
         
         print("    Running Support Vector Classifier")
 
@@ -374,7 +374,7 @@ for metatmp in classifiers_meta[mapstart_num:]: # run each classifier
             clfb.fit(X_train, y_train)
             sv[metatmp] = clfb.score(X_test, y_test)
 
-    if len(set(encoded_mapping[metatmp][0]))>2 and all(isinstance(item, str) for item in encoded_mapping[metatmp][1]) and len(set(encoded_mapping[metatmp][0]))<200: # if not quantity and class is not boolian
+    elif len(set(encoded_mapping[metatmp][0]))>2 and all(isinstance(item, str) for item in encoded_mapping[metatmp][1]) and len(set(encoded_mapping[metatmp][0]))<200: # if not quantity and class is not boolian
     
         print("    Running One vs. One Linear Support Vector Classifier")
 
