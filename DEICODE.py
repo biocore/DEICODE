@@ -168,8 +168,8 @@ except:
 if filename.split('.')[-1]=="biom":
     #BIOM
     #load table
-    total_number_seq_sample=2000 #TODO add to input
-    total_number_seq_features=800 #TODO add to input
+    total_number_seq_sample=0 #TODO add to input
+    total_number_seq_features=0 #TODO add to input
     table = load_table('%s'%in_biom)
     read_filter1 = lambda val, id_, md: sum(val) > total_number_seq_sample
     read_filter2 = lambda val, id_, md: sum(val) > total_number_seq_features
