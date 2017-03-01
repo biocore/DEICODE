@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-
 from __future__ import division
 #parsing command line
 import argparse
@@ -62,15 +61,14 @@ optional.add_argument('-l',"--low_rank_method",type=str,default="SoftImpute",hel
 optional.add_argument("-d", "--decompit",type=int,default=200,help="How many iterations to complete in decomposition (default=100) (options = any integer or None)", required=False)
 optional.add_argument("-b", "--bactnum",type=int,default=10,help="Number of bacteria to extract from PCA axis (default=12) (options = any integer)", required=False)
 optional.add_argument("-c", "--classnum",type=int,default=3,help="Number of highest scoring classifiers to use in analysis (default=2) (options = any integer greater than 1 and less than the umber of columns in the mapping file)", required=False)
-optional.add_argument("-t", "--taxause",type=str,default='genus',help="What level of taxonomy to extract from PCA axis (default=genus) (options = phylum, class, order, family, genus, species or None if you do not have incorporated taxaonomy)", required=False)
+optional.add_argument("-t", "--taxause",type=str,default='class',help="What level of taxonomy to extract from PCA axis (default=genus) (options = phylum, class, order, family, genus, species or None if you do not have incorporated taxaonomy)", required=False)
 optional.add_argument("-s", "--mapstart",type=int,default=0,help="What column to start analysis on in mapping file, (i.e. skipping barcode sequences) (default=0) (options = any integer greater than or equal to 0 and less than the umber of columns in the mapping file)", required=False)
 optional.add_argument("-f", "--feature",type=bool,default=True,help="Set to False if you would like to turn off feature selection (default=True, warning: on large datastes this will signficantly slow down run time)", required=False)
 optional.add_argument("-w_zero", "--w_zero",type=int,default=0,help="Zero value used for weighted PCA (default=0)", required=False)
-optional.add_argument("-w_low", "--w_low",type=int,default=.001,help="Low value used for weighted PCA (default .001)", required=False)
-optional.add_argument("-w_high", "--w_high",type=int,default=10,help="High value used for weighted PCA (default 10)", required=False)
+optional.add_argument("-w_low", "--w_low",type=int,default=.00001,help="Low value used for weighted PCA (default .001)", required=False)
+optional.add_argument("-w_high", "--w_high",type=int,default=1000,help="High value used for weighted PCA (default 10)", required=False)
 optional.add_argument("-n", "--ncomp",type=int,default=3,help="Number of Principle Components to Use in Feature Selection (default=3)", required=False)
 optional.add_argument("-fm", "--fmethod",type=str,default="WPCA",help="Method to use for feature selection (default=WPCA)", required=False)
-
 args = parser.parse_args()
 
 print("\n\nInput biom file is: %s"%(args.Input_OTU))
@@ -99,7 +97,6 @@ bactnum_for_pca=args.bactnum
 classnum_to_analy=args.classnum
 taxause_name=args.taxause
 mapstart_num=args.mapstart
-
 select_features=args.feature
 zerow=args.w_zero
 minw=args.w_low
@@ -107,13 +104,11 @@ maxw=args.w_high
 component=args.ncomp
 feature_method=args.fmethod
 
-
 try:
     os.stat(out)
 except:
     print("specified output folder does not exsist: making it now")
     os.mkdir(out)
-
 
 if taxause_name == "phylum":
     txlvl=1
@@ -129,7 +124,6 @@ elif taxause_name == "species":
     txlvl=6
 elif taxause_name == "none" or taxause_name == "None":
     txlvl=42
-
 
 def convert_biom_to_pandas(table): # covert biom
     feature_table = pd.DataFrame(np.array(table.matrix_data.todense()).T,index=table.ids(axis='sample'),columns=table.ids(axis='observation'))
@@ -155,14 +149,14 @@ def pw_distances(counts, ids=None, metric="braycurtis"):
 
 print('\n Importing Metadata for analysis \n')
 #Mapping import
-mappingdf= pd.read_table('%s'%map_file, index_col=0)
+mappingdf= pd.read_table('%s'%map_file, index_col=0,low_memory=False)
 mappingdf=mappingdf.replace(np.nan,'Unknown', regex=True)
-if min(mappingdf.shape)<=1:
+#mappingdf = mappingdf[mappingdf.life_stage != 'Unknown'] #TODO add metadata filtering feature 
+if min(mappingdf.shape)<=0:
     sys.exit('Import error from mapping or metadata (less than two samples or features): please check your metadata is tab delimited format')
 print('\n Done')
 
 ############################# import otu information ###################################################
-
 
 print('\n Importing .biom table for analysis \n')
 
@@ -174,10 +168,13 @@ except:
 if filename.split('.')[-1]=="biom":
     #BIOM
     #load table
+    total_number_seq_sample=2000 #TODO add to input
+    total_number_seq_features=800 #TODO add to input
     table = load_table('%s'%in_biom)
-    read_filter = lambda val, id_, md: sum(val) > 0
-    table.filter(read_filter, axis='sample')
-    table.filter(read_filter, axis='observation')
+    read_filter1 = lambda val, id_, md: sum(val) > total_number_seq_sample
+    read_filter2 = lambda val, id_, md: sum(val) > total_number_seq_features
+    table.filter(read_filter1, axis='sample')
+    table.filter(read_filter2, axis='observation')
     otu, taxonomy = convert_biom_to_pandas(table)
     otu=otu.T
     otu=otu.replace(np.nan,0, regex=True)
@@ -196,7 +193,7 @@ else:
 #add unque taxa names for pca/machine leanring (save taxa name for later)
 tax_index=[]
 otus_index=[]
-for q in range(len(otu.index.values)):
+for q in range(0,len(otu.index.values)):
     otus_index.append("OTU_%s"%str(q))
 otu['new_index']=otus_index
 otu = otu.set_index('new_index')
@@ -208,7 +205,6 @@ else:
     for t in taxa_names:
         tax_index.append(";".join(t.split(";")[:txlvl]))
 
-
 #### match and save data #####
 
 otu, mappingdf = match(otu.T, mappingdf)
@@ -216,7 +212,7 @@ otu=otu.T
 
 #remove otus with sum to zero after matching files
 
-otu= otu.loc[(otu.sum(axis=1) != 0)]
+otu=otu.loc[(otu.sum(axis=1) != 0)]
 
 # save data, names and classifiers from data frame
 index = otu.index.values.tolist()
@@ -224,11 +220,15 @@ data = otu.as_matrix()
 ids = otu.columns.values.tolist()
 ids = list(map(str, ids))
 
+# process taxa names
+tax_index_new=[]
+for cho in index:
+    tax_index_new.append(tax_index[int(cho.split("_")[1])])
+tax_index=tax_index_new
+tax_index_new=[]
 #encode pre preoccessing from mapping
-
 samplenames = mappingdf.index.values.tolist()
 samplenames = map(str, samplenames)
-
 encoded_mapping={} #save coded and uncoded as dict
 encoded_mappingdf=mappingdf.copy() # encoded dataframe
 le = preprocessing.LabelEncoder() # encoder prepreocessing
@@ -241,7 +241,6 @@ for metatmp in classifiers_meta[mapstart_num:]: # run each classifier
     encoded_mappingdf[metatmp]=encoded #encoded dataframe
 
 #size
-
 print("Number of samples %i"%(int(min(data.shape))))
 print("Number of OTUs %i"%(int(max(data.shape))))
 print("\n Done")
@@ -249,27 +248,21 @@ print("\n Done")
 
 ############################# Low-Rank Matrix Imputations ###################################################
 
-
 print("\n Running Low-Rank Matrix Imputation \n")
-
-otum=data.T.copy() # make copy for imputation
-weight = otum.copy()
-for i in range(len(otum)):
-    for j in range(len(otum[i])):
-        if otum[i][j]==0:
-            weight[i][j]=zerow  # weight unknown values as having almost infinite variance (we don't know if they should exist or not) would be infinite if we know we didnt find what did exisit
-        else:
-            weight[i][j]= (otum[i][j]-minw)/(maxw-minw) # weight low freq otus have having higher possible error and higher frequency as having lower err
-
-
-
 if lr_method=="WPCA" or lr_method=="EMPCA": # Impute by WPCA or EMPCA
+    
+    # higher frequency is determined as having less noise
+    weight=data.T.copy()
+    weight = (weight - weight.min(axis=0)) / (weight.max(axis=0) - weight.min(axis=0)) * (maxw - zerow) + zerow
+
     if lr_method=="EMPCA":
         print(" Running EMPCA")
-        low_rank_matrix = EMPCA(n_components=3).fit_reconstruct(otum,weight).T
+        imputem=EMPCA(n_components=3)
+        low_rank_matrix = imputem.fit_reconstruct(data.T.copy(),weight).T
     else:
         print(" Running WPCA")
-        low_rank_matrix = WPCA(n_components=3).fit_reconstruct(otum,weight).T
+        imputem=WPCA(n_components=3)
+        low_rank_matrix = imputem.fit_reconstruct(data.T.copy(),weight).T
 
 else:
     
@@ -277,7 +270,6 @@ else:
     otum=otum.astype(np.float64)
     #test
     otum[otum == 0] = np.nan #make unknown nan
-    
     if lr_method=='MatrixFactorization':
         print(" Running MatrixFactorization")
         low_rank_matrix=MatrixFactorization().complete(otum)
@@ -295,34 +287,33 @@ print('\nDone')
 
 ############################# SVM , based on data composition and determine best classifier ###################################################
 
-print('\nTesting Cummultive Cumulative Explained Variance for PCA \n')
 
-# plot cumulative explained variance from weighted PCA
-X=low_rank_matrix.copy()
-weight = X.copy()
-for i in range(len(X)):
-    for j in range(len(X[i])):
-        if X[i][j]==0:
-            weight[i][j]=zerow  # weight unknown values as having almost infinite variance (we don't know if they should exist or not) would be infinite if we know we didnt find what did exisit
-        else:
-            weight[i][j]= (X[i][j]-minw)/(maxw-minw) # weight low freq otus have having higher possible error and higher frequency as having lower err
-pca_model=WPCA(n_components=3) #PCA
-X_reduced_var = pca_model.fit_transform(X,weight) #transform
-pccompdf = pd.DataFrame(pca_model.components_,columns=otu.columns,index = ['PC-1','PC-2','PC-3']).T #get wieghts
-var_exp=pca_model.explained_variance_ratio_
-cum_var_exp = np.cumsum(pca_model.explained_variance_ratio_)
-with plt.style.context('seaborn-whitegrid'):
-    plt.figure(figsize=(6,4))
-    plt.bar(range(3), var_exp, alpha=0.5, align='center',
-    label='Individual explained variance')
-    plt.step(range(3), cum_var_exp, where='mid',label='cumulative explained Variance')
-    plt.title(('Imputed Explained variance\n'))
-    plt.ylabel('Explained variance ratio')
-    plt.xlabel('Principal components')
-    plt.legend(loc='best')
-#plt.tight_layout()
-plt.savefig('%s/explained_variance.png'%(out),bbox_to_anchor=(2.2, 1.0), dpi=300, bbox_inches='tight')
+print('\nTesting Cummultive Cumulative Explained Variance for WPCA \n')
 
+if lr_method!="EMPCA" or lr_method!="WPCA":
+
+    X_reduced_var = imputem.fit_transform(low_rank_matrix.copy(),weight) #transform
+    pccompdf = pd.DataFrame(imputem.components_,columns=otu.columns,index = ['PC-1','PC-2','PC-3']).T #get wieghts
+    var_exp=imputem.explained_variance_ratio_
+    cum_var_exp = np.cumsum(imputem.explained_variance_ratio_)
+    print("The Explained Variance By PC Axis is: ")
+    print(var_exp)
+    print("The Cumulative Explained Variance is: ")
+    print(cum_var_exp)
+
+else:
+    # cumulative explained variance from weighted PCA
+    weight=low_rank_matrix.copy()
+    weight = (weight - weight.min(axis=0)) / (weight.max(axis=0) - weight.min(axis=0)) * (maxw - zerow) + zerow
+    pca_model=WPCA(n_components=3) #PCA
+    X_reduced_var = pca_model.fit_transform(low_rank_matrix.copy(),weight) #transform
+    pccompdf = pd.DataFrame(pca_model.components_,columns=otu.columns,index = ['PC-1','PC-2','PC-3']).T #get wieghts
+    var_exp=pca_model.explained_variance_ratio_
+    cum_var_exp = np.cumsum(pca_model.explained_variance_ratio_)
+    print("The Explained Variance By PC Axis is: ")
+    print(var_exp)
+    print("The Cumulative Explained Variance is: ")
+    print(cum_var_exp)
 
 
 # feature selection method
@@ -332,21 +323,14 @@ if select_features == True:
     else:
         feature_clf = EMPCA(n_components=component)
 
-
 # split data
-X_train, X_test, y_train_all, y_test_all = train_test_split(X.T,np.array(encoded_mappingdf.as_matrix()),test_size=0.2,random_state=0)
+X_train, X_test, y_train_all, y_test_all = train_test_split(low_rank_matrix.copy().T,np.array(encoded_mappingdf.as_matrix()),test_size=0.2,random_state=0)
 
 #feature selection
 if select_features == True:
-    print("\nRunning Weighted PCA for Feature Selection and Dimensionality Reduction \n")
+    print("\n Running Weighted PCA for Feature Selection and Dimensionality Reduction \n")
     weights=X_train.copy()
-    for i in range(len(weights)):
-        for j in range(len(weights[i])):
-            if X_train[i][j]==0:
-                weights[i][j]=zerow
-            else:
-                weights[i][j]= (X_train[i][j]-minw)/(maxw-minw)
-
+    weights = (weights - weights.min(axis=0)) / (weights.max(axis=0) - weights.min(axis=0)) * (maxw - zerow) + zerow
     feature_clf.fit(X_train,weights)
     X_t_train = feature_clf.transform(X_train)
     X_t_test = feature_clf.transform(X_test)
@@ -390,10 +374,9 @@ for metatmp in classifiers_meta[mapstart_num:]: # run each classifier
             clfb.fit(X_train, y_train)
             sv[metatmp] = clfb.score(X_test, y_test)
 
-    if len(set(encoded_mapping[metatmp][0]))>2 and all(isinstance(item, str) for item in encoded_mapping[metatmp][1]): # if not quantity and class is not boolian
+    if len(set(encoded_mapping[metatmp][0]))>2 and all(isinstance(item, str) for item in encoded_mapping[metatmp][1]) and len(set(encoded_mapping[metatmp][0]))<200: # if not quantity and class is not boolian
     
         print("    Running One vs. One Linear Support Vector Classifier")
-
 
         if select_features == True:
             
@@ -444,16 +427,15 @@ print('\nSaving Visualization\n')
 
 for bestclassifier in mybest_classer_list[:classnum_to_analy]:
     
-    # bray-curtis PCOA comparison to PCA
+    # bray-curtis PCOA comparison to WPCA
     
     #  continuous data with color bar
     
     if len(set(encoded_mapping[bestclassifier][0])) > 20 and ( all(isinstance(item, int) for item in encoded_mapping[bestclassifier][1]) or all(isinstance(item, float) for item in encoded_mapping[bestclassifier][1])):
-        
-        X=data.T
+
         Y=encoded_mapping[bestclassifier][1].tolist()
         fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(25, 15),sharey=False)
-        bc_dm=pw_distances(X, ids)
+        bc_dm=pw_distances(data.T.copy(), ids)
         ord_results=pcoa(bc_dm)
         X_reduced = ord_results.samples.as_matrix()
         ax.scatter(X_reduced[:, 0], X_reduced[:, 1], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
@@ -473,9 +455,8 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
         
     else:
         
-        X =data.T
         Y=encoded_mapping[bestclassifier][1].tolist()
-        bc_dm=pw_distances(X, ids)
+        bc_dm=pw_distances(data.T.copy(), ids)
         ord_results=pcoa(bc_dm)
         X_reduced = ord_results.samples.as_matrix()
         bmap7 = brewer2mpl.get_map('Set1','qualitative',9,reverse=True)
@@ -507,7 +488,6 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
             numrows=4
         else:
             numrows=int(len(k))
-
         ax.legend(scatter_proxy, k, numpoints = 1,bbox_to_anchor=(0., .89, 1., .102), loc=3, ncol=numrows, labelspacing=.1, borderaxespad=0.,prop={'size':25})
         ax.scatter(X_reduced[:, 0], X_reduced[:, 1], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.Set1_r,s=150)
         ax.set_axis_bgcolor('white')
@@ -525,10 +505,9 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
 	#discr
     if len(set(encoded_mapping[bestclassifier][1])) > 12:
         
-        X=low_rank_matrix.T
         Y=encoded_mapping[bestclassifier][1].tolist()
         fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(25, 15),sharey=False)
-        X_reduced = feature_clf.fit_transform(X)
+        X_reduced = feature_clf.fit_transform(low_rank_matrix.T.copy())
         ax.scatter(X_reduced[:, 0], X_reduced[:, 1], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
         p=ax.scatter(X_reduced[:, 0], X_reduced[:, 1], c=list(encoded_mapping[bestclassifier][0]),cmap=plt.cm.cool,s=200)
         ax.set_title("PCA on Origonal Matrix: colored by pH")
@@ -545,8 +524,7 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
 	#cont
     else:
         Y=encoded_mapping[bestclassifier][1].tolist()
-        X =low_rank_matrix.T
-        X_reduced = feature_clf.fit_transform(X)
+        X_reduced = feature_clf.fit_transform(low_rank_matrix.T.copy())
         bmap7 = brewer2mpl.get_map('Set1','qualitative',9,reverse=True)
         colors = bmap7.mpl_colors
         fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(25, 15),sharey=False)
@@ -570,7 +548,6 @@ for bestclassifier in mybest_classer_list[:classnum_to_analy]:
     PC_list=['PC-1','PC-2']
     for pc in PC_list:
         # otu orignal data
-        imputed_in=low_rank_matrix.copy() # imputed data to use
         if len(set(encoded_mapping[bestclassifier][1])) > 12:
             cont=True # true, false if not continous data
         else:

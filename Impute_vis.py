@@ -88,6 +88,7 @@ class PCA_niche(object):
         X2=observed_table_sfi.as_matrix()
         X_reduced2 = pca_model.fit_transform(X2,weight)
         
+    
         if Pc_plot=="PC-1":
         
             if cont==True:
