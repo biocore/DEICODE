@@ -20,7 +20,9 @@ This project is a demonstration of this method in 16S rRNA sequencing data.
 
 ## Installation
 
-cd usr../DEICODE
+Clone the repo, then:
+
+cd DEICODE
 
 chmod +x setup.sh
 
