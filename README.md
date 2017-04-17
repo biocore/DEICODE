@@ -7,11 +7,8 @@ This project is a demonstration of this method in 16S rRNA sequencing data.
 
 ## Matrix Completion Examples
 
-### [Crohns Nuclear Norm Minimization Case Study ](https://github.com/cjm007/DEICODE/blob/master/Crohn_example_nuclear_norm.ipynb)
+### [MAtrix Completion Examples and Case Studies 88 Soils and Sponge](https://github.com/cjm007/DEICODE/blob/master/Benchmarking_and_Examples.ipynb)
 
-### [88 Soils DEICODE method example](https://github.com/cjm007/DEICODE/blob/master/88Soils_example.ipynb)
-
-### [Amerindians DEICODE method example](https://github.com/cjm007/DEICODE/blob/master/Amerindians_example.ipynb)
 
 
 ## Benchmarking Compltion Methods
@@ -50,10 +47,9 @@ source activate DEICODE_env
 
 ### Commands 
 
-    usage: DEICODE.py [-h] -i INPUT_OTU -m MAP -o OUTPUT [-l LOW_RANK_METHOD]
-                      [-d DECOMPIT] [-b BACTNUM] [-c CLASSNUM] [-t TAXAUSE]
-                      [-s MAPSTART] [-f FEATURE] [-w_zero W_ZERO] [-w_low W_LOW]
-                      [-w_high W_HIGH] [-n NCOMP] [-fm FMETHOD]
+        usage: DEICODE.py [-h] -i INPUT_OTU -m MAP -o OUTPUT [-l LOW_RANK_METHOD]
+                          [-d DECOMPIT] [-b BACTNUM] [-c CLASSNUM] [-t TAXAUSE]
+                          [-s MAPSTART] [-f FEATURE] [-a MINSAMPLE] [-u MINOTU]
 
 
 Required arguments:
@@ -70,63 +66,51 @@ Required arguments:
 
 Optional arguments:
 
-    -l LOW_RANK_METHOD, --low_rank_method LOW_RANK_METHOD
-                          Specify a low rank method to use (default is
-                          SoftImpute) (options = NNM (Nuclear Norm
-                          Minimization), SoftImpute,IterativeSVD,
-                          MatrixFactorization, can also use WPCA, or EMPCA for
-                          imputation)
-
-    -d DECOMPIT, --decompit DECOMPIT
-                          How many iterations to complete in decomposition
-                          (default=100) (options = any integer or None)
-
-    -b BACTNUM, --bactnum BACTNUM
-                          Number of bacteria to extract from PCA axis
-                          (default=12) (options = any integer)
-
-    -c CLASSNUM, --classnum CLASSNUM
-                          Number of highest scoring classifiers to use in
-                          analysis (default=2) (options = any integer greater
-                          than 1 and less than the umber of columns in the
-                          mapping file)
-
-    -t TAXAUSE, --taxause TAXAUSE
-                          What level of taxonomy to extract from PCA axis
-                          (default=genus) (options = phylum, class, order,
-                          family, genus, species or None if you do not have
-                          incorporated taxaonomy)
-
-    -s MAPSTART, --mapstart MAPSTART
-                          What column to start analysis on in mapping file,
-                          (i.e. skipping barcode sequences) (default=3) (options
-                          = any integer greater than 1 and less than the umber
-                          of columns in the mapping file)
-
-    -f FEATURE, --feature FEATURE
-                          Set to False if you would like to turn off feature
-                          selection (default=True, warning: on large datastes
-                          this will signficantly slow down run time)
-
-    -w_zero W_ZERO, --w_zero W_ZERO
-                          Zero value used for weighted PCA (default=0)
-
-    -w_low W_LOW, --w_low W_LOW
-                          Low value used for weighted PCA (default .001)
-
-    -w_high W_HIGH, --w_high W_HIGH
-                          High value used for weighted PCA (default 10)
-
-    -n NCOMP, --ncomp NCOMP
-                          Number of Principle Components to Use in Feature
-                          Selection (default=3)
-
-    -fm FMETHOD, --fmethod FMETHOD
-                          Method to use for feature selection (default=WPCA)
-
+          -l LOW_RANK_METHOD, --low_rank_method LOW_RANK_METHOD
+                                Specify a low rank method to use (default is
+                                SoftImpute) (options = NNM (Nuclear Norm
+                                Minimization), SoftImpute,IterativeSVD,
+                                MatrixFactorization)
+                                
+          -d DECOMPIT, --decompit DECOMPIT
+                                How many iterations to complete in decomposition
+                                (default=100) (options = any integer or None)
+                                
+          -b BACTNUM, --bactnum BACTNUM
+                                Number of bacteria to extract from PCA axis
+                                (default=12) (options = any integer)
+                                
+          -c CLASSNUM, --classnum CLASSNUM
+                                Number of highest scoring classifiers to use in
+                                analysis (default=3) (options = any integer greater
+                                than 1 and less than the umber of columns in the
+                                mapping file)
+                                
+          -t TAXAUSE, --taxause TAXAUSE
+                                What level of taxonomy to extract from PCA axis
+                                (default=genus) (options = phylum, class, order,
+                                family, genus, species or None if you do not have
+                                incorporated taxaonomy)
+                                
+          -s MAPSTART, --mapstart MAPSTART
+                                What column to start analysis on in mapping file,
+                                (i.e. skipping barcode sequences) (default=0) (options
+                                = any integer greater than or equal to 0 and less than
+                                the umber of columns in the mapping file)
+                                
+          -f FEATURE, --feature FEATURE
+                                Set to False if you would like to turn on feature
+                                selection (default=True, warning: on large datastes
+                                this will signficantly slow down run time)
+                                
+          -a MINSAMPLE, --minsample MINSAMPLE
+                                Minimum number of counts a sample needs (min=0)
+                                
+          -u MINOTU, --minOTU MINOTU
+                                Minimum number of counts a OTU needs (min=0)
+                                
 ## Credits
 
 
 - Source Imputation: https://github.com/hammerlab/fancyimpute
-- Source WPCA/EMPCA: https://github.com/jakevdp/wpca
 - Source decompostion Soil and Crohn example: https://github.com/dganguli/robust-pca
