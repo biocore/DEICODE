@@ -7,7 +7,7 @@ This project is a demonstration of this method in 16S rRNA sequencing data.
 
 ## Matrix Completion Examples
 
-### [MAtrix Completion Examples and Case Studies 88 Soils and Sponge](https://github.com/cjm007/DEICODE/blob/master/Benchmarking_and_Examples.ipynb)
+### [Matrix Completion Examples and Case Studies 88 Soils and Sponge](https://github.com/cjm007/DEICODE/blob/master/Benchmarking_and_Examples.ipynb)
 
 
 
