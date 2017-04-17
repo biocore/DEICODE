@@ -1,0 +1,402 @@
+label
+F11Aptl	axilla
+F11Aptr	axilla
+F11Forl	volar forearm
+F11Forr	volar forearm
+F11Fotl	plantar foot
+F11Fotr	plantar foot
+F11Frhd	forehead
+F11Indl	palmar index finger
+F11Indr	palmar index finger
+F11Knel	popliteal fossa
+F11Kner	popliteal fossa
+F11Labi	labia minora
+F11Navl	umbilicus
+F11Nose	external nose
+F11Pinl	lateral pinna
+F11Pinr	lateral pinna
+F11Plml	palm
+F11Plmr	palm
+F21Aptl	axilla
+F21Aptr	axilla
+F21Forl	volar forearm
+F21Forr	volar forearm
+F21Fotl	plantar foot
+F21Fotr	plantar foot
+F21Frhd	forehead
+F21Indl	palmar index finger
+F21Indr	palmar index finger
+F21Knel	popliteal fossa
+F21Kner	popliteal fossa
+F21Labi	labia minora
+F21Navl	umbilicus
+F21Nose	external nose
+F21Pinr	lateral pinna
+F21Plml	palm
+F21Plmr	palm
+F31Aptl	axilla
+F31Aptr	axilla
+F31Forl	volar forearm
+F31Forr	volar forearm
+F31Fotl	plantar foot
+F31Fotr	plantar foot
+F31Frhd	forehead
+F31Indl	palmar index finger
+F31Indr	palmar index finger
+F31Knel	popliteal fossa
+F31Kner	popliteal fossa
+F31Labi	labia minora
+F31Nose	external nose
+F31Pinl	lateral pinna
+F31Pinr	lateral pinna
+F31Plml	palm
+F31Plmr	palm
+M11Aptl	axilla
+M11Aptr	axilla
+M11Forl	volar forearm
+M11Forr	volar forearm
+M11Fotl	plantar foot
+M11Fotr	plantar foot
+M11Frhd	forehead
+M11Glns	glans penis
+M11Indl	palmar index finger
+M11Indr	palmar index finger
+M11Knel	popliteal fossa
+M11Kner	popliteal fossa
+M11Navl	umbilicus
+M11Nose	external nose
+M11Pinl	lateral pinna
+M11Pinr	lateral pinna
+M11Plml	palm
+M11Plmr	palm
+M21Aptl	axilla
+M21Aptr	axilla
+M21Forl	volar forearm
+M21Forr	volar forearm
+M21Fotl	plantar foot
+M21Fotr	plantar foot
+M21Frhd	forehead
+M21Glns	glans penis
+M21Indl	palmar index finger
+M21Indr	palmar index finger
+M21Knel	popliteal fossa
+M21Kner	popliteal fossa
+M21Navl	umbilicus
+M21Nose	external nose
+M21Pinl	lateral pinna
+M21Pinr	lateral pinna
+M21Plml	palm
+M21Plmr	palm
+M31Aptl	axilla
+M31Aptr	axilla
+M31Forl	volar forearm
+M31Forr	volar forearm
+M31Fotl	plantar foot
+M31Fotr	plantar foot
+M31Frhd	forehead
+M31Glns	glans penis
+M31Indl	palmar index finger
+M31Indr	palmar index finger
+M31Knel	popliteal fossa
+M31Kner	popliteal fossa
+M31Navl	umbilicus
+M31Nose	external nose
+M31Pinl	lateral pinna
+M31Pinr	lateral pinna
+M31Plml	palm
+M31Plmr	palm
+M41Aptl	axilla
+M41Aptr	axilla
+M41Forl	volar forearm
+M41Forr	volar forearm
+M41Fotl	plantar foot
+M41Fotr	plantar foot
+M41Frhd	forehead
+M41Glns	glans penis
+M41Indl	palmar index finger
+M41Indr	palmar index finger
+M41Knel	popliteal fossa
+M41Kner	popliteal fossa
+M41Navl	umbilicus
+M41Nose	external nose
+M41Pinl	lateral pinna
+M41Pinr	lateral pinna
+M41Plml	palm
+M41Plmr	palm
+F12Aptl	axilla
+F12Aptr	axilla
+F12Forl	volar forearm
+F12Forr	volar forearm
+F12Fotl	plantar foot
+F12Fotr	plantar foot
+F12Frhd	forehead
+F12Indl	palmar index finger
+F12Indr	palmar index finger
+F12Knel	popliteal fossa
+F12Kner	popliteal fossa
+F12Labi	labia minora
+F12Navl	umbilicus
+F12Nose	external nose
+F12Pinl	lateral pinna
+F12Pinr	lateral pinna
+F12Plml	palm
+F12Plmr	palm
+F22Aptl	axilla
+F22Aptr	axilla
+F22Forl	volar forearm
+F22Forr	volar forearm
+F22Fotl	plantar foot
+F22Fotr	plantar foot
+F22Frhd	forehead
+F22Indl	palmar index finger
+F22Indr	palmar index finger
+F22Knel	popliteal fossa
+F22Kner	popliteal fossa
+F22Labi	labia minora
+F22Navl	umbilicus
+F22Nose	external nose
+F22Pinl	lateral pinna
+F22Pinr	lateral pinna
+F22Plml	palm
+F22Plmr	palm
+F32Aptl	axilla
+F32Aptr	axilla
+F32Forl	volar forearm
+F32Forr	volar forearm
+F32Fotl	plantar foot
+F32Fotr	plantar foot
+F32Frhd	forehead
+F32Indl	palmar index finger
+F32Indr	palmar index finger
+F32Knel	popliteal fossa
+F32Kner	popliteal fossa
+F32Labi	labia minora
+F32Navl	umbilicus
+F32Nose	external nose
+F32Pinl	lateral pinna
+F32Pinr	lateral pinna
+F32Plml	palm
+F32Plmr	palm
+M12Aptl	axilla
+M12Aptr	axilla
+M12Forl	volar forearm
+M12Forr	volar forearm
+M12Fotl	plantar foot
+M12Fotr	plantar foot
+M12Frhd	forehead
+M12Glns	glans penis
+M12Indl	palmar index finger
+M12Indr	palmar index finger
+M12Knel	popliteal fossa
+M12Kner	popliteal fossa
+M12Navl	umbilicus
+M12Nose	external nose
+M12Pinl	lateral pinna
+M12Pinr	lateral pinna
+M12Plml	palm
+M12Plmr	palm
+M22Aptr	axilla
+M22Forl	volar forearm
+M22Forr	volar forearm
+M22Fotl	plantar foot
+M22Fotr	plantar foot
+M22Frhd	forehead
+M22Glns	glans penis
+M22Indl	palmar index finger
+M22Indr	palmar index finger
+M22Kner	popliteal fossa
+M22Navl	umbilicus
+M22Nose	external nose
+M22Pinl	lateral pinna
+M22Pinr	lateral pinna
+M22Plml	palm
+M22Plmr	palm
+M32Aptl	axilla
+M32Aptr	axilla
+M32Forl	volar forearm
+M32Forr	volar forearm
+M32Fotl	plantar foot
+M32Fotr	plantar foot
+M32Frhd	forehead
+M32Glns	glans penis
+M32Indl	palmar index finger
+M32Indr	palmar index finger
+M32Knel	popliteal fossa
+M32Kner	popliteal fossa
+M32Nose	external nose
+M32Pinl	lateral pinna
+M32Pinr	lateral pinna
+M32Plml	palm
+M32Plmr	palm
+M42Aptl	axilla
+M42Aptr	axilla
+M42Forl	volar forearm
+M42Forr	volar forearm
+M42Fotl	plantar foot
+M42Fotr	plantar foot
+M42Frhd	forehead
+M42Glns	glans penis
+M42Indl	palmar index finger
+M42Indr	palmar index finger
+M42Knel	popliteal fossa
+M42Kner	popliteal fossa
+M42Navl	umbilicus
+M42Nose	external nose
+M42Pinl	lateral pinna
+M42Pinr	lateral pinna
+M42Plml	palm
+M42Plmr	palm
+F210A1	volar forearm
+F210A2	volar forearm
+F210A3	volar forearm
+F210A4	volar forearm
+F210H5	forehead
+F210H6	forehead
+F210H7	forehead
+F210H8	forehead
+F310A1	volar forearm
+F310A2	volar forearm
+F310A3	volar forearm
+F310A4	volar forearm
+F310H5	forehead
+F310H6	forehead
+F310H7	forehead
+F310H8	forehead
+M110A1	volar forearm
+M110A2	volar forearm
+M110A3	volar forearm
+M110A4	volar forearm
+M110H5	forehead
+M110H6	forehead
+M110H7	forehead
+M110H8	forehead
+M410A1	volar forearm
+M410A2	volar forearm
+M410A3	volar forearm
+M410A4	volar forearm
+M410H5	forehead
+M410H6	forehead
+M410H7	forehead
+M410H8	forehead
+F220A1	volar forearm
+F220A2	volar forearm
+F220A3	volar forearm
+F220A4	volar forearm
+F220H5	forehead
+F220H6	forehead
+F220H7	forehead
+F220H8	forehead
+F320A1	volar forearm
+F320A2	volar forearm
+F320A3	volar forearm
+F320A4	volar forearm
+F320H5	forehead
+F320H6	forehead
+F320H7	forehead
+F320H8	forehead
+M120A1	volar forearm
+M120A2	volar forearm
+M120A3	volar forearm
+M120A4	volar forearm
+M120H5	forehead
+M120H6	forehead
+M120H7	forehead
+M120H8	forehead
+M420A1	volar forearm
+M420A2	volar forearm
+M420A3	volar forearm
+M420A4	volar forearm
+M420H5	forehead
+M420H6	forehead
+M420H7	forehead
+M420H8	forehead
+F13Fotl	plantar foot
+F13Fotr	plantar foot
+F13Frhd	forehead
+F13Plml	palm
+F13Plmr	palm
+F23Fotl	plantar foot
+F23Fotr	plantar foot
+F23Frhd	forehead
+F23Plml	palm
+F23Plmr	palm
+F33Fotl	plantar foot
+F33Fotr	plantar foot
+F33Frhd	forehead
+F33Plml	palm
+F33Plmr	palm
+M13Fotl	plantar foot
+M13Fotr	plantar foot
+M13Frhd	forehead
+M13Plml	palm
+M13Plmr	palm
+M23Fotl	plantar foot
+M23Fotr	plantar foot
+M23Frhd	forehead
+M23Plml	palm
+M23Plmr	palm
+M33Fotl	plantar foot
+M33Fotr	plantar foot
+M33Frhd	forehead
+M33Plml	palm
+M33Plmr	palm
+M43Fotl	plantar foot
+M43Fotr	plantar foot
+M43Frhd	forehead
+M43Plml	palm
+M43Plmr	palm
+M53Fotl	plantar foot
+M53Fotr	plantar foot
+M53Frhd	forehead
+M53Plml	palm
+M53Plmr	palm
+M63Fotl	plantar foot
+M63Fotr	plantar foot
+M63Frhd	forehead
+M63Plml	palm
+M63Plmr	palm
+F14Fotl	plantar foot
+F14Fotr	plantar foot
+F14Frhd	forehead
+F14Plml	palm
+F14Plmr	palm
+F24Fotl	plantar foot
+F24Fotr	plantar foot
+F24Frhd	forehead
+F24Plml	palm
+F24Plmr	palm
+F34Fotl	plantar foot
+F34Fotr	plantar foot
+F34Frhd	forehead
+F34Plml	palm
+F34Plmr	palm
+M14Fotl	plantar foot
+M14Fotr	plantar foot
+M14Frhd	forehead
+M14Plml	palm
+M14Plmr	palm
+M24Fotl	plantar foot
+M24Fotr	plantar foot
+M24Frhd	forehead
+M24Plml	palm
+M24Plmr	palm
+M34Fotl	plantar foot
+M34Fotr	plantar foot
+M34Frhd	forehead
+M34Plml	palm
+M34Plmr	palm
+M44Fotl	plantar foot
+M44Fotr	plantar foot
+M44Frhd	forehead
+M44Plml	palm
+M44Plmr	palm
+M54Fotl	plantar foot
+M54Fotr	plantar foot
+M54Frhd	forehead
+M54Plml	palm
+M54Plmr	palm
+M64Fotl	plantar foot
+M64Fotr	plantar foot
+M64Frhd	forehead
+M64Plml	palm
+M64Plmr	palm
