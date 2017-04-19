@@ -344,7 +344,7 @@ fig, (ax1) = plt.subplots(ncols=1, nrows=1)
 scores.columns=['Matrix Completion (RF)']
 scores.sort_values(['Matrix Completion (RF)'], ascending = [True], inplace = True)
 #rename a few
-scores.plot(kind='barh',title='Mean Cross-Validation Scores (Lauber $et \, al.$)',xlim=(0,1),ax=ax1)
+scores.plot(kind='barh',title='Mean Cross-Validation Scores',xlim=(0,1),ax=ax1)
 handles, labels = ax1.get_legend_handles_labels()
 ax1.legend(handles[::-1], labels[::-1],loc=2,prop={'size':12}, bbox_to_anchor=(1.0, 1.0))
 ax1.set_ylabel('')
