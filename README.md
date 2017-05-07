@@ -25,6 +25,6 @@ TODO
 
 ## Credits
 
-- Transforms and PCoA : scikit-bio
-- Machine Leanring : Scikit-learn
-- Source Imputation: https://github.com/hammerlab/fancyimpute
+- Transforms and PCoA : [Scikit-bio](https://github.com/biocore/scikit-bio)
+- Machine Leanring : [Scikit-learn](https://github.com/scikit-learn/scikit-learn)
+- Source Imputation: [Fancy Impute](https://github.com/hammerlab/fancyimpute)
