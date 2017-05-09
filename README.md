@@ -26,7 +26,7 @@ TODO
 ## Credits
 
 - Transforms and PCoA : [Scikit-bio](https://github.com/biocore/scikit-bio)
-- Machine Leanring : [Scikit-learn](https://github.com/scikit-learn/scikit-learn)
+- Machine Learning : [Scikit-learn](https://github.com/scikit-learn/scikit-learn)
 - Source Imputation: [Fancy Impute](https://github.com/hammerlab/fancyimpute)
 - Data For Examples : [Qiita](https://qiita.ucsd.edu/)
 - General Data Preprocessing : [Qiime2](https://github.com/qiime2/qiime2)
