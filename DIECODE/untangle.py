@@ -330,7 +330,7 @@ def pca_plot(otudf,mapping,catvis):
 
     if all(isinstance(item, str) for item in list(mapping.T[catvis])) or all(isinstance(item, bool) for item in list(mapping.T[catvis])):
         pca_model=PCA(n_components=2)
-        reduced=pca_model.fit_transform(clr(complete_matrix(otudf.as_matrix(),iteration=100).T+1))
+        reduced=pca_model.fit_transform(clr(complete_matrix(otudf.as_matrix(),iteration=100).T))
         pcaplot=pd.DataFrame(reduced,columns=['PC1','PC2'],index=otudf.columns)
         pcaplot['c']=list(mapping.T[catvis])
         fig, (ax1) = plt.subplots(ncols=1, nrows=1, figsize=(8, 6),sharey=False)
@@ -342,7 +342,7 @@ def pca_plot(otudf,mapping,catvis):
         ax1.legend(loc=2,prop={'size':22},bbox_to_anchor=(1.0, 1.0))
     else:
         pca_model=PCA(n_components=2)
-        reduced=pca_model.fit_transform(clr(complete_matrix(otudf.as_matrix(),iteration=100).T+1))     
+        reduced=pca_model.fit_transform(clr(complete_matrix(otudf.as_matrix(),iteration=100).T))     
         pcaplot=pd.DataFrame(reduced,columns=['PC1','PC2'],index=otudf.columns)
         pcaplot['c']=list(mapping.T[catvis])
         fig, (ax1) = plt.subplots(ncols=1, nrows=1, figsize=(8, 6),sharey=False)
