@@ -20,10 +20,6 @@ This project is a demonstration of this method in 16S rRNA sequencing data.
 
 TODO
 
-## Test
-
-TODO
-
 ## Credits
 
 - Transforms and PCoA : [Scikit-bio](https://github.com/biocore/scikit-bio)
