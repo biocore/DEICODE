@@ -27,8 +27,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 #completion
 from fancyimpute import SoftImpute
-#outlier detection
-from sklearn.neighbors import LocalOutlierFactor
 #DEICODE utils
 from . import fetch
 
@@ -58,57 +56,6 @@ def complete_matrix(data,iteration,minval=0):
     otum=otum.astype(np.float64)
     otum[otum == 0] = np.nan #make unknown nan
     return SoftImpute(max_rank=min(otum.shape),max_iters=iteration,convergence_threshold=0.00001,min_value=minval,max_value=(np.amax(otum)),verbose=False).complete(otum)
-
-def outlier_plot(otudf,dimen='PCA',complete=False,iter=100,method='euclidean',cnt=.01):
-    
-    #plot outliers 
-    
-    if complete==True:
-        data=complete_matrix(otudf.as_matrix(),iteration=100)
-        data=clr(data+1)
-    else:
-        data=otudf.as_matrix()
-
-    clf = LocalOutlierFactor(n_neighbors=20,metric=method,contamination=cnt)
-    lcf_f = clf.fit_predict(data.T)
-
-    if dimen=='PCA':
-        lcf_f = clf.fit_predict(data.T)
-        pca_model=PCA(n_components=2) #PCA
-        X1=pca_model.fit_transform(data.T.copy()) #transform
-    elif dimen=='PCoA':
-        X1=pcoa(DistanceMatrix(pdist(data.T,'braycurtis'),otudf.columns)).samples[['PC1','PC2']].as_matrix()
-
-    q=0
-    check1=0
-    check2=0
-    outliers=list(lcf_f)
-    X1=X1.T
-    for v in list(outliers):
-        if v==1:
-            if check1==0:
-                X_normal=X1.T[q]
-                check1+=1
-            else:
-                X_normal=np.c_[X_normal,X1.T[q]]            
-        elif v==-1:
-            if check2==0:
-                X_outlier=X1.T[q]
-                check2+=1
-            else:
-                X_outlier=np.c_[X_outlier,X1.T[q]]        
-        else:
-            print("skipping")
-        q+=1
-    if complete==False:
-        plt.title("%s Outlier Origonal Data"%dimen)
-    else:
-        plt.title("%s Outlier Completed Data"%dimen)
-    b2=plt.scatter(X_normal[0], X_normal[1], c='green')
-    c=plt.scatter(X_outlier[0], X_outlier[1], c='red')
-    plt.axis('tight')
-    plt.legend([b2, c],["regular observations", "outlier observations"],bbox_to_anchor=(1.3, 1.0))
-    return plt
 
 def feature_vis(otulearn,mappingdf,importance,catv,taxa):
     
