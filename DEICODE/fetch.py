@@ -2,34 +2,8 @@
 from __future__ import division
 import pandas as pd
 import numpy as np
-from scipy import stats, optimize
 from biom import load_table
 import sys
-#ML
-from sklearn import preprocessing
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.ensemble import RandomForestClassifier
-from fancyimpute import SoftImpute
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix
-#PCOA
-from skbio.stats.distance import anosim
-from skbio import DistanceMatrix
-from skbio.stats.ordination import pcoa
-from scipy.spatial.distance import pdist, squareform
-from skbio.diversity import alpha_diversity
-#transforms 
-from skbio.stats.composition import clr,ilr
-#PCA 
-from sklearn.decomposition import PCA
-#ploting
-import seaborn as sns
-import matplotlib.pyplot as plt
-#completion
-from fancyimpute import SoftImpute
-#outlier detection
-from sklearn.neighbors import LocalOutlierFactor
-
 
 
 def matchtable(df1,df2):

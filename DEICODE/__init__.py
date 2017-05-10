@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------
-# Copyright (c) 2016--, DIECODE development team.
+# Copyright (c) 2016--, DEICODE development team.
 #
 # Distributed under the terms of the Modified BSD License.
 #
@@ -11,4 +11,4 @@
 
 __version__ = "0.1.0"
 
-from DIECODE import *
+from DEICODE import *
