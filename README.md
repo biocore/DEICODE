@@ -18,7 +18,7 @@ This project is a demonstration of this method in 16S rRNA sequencing data.
 
 ## Installation
 
-TODO
+    pip install DEICODE
 
 ## Credits
 
