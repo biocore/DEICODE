@@ -1,8 +1,8 @@
 [![Build Status](https://travis-ci.org/cjm007/DEICODE.svg?branch=master)](https://travis-ci.org/cjm007/DEICODE)
 
-# DEICODE (pronounced /dēˈkōd/)
+# DEICODE (pronounced like decode)
 
-Through matrix completion methods trends can be discovered from environmental factors or patient outcomes between sample groups.
+Relating mapping data from environmental factors and patient outcomes between sample groups in sparse datasets.
 
 This project is a demonstration of this method in 16S rRNA sequencing data. 
 
