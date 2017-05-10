@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/cjm007/DEICODE.svg?branch=master)](https://travis-ci.org/cjm007/DEICODE)
+
 # DEICODE (pronounced /dēˈkōd/)
 
 Through matrix completion methods trends can be discovered from environmental factors or patient outcome changes between sample groups.
