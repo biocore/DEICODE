@@ -2,7 +2,7 @@
 
 # DEICODE (pronounced /dēˈkōd/)
 
-Through matrix completion methods trends can be discovered from environmental factors or patient outcome changes between sample groups.
+Through matrix completion methods trends can be discovered from environmental factors or patient outcomes between sample groups.
 
 This project is a demonstration of this method in 16S rRNA sequencing data. 
 
