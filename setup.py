@@ -89,6 +89,7 @@ setup(name='DEICODE',
           'scikit-learn == 0.18.1',
           'seaborn >= 0.7.1',
           'fancyimpute >= 0.2.0',
+          'gneiss >= 0.3.2',
       ],classifiers=classifiers,
       package_data={
           })
