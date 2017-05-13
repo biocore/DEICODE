@@ -11,4 +11,3 @@ scipy
 matplotlib
 pandas
 seaborn
-gneiss
