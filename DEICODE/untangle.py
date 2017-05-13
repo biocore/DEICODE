@@ -30,6 +30,23 @@ from fancyimpute import SoftImpute
 #DEICODE utils
 from . import fetch
 
+
+def compositional(df):
+    
+    '''
+        input: dataframe with raw counts (sprase)
+        
+        output: relative abundance table to (i.e. each column sums to 100% )
+        
+        '''
+    
+    comp_count=df.copy()
+    for n in comp_count.columns.values.tolist():
+        if n != 'bact_id':
+            wtemp = (100/(comp_count["%s"%n].sum()))
+            comp_count['%s'%n] = comp_count['%s'%n] *wtemp
+    return comp_count
+
 def encode_mapping(mapdf):
     
     '''
@@ -56,6 +73,34 @@ def complete_matrix(data,iteration,minval=0):
     otum=otum.astype(np.float64)
     otum[otum == 0] = np.nan #make unknown nan
     return SoftImpute(max_rank=min(otum.shape),max_iters=iteration,convergence_threshold=0.00001,min_value=minval,max_value=(np.amax(otum)),verbose=False).complete(otum)
+
+def scatter_plot(reduced,mapping,catvis):
+    
+    '''
+        input: data dataframe, mapping file dataframe, mapping file column to plot
+        
+        output: scatter plot for mapping data
+        
+        '''
+    
+    if all(isinstance(item, str) for item in list(mapping.T[catvis])) or all(isinstance(item, bool) for item in list(mapping.T[catvis])):
+        fig, (ax1) = plt.subplots(ncols=1, nrows=1, figsize=(8, 6),sharey=False)
+        for ((key, grp)) in reduced.groupby(catvis):
+            plt.scatter(grp['PC1'], grp['PC2'], color=next(ax1._get_lines.prop_cycler)['color'], label=key, s=50)
+        ax1.set_xlabel('$PC-1$')
+        ax1.set_ylabel('$PC-2$')
+        ax1.set_xticks([])
+        ax1.set_yticks([])
+        ax1.legend(loc=2,prop={'size':22},bbox_to_anchor=(1.0, 1.0))
+        return fig
+    else:
+        fig, (ax1) = plt.subplots(ncols=1, nrows=1, figsize=(8, 6),sharey=False)
+        reduced.plot.scatter(x='PC1', y='PC2', c=str(catvis), s=50,ax=ax1);
+        ax1.set_xlabel('$PC-1$')
+        ax1.set_ylabel('$PC-2$')
+        ax1.set_xticks([])
+        ax1.set_yticks([])
+        return fig
 
 def feature_vis(otulearn,mappingdf,importance,catv,taxa):
     
@@ -249,67 +294,44 @@ def machine_learning(otulearn,mapdf,complete=True,single=False,single_cat=[''],i
     
     return scores,otulearn
 
-
-def pcoa_red(rm,ids,catvis,mapping):
-
-    '''
-    input: otu table, mapping table, column to visualize, for easy comparison to PCA
-    
-    output: pcoa
+def reduce_plot(otudf,mapping,catvis,method='clrPCA',iters=200,weights_extract=True,reduce_only=False,min_val=1e-15):
     
     '''
-
-    pcoaplot=pcoa(DistanceMatrix(pdist(rm,'braycurtis'),list(ids))).samples[['PC1','PC2']]
-    pcoaplot['c']=list(mapping.T[catvis])
-    fig, (ax1) = plt.subplots(ncols=1, nrows=1, figsize=(8, 6),sharey=False)
-    sns.swarmplot(x="PC1", y="PC2", data=pcoaplot, hue="c", size=10,ax=ax1)
-    ax1.set_xlabel('$PC-1$')
-    ax1.set_ylabel('$PC-2$')
-    ax1.set_xticks([])
-    ax1.set_yticks([])
-    ax1.legend(loc=2,prop={'size':22},bbox_to_anchor=(1.0, 1.0))
-    
+        input: matched otu tables and mapping data and a column of the mapping file for dimentionality reduction
         
-    return fig
-    
-    
-def compositional(df):
-    comp_count=df.copy()
-    for n in comp_count.columns.values.tolist():
-        if n != 'bact_id':
-            wtemp = (100/(comp_count["%s"%n].sum()))
-            comp_count['%s'%n] = comp_count['%s'%n] *wtemp
-    return comp_count
-
-def pca_plot(otudf,mapping,catvis,method='PCA'):
+        output: 2D scatter plot for specified column (All) and variant features for each axis as dataframes (not for PCoA)
+        
+        '''
     
     if method=='PCoA':
+        pcaplot=pcoa(DistanceMatrix(pdist(otudf.as_matrix().T,'braycurtis'),list(otudf.columns))).samples[['PC1','PC2','PC3']]
+        pcaplot[catvis]=list(mapping.T[catvis])
+        if reduce_only==True:
+            return pcaplot
+        else:
+            return scatter_plot(pcaplot,mapping,catvis)
     
-        return pcoa_red(otudf.as_matrix().T,otudf.columns,catvis,mapping)
-
-    if all(isinstance(item, str) for item in list(mapping.T[catvis])) or all(isinstance(item, bool) for item in list(mapping.T[catvis])):
-        pca_model=PCA(n_components=2)
-        reduced=pca_model.fit_transform(clr(complete_matrix(otudf.as_matrix(),iteration=100,minval=1).T))
-        pcaplot=pd.DataFrame(reduced,columns=['PC1','PC2'],index=otudf.columns)
-        pcaplot['c']=list(mapping.T[catvis])
-        fig, (ax1) = plt.subplots(ncols=1, nrows=1, figsize=(8, 6),sharey=False)
-        sns.swarmplot(x="PC1", y="PC2", data=pcaplot, hue="c", size=10,ax=ax1)
-        ax1.set_xlabel('$PC-1$')
-        ax1.set_ylabel('$PC-2$')
-        ax1.set_xticks([])
-        ax1.set_yticks([])
-        ax1.legend(loc=2,prop={'size':22},bbox_to_anchor=(1.0, 1.0))
+    elif method=='PCA':
+        pca_model=PCA(n_components=3)
+        reduced=pca_model.fit_transform(otudf.as_matrix().T)
+        pcaplot=pd.DataFrame(reduced,columns=['PC1','PC2','PC3'],index=otudf.columns)
+        pcaplot[catvis]=list(mapping.T[catvis])
+        OTUweights=pd.DataFrame(pca_model.components_.T,columns=['PC1','PC2','PC3'],index=otudf.index)
+        if reduce_only==True:
+            return pcaplot
+        if weights_extract==True:
+            return scatter_plot(pcaplot,mapping,catvis),OTUweights.sort(['PC1'],ascending=False),OTUweights.sort(['PC2'],ascending=False)
+        else:
+            return scatter_plot(pcaplot,mapping,catvis)
     else:
-        pca_model=PCA(n_components=2)
-        reduced=pca_model.fit_transform(clr(complete_matrix(otudf.as_matrix(),iteration=100,minval=1).T))
-        pcaplot=pd.DataFrame(reduced,columns=['PC1','PC2'],index=otudf.columns)
-        pcaplot['c']=list(mapping.T[catvis])
-        fig, (ax1) = plt.subplots(ncols=1, nrows=1, figsize=(8, 6),sharey=False)
-        pcaplot.plot(kind='scatter', x='PC1', y='PC2', c='c', s=50,ax=ax1)
-        ax1.set_xlabel('$PC-1$')
-        ax1.set_ylabel('$PC-2$')
-        ax1.set_xticks([])
-        ax1.set_yticks([])
-    OTUweights=pd.DataFrame(pca_model.components_.T,columns=['PC1','PC2'],index=otudf.index)
-    
-    return fig,OTUweights.sort(['PC1'],ascending=False),OTUweights.sort(['PC2'],ascending=False)
+        pca_model=PCA(n_components=3)
+        reduced=pca_model.fit_transform(clr(complete_matrix(otudf.as_matrix(),iteration=iters,minval=min_val)).T)
+        pcaplot=pd.DataFrame(reduced,columns=['PC1','PC2','PC3'],index=otudf.columns)
+        pcaplot[catvis]=list(mapping.T[catvis])
+        OTUweights=pd.DataFrame(pca_model.components_.T,columns=['PC1','PC2','PC3'],index=otudf.index)
+        if reduce_only==True:
+            return pcaplot
+        if weights_extract==True:
+            return scatter_plot(pcaplot,mapping,catvis),OTUweights.sort(['PC1'],ascending=False),OTUweights.sort(['PC2'],ascending=False)
+        else:
+            return scatter_plot(pcaplot,mapping,catvis)
