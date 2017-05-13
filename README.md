@@ -14,9 +14,9 @@ This project is a demonstration of this method in 16S rRNA sequencing data.
 
 [88 Soils Proof of Concept](https://github.com/cjm007/DEICODE/blob/master/Examples/88_soils.ipynb)
 
-[Infant Biom Example](https://github.com/cjm007/DEICODE/blob/master/Examples/infant_biom.ipynb)
-
 [Sponge Biom Example](https://github.com/cjm007/DEICODE/blob/master/Examples/sponge_biom.ipynb)
+
+[Infant Biom Example](https://github.com/cjm007/DEICODE/blob/master/Examples/infant_biom.ipynb)
 
 ## Installation
 
