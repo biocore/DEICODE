@@ -9,17 +9,15 @@ import itertools
 from sklearn import preprocessing
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import RandomForestClassifier
-from fancyimpute import SoftImpute
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
+from sklearn.cluster.bicluster import SpectralCoclustering
 #PCOA
-from skbio.stats.distance import anosim
 from skbio import DistanceMatrix
 from skbio.stats.ordination import pcoa
 from scipy.spatial.distance import pdist, squareform
-from skbio.diversity import alpha_diversity
 #transforms 
-from skbio.stats.composition import clr,ilr
+from skbio.stats.composition import clr,centralize
 #PCA 
 from sklearn.decomposition import PCA
 #ploting
@@ -29,6 +27,49 @@ import matplotlib.pyplot as plt
 from fancyimpute import SoftImpute
 #DEICODE utils
 from . import fetch
+
+def _scatter(ax1,reduced,catvis,legendadd=True):
+
+    '''
+    input: OTU table and underlying rank structure 
+    
+    output: sorted dataframe with orginal index and column labels, dataframe with assigned niche labels 
+    
+    '''
+    
+    for ((key, grp)) in reduced.groupby(catvis):
+        ax1.scatter(grp['PC1'], grp['PC2'], color=next(ax1._get_lines.prop_cycler)['color'], label=key, s=50)
+    ax1.set_xlabel('$PC-1$')
+    ax1.set_ylabel('$PC-2$')
+    ax1.set_xticks([])
+    ax1.set_yticks([])
+    if legendadd==True:
+        ax1.legend(loc=2,prop={'size':16},bbox_to_anchor=(1.0, 1.0))
+
+    return 
+
+def biplot(data,r):
+    
+    '''
+    input: OTU table and underlying rank structure 
+    
+    output: sorted dataframe with orginal index and column labels, dataframe with assigned niche labels 
+    
+    '''
+    
+    #generate model 
+    model = SpectralCoclustering(n_clusters=r, random_state=0)
+    model.fit(data.copy())
+    #sort 
+    data['_sort_']=model.row_labels_
+    data.sort_values(by='_sort_',inplace=True)
+    data.drop('_sort_', axis=1, inplace=True)
+    data=data.T
+    data['_sort_']=model.column_labels_
+    data.sort_values(by='_sort_',inplace=True)
+    data.drop('_sort_', axis=1, inplace=True)
+    
+    return data.T,pd.DataFrame(data,columns=model.column_labels_,index=model.row_labels_)
 
 
 def compositional(df):
@@ -191,7 +232,30 @@ def features_ml(otulearn,mapdf,catv,complete=True,iteration=100):
 
     return importance
         
-        
+
+def get_confusion(otulearn,mapdf,catv,splits=0.2):
+
+    '''
+    input: Otu table and mapping file in dataframe and catagory in mapping
+    
+    output: normalized confusion matrix (dataframe)
+    
+    '''
+    #match
+    otulearn,mapdf=fetch.matchtable(otulearn,mapdf.T)
+    rng = np.random.RandomState(42)
+    X_train, X_test, y_train, y_test = train_test_split(otulearn.copy().T.as_matrix(),mapdf.T[catv].values.ravel(),test_size=splits,random_state=0)      
+    # Compute confusion matrix
+    clfr = RandomForestClassifier(random_state=rng)
+    clfr.fit(X_train, y_train)
+    y_pred=clfr.predict(X_test)
+    cnf_matrix = confusion_matrix(y_test, y_pred)
+    cnf_matrix = cnf_matrix.astype('float') / cnf_matrix.sum(axis=1)[:, np.newaxis]
+
+    return pd.DataFrame(cnf_matrix,index=list(set(mapdf.T[catv].values)),columns=list(set(mapdf.T[catv].values))).astype(float)
+
+
+    
 def machine_learning(otulearn,mapdf,complete=True,single=False,single_cat=[''],iteration=100,mean_count=10,addtofilter=[]):
     
     '''
