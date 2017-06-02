@@ -48,15 +48,14 @@ def _scatter(ax1,reduced,catvis,legendadd=True):
 
     return 
 
-def biplot(data,r):
+def biplot(data,r,time=False):
     
     '''
-    input: OTU table and underlying rank structure 
+    input: OTU table in dataframe, underlying rank structure r , (if time == True columns are not sorted, returns in input time)
     
-    output: two dataframes both coclustered, first one with orginal row and column labels, second with assigned row and column labels 
+    output: Two dataframes both coclustered, first one with orginal row and column labels, second with assigned row and column labels
     
     '''
-    
     #generate model 
     model = SpectralCoclustering(n_clusters=r, random_state=0)
     model.fit(data.copy())
@@ -65,12 +64,13 @@ def biplot(data,r):
     data.sort_values(by='_sort_',inplace=True)
     data.drop('_sort_', axis=1, inplace=True)
     data=data.T
-    data['_sort_']=model.column_labels_
-    data.sort_values(by='_sort_',inplace=True)
-    data.drop('_sort_', axis=1, inplace=True)
-    
-    return data.T,pd.DataFrame(data.as_matrix().T,columns=list(np.sort(model.column_labels_)),index=list(np.sort(model.row_labels_)))
-
+    if time==False:
+        data['_sort_']=model.column_labels_
+        data.sort_values(by='_sort_',inplace=True)
+        data.drop('_sort_', axis=1, inplace=True)
+        return data.T,pd.DataFrame(data.as_matrix().T,columns=list(np.sort(model.column_labels_)),index=list(np.sort(model.row_labels_)))
+    elif time==True:
+        return data.T,pd.DataFrame(data.as_matrix().T,columns=list(model.column_labels_),index=list(np.sort(model.row_labels_)))
 
 def compositional(df):
     
