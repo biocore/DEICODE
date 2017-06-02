@@ -53,7 +53,7 @@ def biplot(data,r):
     '''
     input: OTU table and underlying rank structure 
     
-    output: sorted dataframe with orginal index and column labels, dataframe with assigned niche labels 
+    output: two dataframes both coclustered, first one with orginal row and column labels, second with assigned row and column labels 
     
     '''
     
@@ -69,18 +69,18 @@ def biplot(data,r):
     data.sort_values(by='_sort_',inplace=True)
     data.drop('_sort_', axis=1, inplace=True)
     
-    return data.T,pd.DataFrame(data,columns=model.column_labels_,index=model.row_labels_)
+    return data.T,pd.DataFrame(data.as_matrix().T,columns=list(np.sort(model.column_labels_)),index=list(np.sort(model.row_labels_)))
 
 
 def compositional(df):
     
     '''
-        input: dataframe with raw counts (sprase)
-        
-        output: relative abundance table to (i.e. each column sums to 100% )
-        
-        '''
+    input: dataframe with raw counts (sprase)
     
+    output: relative abundance table to (i.e. each column sums to 100% )
+    
+    '''
+
     comp_count=df.copy()
     for n in comp_count.columns.values.tolist():
         if n != 'bact_id':
