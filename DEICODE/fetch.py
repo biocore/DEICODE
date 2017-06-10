@@ -91,7 +91,7 @@ def dfimport(in_biom,map_file,filter_count=0,txlvl=6):
             sys.exit('Import error less than two samples or features: please check that your data is tab delimited or in biom file format')
         #tax to level (i.e. 6 is usually species)
         otu.index=[str("OTU_%s"%str(q)) for q in range(0,len(otu.index.values))]
-        otu,mappingdf=matchtable(otu,mappingdf)
+        otu,mappingdf=matchtable(otu,mappingdf.T)
         return otu,mappingdf,taxanames
     else:
         sys.exit('Import error: please check that your data is one of the following file formats (.csv,.biom,.txt,.tsv)')
