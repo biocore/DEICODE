@@ -4,6 +4,7 @@ from gneiss.regression import ols
 from gneiss.cluster import correlation_linkage
 from fancyimpute import SoftImpute
 from sklearn.model_selection import KFold
+from gneiss.util import _type_cast_to_float
 import pandas as pd
 import skbio
 import numpy as np
@@ -32,6 +33,7 @@ def ols_regression(table: pd.DataFrame, tree: skbio.TreeNode,
     cv: pd.DataFrame
        Cross validation results.
     """
+    metadata = _type_cast_to_float(metadata)
     num_folds = 5
     if complete_matrix == True:
         res, beta, alpha, mse_score = optimize_complete(table, tree,
