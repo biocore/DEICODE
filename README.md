@@ -1,3 +1,5 @@
+
+[![Latest Github release](https://img.shields.io/github/release/cjm007/DEICODE.svg)](https://github.com/cjm007/DEICODE/releases/latest)
 [![Build Status](https://travis-ci.org/cjm007/DEICODE.svg?branch=master)](https://travis-ci.org/cjm007/DEICODE)
 
 # DEICODE (pronounced like decode)
