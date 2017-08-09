@@ -89,8 +89,8 @@ def ols_regression(table: pd.DataFrame, tree: skbio.TreeNode,
     return res, params, cv
 
 
-def optimize_complete(df_, tree_, formula_, metadata_, min_alpha=1e-3, max_alpha=1,
-                      alpha_iter=2000, min_beta=1, max_beta=1000,
+def optimize_complete(df_, tree_, formula_, metadata_, min_alpha=1e-5, max_alpha=1,
+                      alpha_iter=1000, min_beta=1, max_beta=1000,
                       beta_iter=10, iter_max=200, in_thresh=.001):
     """
     Takes OTU table, formula and metadata and creates a
