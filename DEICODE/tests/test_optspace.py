@@ -127,6 +127,7 @@ class TestOptspace(unittest.TestCase):
         E = 1 - np.ceil( rand(n, m) - eps/np.sqrt(m*n)  )
         M_E = np.multiply(M0, E)
         X, S, Y, dist = optspace(M_E, r=3, niter=10, tol=tol)
+
         exp_X = np.array([[-8.79865705e-01, 5.80137539e-01, -2.11945417e+00],
                           [2.41254717e+00, -4.15135158e-02, -8.08590887e-02],
                           [9.54706347e-01, 6.53315999e-01, -7.83143452e-01],

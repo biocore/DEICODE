@@ -30,13 +30,13 @@ def optspace(M_E, r, niter, tol):
     # wtf does 10000 come from
     m0 = 10000
 
-    rho = 0
+    rho = eps * n
     X, Y = X0, Y0.T;
 
     S = getoptS(X, Y, M_E, E);
     ft = M_E - X.dot(S).dot(Y.T)
-    dist = np.zeros(niter+1)
-    dist[0] = norm( np.multiply(ft, E) ,'fro')/ np.sqrt(nnz)
+    dist = np.zeros(niter + 1)
+    dist[0] = norm( np.multiply(ft, E) ,'fro') / np.sqrt(nnz)
     for i in range(niter):
         W, Z = gradF_t(X, Y, S, M_E, E, m0, rho);
 
@@ -140,14 +140,6 @@ def getoptT(X, W, Y, Z, S, M_E, E, m0, rho):
     return t
 
 
-def leastsq(A, B):
-    """ Solves the problem Ax = B """
-    inv = np.linalg.pinv(np.dot(A.T, A))
-    cross = np.dot(inv, A.T)
-    x = np.dot(cross, B)
-    return x
-
-
 def getoptS(X, Y, M_E, E):
     """ X, Y, M_E, E """
     n, r = X.shape
@@ -159,6 +151,7 @@ def getoptS(X, Y, M_E, E):
             temp = np.multiply(X[:, i].dot(Y[:, j].T), E)
             temp = X.T.dot(temp).dot(Y)
             A[:, ind] = np.ravel(temp)
-    S = leastsq(A, C)
+    S = np.linalg.lstsq(A, C,
+                        rcond = np.finfo(np.double).eps*int(max(A.shape)))[0]
     S = S.reshape((r, r))
     return S
