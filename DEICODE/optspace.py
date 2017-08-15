@@ -16,7 +16,7 @@ def optspace(M_E, r, niter, tol):
     """
     E = M_E > 0
 
-    rescal_param = np.sqrt( np.count_nonzero(E) * r / norm(M_E,'fro') ** 2 ) ;
+    rescal_param = np.sqrt( np.count_nonzero(E) * r / norm(M_E, 'fro') ** 2 ) ;
     M_E = M_E * rescal_param ;
     # TODO: Add in trimming for rows and columns
     X0, S0, Y0 = svds(M_E, r)
@@ -31,12 +31,11 @@ def optspace(M_E, r, niter, tol):
     m0 = 10000
 
     rho = 0
-
     X, Y = X0, Y0.T;
 
     S = getoptS(X, Y, M_E, E);
     ft = M_E - X.dot(S).dot(Y.T)
-    dist = np.zeros(niter)
+    dist = np.zeros(niter+1)
     dist[0] = norm( np.multiply(ft, E) ,'fro')/ np.sqrt(nnz)
     for i in range(niter):
         W, Z = gradF_t(X, Y, S, M_E, E, m0, rho);
@@ -50,12 +49,11 @@ def optspace(M_E, r, niter, tol):
 
         # Compute the distortion
         ft = M_E - X.dot(S).dot(Y.T)
-        dist[i+1] = norm( np.multiply(ft, E) ,'fro')/ np.sqrt(nnz)
+        dist[i+1] = norm( np.multiply(ft, E) ,'fro') /  np.sqrt(nnz)
         if( dist[i+1] < tol ):
             break ;
     S = S /rescal_param ;
     return X, S, Y, dist
-
 
 def F_t(X, Y, S, M_E, E, m0, rho):
     """
@@ -68,7 +66,9 @@ def F_t(X, Y, S, M_E, E, m0, rho):
     M ~ XSY
     """
     n, r = X.shape
-    out1 = np.sum(np.sum((np.multiply((X.dot(S).dot(Y.T) - M_E), E)**2)))  /2
+    out1 = np.sum(
+        np.sum((
+            np.multiply((X.dot(S).dot(Y.T) - M_E), E)**2))) / 2
     out2 =  rho * G(Y, m0, r)
     out3 =  rho * G(X, m0, r)
     out = out1 + out2 + out3
@@ -102,11 +102,10 @@ def gradF_t(X, Y, S, M_E, E, m0, rho):
     YS = Y.dot(S.T)
     XSY = XS.dot(Y.T)
 
-    Qx = X.T.dot( np.multiply((M_E - XSY), E )).dot(YS) / n;
-    Qy = Y.T.dot( np.multiply((M_E - XSY), E ).T).dot(XS) / m;
-
-    W = np.multiply((XSY - M_E),E ).dot(YS) + X.dot(Qx) + rho*Gp(X,m0,r);
-    Z = np.multiply((XSY - M_E),E ).T.dot(XS) + Y.dot(Qy) + rho*Gp(Y,m0,r);
+    Qx = X.T.dot( np.multiply((M_E - XSY), E)).dot(YS) / n;
+    Qy = Y.T.dot( np.multiply((M_E - XSY), E).T).dot(XS) / m;
+    W = np.multiply((XSY - M_E), E).dot(YS) + X.dot(Qx) + rho * Gp(X, m0, r);
+    Z = np.multiply((XSY - M_E), E).T.dot(XS) + Y.dot(Qy) + rho * Gp(Y, m0, r);
     return W, Z
 
 def Gp(X, m0, r):
@@ -126,32 +125,40 @@ def getoptT(X, W, Y, Z, S, M_E, E, m0, rho):
     """ X, W, Y, Z, S, M_E, E, m0, rho """
     norm2WZ = norm(W, 'fro')**2 + norm(Z, 'fro')**2
 
-    # wtf does 20 come from?
-    # can we tune this?
+    # this is the resolution limit (t > 2**-20
     n_intervals = 20
     f = np.zeros(n_intervals+1)
     f[0] = F_t(X, Y, S, M_E, E, m0, rho)
     t = -1e-1
 
     for i in range(n_intervals):
+
         f[i+1] = F_t(X+t*W, Y+t*Z, S, M_E, E, m0, rho)
-        if( f[i+1] - f[1] <= .5*t*norm2WZ ):
+        if( (f[i+1] - f[1]) <= .5*t*norm2WZ ):
             return t
         t = t/2
     return t
 
+
+def leastsq(A, B):
+    """ Solves the problem Ax = B """
+    inv = np.linalg.pinv(np.dot(A.T, A))
+    cross = np.dot(inv, A.T)
+    x = np.dot(cross, B)
+    return x
+
+
 def getoptS(X, Y, M_E, E):
     """ X, Y, M_E, E """
     n, r = X.shape
-
     C = np.ravel(X.T.dot(M_E).dot(Y))
     A = np.zeros((r*r, r*r))
     for i in range(r):
         for j in range(r):
             ind = j*r + i
-            temp = X.T.dot(np.multiply(X[:, i].dot(Y[:, j].T), E )).dot(Y)
+            temp = np.multiply(X[:, i].dot(Y[:, j].T), E)
+            temp = X.T.dot(temp).dot(Y)
             A[:, ind] = np.ravel(temp)
-
-    S = np.linalg.lstsq(A, C)[0]
+    S = leastsq(A, C)
     S = S.reshape((r, r))
     return S
