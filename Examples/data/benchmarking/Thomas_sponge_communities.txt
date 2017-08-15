@@ -1,4 +1,4 @@
-sample name	Collection Timestamp	Country	Depth	Environment 	Host_Name	Host ID	Latitude	Longitude	Processing Lab 	pH	Life_Stage	Temp 	Salinity
+sample name	Collection Timestamp	Country	Depth	Environment 	Host Name	Host ID	Latitude	Longitude	Processing Lab 	pH	Life Stage	Temp 	Salinity
 1740.1.EMP.Thomas.sponges.16S.L007	2012-07-16 00:00:00	GAZ:The Bahamas	12.1	ENVO:reef	sponges	299	26.56295	-77.8815	Russell Hill Lab				
 1740.10.EMP.Thomas.sponges.16S.L007	2012-07-19 00:00:00	GAZ:Mexico	12.1	ENVO:reef	black-ball sponge	305	18.40198	-87.40878	Russell Hill Lab				
 1740.10.IV.05.2.001.EMP.Thomas.sponges.16S.L007	2005-04-10 00:00:00	GAZ:The Bahamas	24.4	ENVO:reef	sponges	461	24.13308	-79.84085	HBOI.McCarthy				
