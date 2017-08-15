@@ -7,7 +7,6 @@ import sys
 from sklearn import preprocessing
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split # TODO remove after single fix
 from sklearn.cluster.bicluster import SpectralCoclustering
 from sklearn.model_selection import ShuffleSplit
 #ploting
