@@ -33,7 +33,7 @@ def optspace(M_E, r, niter, tol):
     rho = eps * n
     X, Y = X0, Y0.T;
 
-    S = getoptS(X, Y, M_E, E);
+    S = getoptS(X, Y, M_E, E)
     ft = M_E - X.dot(S).dot(Y.T)
     dist = np.zeros(niter + 1)
     dist[0] = norm( np.multiply(ft, E) ,'fro') / np.sqrt(nnz)
@@ -83,6 +83,7 @@ def G(X, m0, r):
     z = np.sum(X**2, axis=1) / (2 * m0 * r) ;
     y = np.exp( (z-1)**2 ) - 1 ;
     y[z<1] = 0
+    y[y == np.inf] = 0
     return y.sum()
 
 def gradF_t(X, Y, S, M_E, E, m0, rho):
@@ -143,15 +144,18 @@ def getoptT(X, W, Y, Z, S, M_E, E, m0, rho):
 def getoptS(X, Y, M_E, E):
     """ X, Y, M_E, E """
     n, r = X.shape
+
     C = np.ravel(X.T.dot(M_E).dot(Y))
     A = np.zeros((r*r, r*r))
+
     for i in range(r):
         for j in range(r):
             ind = j*r + i
-            temp = np.multiply(X[:, i].dot(Y[:, j].T), E)
+            temp = np.multiply(X[ i,:].dot(Y[j,:].T), E)
             temp = X.T.dot(temp).dot(Y)
             A[:, ind] = np.ravel(temp)
     S = np.linalg.lstsq(A, C,
                         rcond = np.finfo(np.double).eps*int(max(A.shape)))[0]
+
     S = S.reshape((r, r))
     return S
