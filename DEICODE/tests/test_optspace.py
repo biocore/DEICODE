@@ -1,4 +1,5 @@
-from DEICODE.optspace import G, F_t, gradF_t, Gp, getoptT, getoptS, optspace
+from DEICODE.optspace import (G, F_t, gradF_t, Gp, getoptT, getoptS, optspace,
+                              P_E)
 import numpy as np
 from numpy.random import randn, rand
 from numpy.linalg import norm
@@ -132,6 +133,12 @@ class TestOptspace(unittest.TestCase):
                         [ 1.18,  1.18,  1.18,  1.18,  1.18]])
         npt.assert_allclose(res, exp)
 
+    def test_P_E(self):
+        x = np.array([1., 2., 0., 4.])
+        y = P_E(x)
+        exp_y = np.array([1, 2, 1.5, 4])
+        npt.assert_allclose(y, exp_y)
+
     def test_optspace_no_noise_small(self):
         np.random.seed(0)
 
@@ -148,7 +155,7 @@ class TestOptspace(unittest.TestCase):
         M0 = U.dot(Sig).dot(V.T)
 
         E = 1 - np.ceil( rand(n, m) - eps/np.sqrt(m*n)  )
-        
+
         M_E = np.multiply(M0, E)
         X, S, Y, dist = optspace(M_E, r=3, niter=10, tol=tol)
 
@@ -181,7 +188,7 @@ class TestOptspace(unittest.TestCase):
         exp_dist = np.array([1.04939, 1.04939, 1.04939, 1.04939,
                              1.04939, 1.04939, 1.04939, 1.04939,
                              1.04939, 1.04939, 1.04939])
-                             
+
         npt.assert_allclose(X, exp_X, atol=1e-5)
         npt.assert_allclose(S, exp_S, atol=1e-5)
         npt.assert_allclose(Y, exp_Y, atol=1e-5)
@@ -190,31 +197,31 @@ class TestOptspace(unittest.TestCase):
 
     def test_optspace_noisy_small_noise(self):
         np.random.seed(0)
-        
+
         n = 20
         m = 10
         r = 3
         tol = 1e-8
-        
+
         eps = r*np.log10(n);
         U = randn(n, r)
         V = randn(m, r)
         Sig = np.eye(r)
         M0 = U.dot(Sig).dot(V.T)
-        
+
         # add some noise (.001 is noise amplitude)
         err = .001 * np.ones_like(M0)
         i = np.random.randint(0, err.shape[0], 5000)
         j = np.random.randint(0, err.shape[1], 5000)
         err[i, j] = .0001
         M0 = abs(np.random.normal(M0, err))
-        
+
         #sparcity
         E = 1 - np.ceil( rand(n, m) - eps/np.sqrt(m*n)  )
         M_E = np.multiply(M0, E)
-        
+
         X, S, Y, dist = optspace(M_E, r=3, niter=10, tol=tol)
-        
+
         exp_X=np.array([[-0.26134281, -0.41393434,  0.11403524],
                         [-0.36609965,  1.21811109,  2.95791077],
                         [-0.14474412, -0.67538941,  0.21050033],
@@ -235,12 +242,12 @@ class TestOptspace(unittest.TestCase):
                         [-0.11137632, -0.14576371,  0.11956169],
                         [-0.14626283, -0.60152865,  0.20338137],
                         [-0.03958251, -0.05197697,  0.04291738]])
-                        
-                        
+
+
         exp_S= np.array([[ 0.62433487,  1.48690764,  0.88114666],
                          [ 0.02594646,  0.01457821,  0.03445409],
                          [-0.07239248, -0.06171197, -0.02125931]])
-                         
+
 
         exp_Y=[[-0.39595047, -0.6587885,   0.57826609],
              [-0.02088513, -0.02779878,  0.0123531 ],
@@ -255,7 +262,7 @@ class TestOptspace(unittest.TestCase):
 
         exp_dist=np.array([ 2.85982659,  2.85982646,  2.85982633,  2.8598262,   2.85982607,  2.85982593,
          2.8598258,   2.85982567,  2.85982554,  2.85982541,  2.85982528])
-        
+
         npt.assert_allclose(X, exp_X, atol=1e-5)
         npt.assert_allclose(S, exp_S, atol=1e-5)
         npt.assert_allclose(Y, exp_Y, atol=1e-5)
@@ -263,19 +270,19 @@ class TestOptspace(unittest.TestCase):
 
     def test_optspace_rect(self):
         np.random.seed(0)
-        
+
         n = 20
         m = 10
         r = 3
         tol = 1e-8
-        
+
         eps = r*np.log10(n);
-        
+
         U = randn(n, r)
         V = randn(m, r)
         Sig = np.eye(r)
         M0 = U.dot(Sig).dot(V.T)
-        
+
         E = 1 - np.ceil( rand(n, m) - eps/np.sqrt(m*n)  )
         M_E = np.multiply(M0, E)
         X, S, Y, dist = optspace(M_E, r=3, niter=10, tol=tol)
@@ -300,11 +307,11 @@ class TestOptspace(unittest.TestCase):
                           [  1.51729245e+00,  5.82858430e-01,   1.95268698e-01],
                           [  1.03817652e-01,   1.69187705e-01,  -3.24675239e-02],
                           [  7.14100851e-01,  -4.62712815e-01,  -4.30432263e-01]])
-    
+
         exp_S = np.array([[  0.00000000e+00,   1.85550119e-01,   0.00000000e+00],
                          [ -9.62508393e-48,   1.25410283e-01,   0.00000000e+00],
                          [  0.00000000e+00,  -1.34288448e+00,   0.00000000e+00]])
-        
+
         exp_Y = np.array([[-0.47458205, -0.15117831, -0.03750719],
                           [ 0.08870875,  0.14503068,  0.08960488],
                           [-0.48638819,  1.71614626, -1.38156126],
@@ -315,12 +322,12 @@ class TestOptspace(unittest.TestCase):
                           [ 2.34342552,  0.96412366,  0.52283276],
                           [-0.93584522,  1.05607652,  2.68589675],
                           [-1.17121138, -1.2261424, -0.16068614]])
-                         
-         
+
+
         exp_dist = np.array([ 2.017845,  2.017845,  2.017845,  2.017845,  2.017845,  2.017845,
                              2.017845,  2.017845,  2.017845,   2.017845,  2.017845])
-        
-        
+
+
         npt.assert_allclose(X, exp_X, atol=1e-5)
         npt.assert_allclose(S, exp_S, atol=1e-5)
         npt.assert_allclose(Y, exp_Y, atol=1e-5)
