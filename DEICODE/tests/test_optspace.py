@@ -1,5 +1,6 @@
 from DEICODE.optspace import (G, F_t, gradF_t, Gp, getoptT, getoptS, optspace,
-                              P_E)
+                              coptspace, impute_running_mean,
+                              _impute_running_mean_helper)
 import numpy as np
 from numpy.random import randn, rand
 from numpy.linalg import norm
@@ -8,6 +9,7 @@ import numpy.testing as npt
 from gneiss.util import block_diagonal
 from scipy.io import loadmat
 from skbio.util import get_data_path
+from skbio.stats.composition import ilr, ilr_inv
 
 
 class TestOptspace(unittest.TestCase):
@@ -131,6 +133,38 @@ class TestOptspace(unittest.TestCase):
         res = norm(err, 'fro') / np.sqrt(m*n)
         exp = 0.0010701845536
         self.assertAlmostEqual(res, exp)
+
+    def test_impute_running_mean_helper(self):
+        x = np.array([1, 2, -np.inf, 4])
+        y = _impute_running_mean_helper(x)
+        exp_y = np.array([1, 2, 1.5, 4])
+        npt.assert_allclose(y, exp_y)
+
+    def test_impute_running_mean(self):
+        X = np.array(
+            [[1, 2, -np.inf, 4],
+             [1, -np.inf, 3, 4]]
+        )
+        Y = impute_running_mean(X)
+        exp_Y = np.array([[1, 2, 1.5, 4],
+                          [1, 1, 3, 4]])
+
+        npt.assert_allclose(Y, exp_Y)
+
+    def test_coptspace(self):
+        M0 = loadmat(get_data_path('large_test.mat'))['M0']
+
+        M0 = ilr_inv(M0)
+        E = np.random.randint(0, 2, size=M0.shape)
+        E[:, 0] = 1
+        M0 = M0.astype(np.float)
+        M_E = np.multiply(M0, E)
+        M_r = coptspace(M_E, r=3, niter=41, tol=1e-8)
+        err = M_r - M0
+        n, m = M0.shape
+
+        res = norm(err, 'fro') / np.sqrt(m*n)
+        print(res)
 
 
 if __name__ == "__main__":
