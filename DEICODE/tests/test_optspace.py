@@ -135,15 +135,15 @@ class TestOptspace(unittest.TestCase):
         self.assertAlmostEqual(res, exp)
 
     def test_impute_running_mean_helper(self):
-        x = np.array([1, 2, -np.inf, 4])
+        x = np.array([1, 2, np.nan, 4])
         y = _impute_running_mean_helper(x)
         exp_y = np.array([1, 2, 1.5, 4])
         npt.assert_allclose(y, exp_y)
 
     def test_impute_running_mean(self):
         X = np.array(
-            [[1, 2, -np.inf, 4],
-             [1, -np.inf, 3, 4]]
+            [[1, 2, np.nan, 4],
+             [1, np.nan, 3, 4]]
         )
         Y = impute_running_mean(X)
         exp_Y = np.array([[1, 2, 1.5, 4],
@@ -153,18 +153,25 @@ class TestOptspace(unittest.TestCase):
 
     def test_coptspace(self):
         M0 = loadmat(get_data_path('large_test.mat'))['M0']
+        M_E = loadmat(get_data_path('large_test.mat'))['M_E']
+        M_E = np.array(M_E.todense())
+
+        E = (np.abs(M_E) > 1e-10).astype(np.int)
+        # force in a spike in
+        o = np.ones(E.shape[0])
+        E = np.vstack((E.T, o)).T[:, ::-1]
 
         M0 = ilr_inv(M0)
-        E = np.random.randint(0, 2, size=M0.shape)
-        E[:, 0] = 1
         M0 = M0.astype(np.float)
         M_E = np.multiply(M0, E)
-        M_r = coptspace(M_E, r=3, niter=41, tol=1e-8)
+
+        M_r = coptspace(M_E, r=3, niter=21, tol=1e-8)
         err = M_r - M0
         n, m = M0.shape
 
         res = norm(err, 'fro') / np.sqrt(m*n)
-        print(res)
+        exp = 0.00446289395349
+        self.assertAlmostEqual(res, exp)
 
 
 if __name__ == "__main__":

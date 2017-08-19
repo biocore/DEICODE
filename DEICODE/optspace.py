@@ -63,7 +63,7 @@ def coptspace(M_E, r, niter, tol):
 
     # perform ilr
     M_E = ilr(M_E, basis=basis)
-    X, S, Y, dist =  _optspace(M_E, E, r, niter, tol)
+    X, S, Y, dist =  _optspace(M_E, E, r, niter, tol, sign=1)
     M = ilr_inv(X.dot(S).dot(Y.T), basis=basis)
     return M
 
@@ -78,10 +78,10 @@ def optspace(M_E, r, niter, tol):
     X, S, Y
     """
     E = (np.abs(M_E) > 1e-10).astype(np.int)
-    return _optspace(M_E, E, r, niter, tol)
+    return _optspace(M_E, E, r, niter, tol, sign=-1)
 
 
-def _optspace(M_E, E, r, niter, tol):
+def _optspace(M_E, E, r, niter, tol, sign=1):
     """
     Parameters
     ----------
@@ -112,21 +112,20 @@ def _optspace(M_E, E, r, niter, tol):
     ft = M_E - X.dot(S).dot(Y.T)
     dist = np.zeros(niter + 1)
     dist[0] = norm( np.multiply(ft, E) ,'fro') / np.sqrt(nnz)
-    print(0, dist[0])
+
     for i in range(1, niter):
         W, Z = gradF_t(X, Y, S, M_E, E, m0, rho);
 
         # Line search for the optimum jump length
         t = getoptT(X, W, Y, Z, S, M_E, E, m0, rho) ;
-        X = X + t*W
-        Y = Y + t*Z
+        X = X - sign*t*W
+        Y = Y - sign*t*Z
 
         S = getoptS(X, Y, M_E, E) ;
 
         # Compute the distortion
         ft = M_E - X.dot(S).dot(Y.T)
         dist[i+1] = norm( np.multiply(ft, E) ,'fro') /  np.sqrt(nnz)
-        print(i, dist[i+1])
         if( dist[i+1] < tol ):
             break ;
     S = S /rescal_param ;
