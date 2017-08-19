@@ -350,15 +350,18 @@ class TestOptspace(unittest.TestCase):
         npt.assert_allclose(dist, exp_dist, atol=1e-5)
 
     def test_optspace_original(self):
-        M0 = loadmat(get_data_path('dense_opttest.mat'))['M0'].astype(np.float)
-        M_E = loadmat(get_data_path('sparse_opttest.mat'))['M_E'].astype(np.float)
+        M0 = loadmat(get_data_path('large_test.mat'))['M0']
+        M_E = loadmat(get_data_path('large_test.mat'))['M_E']
 
-        M_E = np.array(M_E.todense())
-        X, S, Y, dist = optspace(M_E, r=3, niter=1, tol=1e-8)
+        M0 = M0.astype(np.float)
+        M_E = np.array(M_E.todense()).astype(np.float)
+        X, S, Y, dist = optspace(M_E, r=3, niter=11, tol=1e-8)
         err = X.dot(S).dot(Y.T) - M0
         n, m = M0.shape
 
-        print(norm(err, 'fro') / np.sqrt(m*n))
+        res = norm(err, 'fro') / np.sqrt(m*n)
+        exp = 0.0010701845536
+        self.assertAlmostEqual(res, exp)
 
 
 if __name__ == "__main__":
