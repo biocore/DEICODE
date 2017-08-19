@@ -27,6 +27,7 @@ def coptspace(M_E, r, niter, tol):
     # perform mean imputation scheme, so that we are only
     # measuring the subcompositional stress.
     M_E = np.vstack([P_E(M_E[i, :]) for i in range(M_E.shape[0])])
+
     # perform the actual ilr transform
     M_E = basis.dot(M_E)
 
@@ -106,9 +107,11 @@ def optspace(M_E, r, niter, tol):
     X, Y = X0, Y0.T;
 
     S = getoptS(X, Y, M_E, E)
+
     ft = M_E - X.dot(S).dot(Y.T)
     dist = np.zeros(niter + 1)
     dist[0] = norm( np.multiply(ft, E) ,'fro') / np.sqrt(nnz)
+
     for i in range(niter):
         W, Z = gradF_t(X, Y, S, M_E, E, m0, rho);
 
@@ -122,10 +125,12 @@ def optspace(M_E, r, niter, tol):
         # Compute the distortion
         ft = M_E - X.dot(S).dot(Y.T)
         dist[i+1] = norm( np.multiply(ft, E) ,'fro') /  np.sqrt(nnz)
+
         if( dist[i+1] < tol ):
             break ;
     S = S /rescal_param ;
     return X, S, Y, dist
+
 
 def F_t(X, Y, S, M_E, E, m0, rho):
     """
@@ -178,7 +183,7 @@ def gradF_t(X, Y, S, M_E, E, m0, rho):
     Qx = X.T.dot( np.multiply((M_E - XSY), E)).dot(YS) / n;
     Qy = Y.T.dot( np.multiply((M_E - XSY), E).T).dot(XS) / m;
     W = np.multiply((XSY - M_E), E).dot(YS) + X.dot(Qx) + rho * Gp(X, m0, r);
-         Z = np.multiply((XSY - M_E), E).T.dot(XS) + Y.dot(Qy) + rho * Gp(Y, m0, r);
+    Z = np.multiply((XSY - M_E), E).T.dot(XS) + Y.dot(Qy) + rho * Gp(Y, m0, r);
     return W, Z
 
 def Gp(X, m0, r):
@@ -237,15 +242,17 @@ def getoptS(X, Y, M_E, E):
 
     C = np.ravel(X.T.dot(M_E).dot(Y))
     A = np.zeros((r*r, r*r))
-
     for i in range(r):
         for j in range(r):
             ind = j*r + i
-            temp = np.multiply(X[ i,:].dot(Y[j,:].T), E)
-            temp = X.T.dot(temp).dot(Y)
+            x = X[:, i].reshape(1, len(X[:, i]))
+            y = Y[:, j].reshape(len(Y[:, j]), 1)
+            tmp = np.multiply((y.dot(x)).T, E)
+            temp = X.T.dot(tmp).dot(Y)
             A[:, ind] = np.ravel(temp)
-    S = np.linalg.lstsq(A, C,
-                        rcond = np.finfo(np.double).eps*int(max(A.shape)))[0]
 
-    S = S.reshape((r, r))
+    S = np.linalg.lstsq(A, C, rcond=1e-12)[0]
+    # rcond = np.finfo(np.double).eps*int(max(A.shape)))[0]
+    S = S.reshape((r, r)).T
+
     return S
