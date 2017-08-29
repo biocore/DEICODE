@@ -11,14 +11,13 @@ from sklearn.cluster.bicluster import SpectralCoclustering
 from sklearn.model_selection import ShuffleSplit
 #ploting
 import matplotlib.pyplot as plt
-#completion/
-from fancyimpute import SoftImpute
 # utils
 from gneiss.util import match
+#completion
+from DEICODE import optspace
 
 
-
-def complete_matrix(data,iteration,minval):
+def complete_matrix(data,rank=2,iteration=40,tol=1e-8,minval=None):
     
     
     """
@@ -80,9 +79,13 @@ def complete_matrix(data,iteration,minval):
     """
     
     otum=data.copy().astype(np.float64) # make copy for imputation, check type
-    otum[otum == 0] = np.nan # make all previously zero values unknown (i.e. Nan)
-    # return imputed matrix through Fancy Impute's Soft Impute function
-    return SoftImpute(max_rank=min(otum.shape),max_iters=iteration,convergence_threshold=0.00001,min_value=minval,max_value=(np.amax(otum)),verbose=False).complete(otum)
+    # return imputed matrix
+    x, s, y, _ = optspace.optspace(otum, r=rank, niter=iteration, tol=tol)
+    completed=x.dot(s).dot(y.T)
+    #clip values below min
+    if minval!=None:
+        completed[completed<minval]=minval
+    return completed
 
 def biplot(data,r,time=False):
     
@@ -223,7 +226,7 @@ def features_ml(otulearn,mapdf,catv,complete=True,iteration=100):
 
     return importance
 
-def machine_learning(otulearn,mapdf,complete=True,single=False,single_cat=[''],nmin=1e-3,test_split=0.2,iteration=100,mean_count=10,addtofilter=[]):
+def machine_learning(otulearn,mapdf,single=False,single_cat=[''],nmin=1e-3,test_split=0.2,iteration=100,mean_count=10,addtofilter=[]):
     
     '''
     input: matched otu tables and mapping data 
@@ -237,11 +240,7 @@ def machine_learning(otulearn,mapdf,complete=True,single=False,single_cat=[''],n
         filterlist=['Unknown']
     else:
         filterlist=['Unknown']+addtofilter
-    
-    #complete matrix 
-    if complete==True:
-        otulearn=pd.DataFrame(complete_matrix(otulearn.as_matrix(),iteration,minval=nmin),columns=otulearn.columns,index=otulearn.index)
-    
+
     #intitals 
     sv={} # save scores for each classifier
     split_tmp=0
