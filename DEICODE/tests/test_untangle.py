@@ -60,7 +60,7 @@ class TestUntangle(unittest.TestCase):
     def test_complete_matrix(self):
         
         truth=np.array([[ 0.2,0.4,0.4,0.],[ 0.23683605,0.5,0.5,0.]])
-        test=complete_matrix(np.array([[.2,.4,.4, 0],[0,.5,.5,0]]),iteration=1000,minval=1e-3)
+        test=complete_matrix(np.array([[.2,.4,.4, 0],[0,.5,.5,0]]),rank=1,iteration=40)
         assert_array_almost_equal(truth,test,decimal=1)
 
     def test_features_ml(self):
@@ -77,19 +77,14 @@ class TestUntangle(unittest.TestCase):
     def test_machine_learning(self):
         
         scores_truth=pd.DataFrame(np.array([[ 0.28,0.44899889],[ 0.72,0.44899889]]),index=['state_m1 (n=3) (labels=2)', 'state_m2 (n=3) (labels=2)'],columns=['Mean Matrix Completion (RF)', 'std Matrix Completion (RF)'])
-        truth_comp=pd.DataFrame(np.array([[  1.00000000e+03,   1.00000000e-03,   1.00000000e-03],
-                                          [  1.28523204e-03,   1.00000000e+03,   1.00000000e-03],
-                                          [  1.00000000e+03,   1.00000000e-03,   1.00000000e-03]]),
-                                index=['o1', 'o2', 'o3'],columns=['s1', 's2', 's3'])
+
         table=pd.DataFrame([[1000,0,0],[0,1000,0],[1000,0,0]],index=['o1','o2','o3'],columns=['s1','s2','s3'])
         mapping=pd.DataFrame(np.array([['state_1','state_2','state_1'],['state_1','state_2','state_2']]).T,index=['s1','s2','s3'],columns=['state_m1','state_m2'])
         scores_test,test_comp=machine_learning(table,mapping,mean_count=50)
         try:
-            assert_array_almost_equal([[ 0.28,0.44899889],[ 0.72,0.44899889]],scores_test,decimal=1)
-            assert_array_almost_equal(truth_comp,test_comp)
+            assert_array_almost_equal(np.array([[0.4,0.5],[0.6,0.5]]),scores_test,decimal=1)
         except:
-            assert_array_almost_equal([[ 0.72,0.44899889],[0.28,0.44899889]],scores_test,decimal=1)
-            assert_array_almost_equal(truth_comp,test_comp)
+            assert_array_almost_equal(np.array([[0.6,0.5],[0.4,0.5]]),scores_test,decimal=1)
 
 
 if __name__ == '__main__':
