@@ -25,7 +25,8 @@ install:
   - sudo pip install nose
   - sudo pip install coveralls
 script:
-  - nosetests -v DEICODE --with-coverage
+  - WITH_COVERAGE=TRUE make all
+  - if [ ${MAKE_DOC} ]; then make -C doc clean html; fi
 after_success:
   - coveralls
 notifications:
