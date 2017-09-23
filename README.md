@@ -1,7 +1,7 @@
 
 [![Latest Github release](https://img.shields.io/github/release/cjm007/DEICODE.svg)](https://github.com/cjm007/DEICODE/releases/latest)
 [![Build Status](https://travis-ci.org/cjm007/DEICODE.svg?branch=master)](https://travis-ci.org/cjm007/DEICODE)
-
+[![Coverage Status](https://coveralls.io/repos/github/cjm007/DEICODE/badge.svg?branch=master)](https://coveralls.io/github/cjm007/DEICODE?branch=master)
 # DEICODE (pronounced like decode)
 
 Relating mapping data from environmental factors and patient outcomes between sample groups in sparse datasets.
