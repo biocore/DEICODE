@@ -25,6 +25,7 @@ install:
   - sudo pip install nose
   - sudo pip install coveralls
 script:
+  - source activate test_env
   - sudo nosetests --with-coverage
 after_success:
   - coveralls
