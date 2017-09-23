@@ -50,7 +50,7 @@ classes = """
 """
 classifiers = [s.strip() for s in classes.split('\n') if s]
 
-description = ('Compositional data analysis tools and visualizations')
+description = ('Matrix completion toolbox for partially observed omics datasets')
 
 with open('README.md') as f:
     long_description = f.read()
