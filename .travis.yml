@@ -25,8 +25,7 @@ install:
   - sudo pip install nose
   - sudo pip install coveralls
 script:
-  - WITH_COVERAGE=TRUE make all
-  - if [ ${MAKE_DOC} ]; then make -C doc clean html; fi
+  - sudo nosetests --with-coverage
 after_success:
   - coveralls
 notifications:
