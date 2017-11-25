@@ -17,7 +17,7 @@ from gneiss.util import match
 from DEICODE import optspace
 
 
-def complete_matrix(data,rank=2,iteration=40,tol=1e-8,minval=None):
+def complete_matrix(data,rank=2,iteration=40,tol=1e-8,minval=None,maxval=True):
     
     
     """
@@ -32,16 +32,17 @@ def complete_matrix(data,rank=2,iteration=40,tol=1e-8,minval=None):
     rows = Features (i.e. OTUs, metabolites)
     columns = Samples
     
-    iteration: float, optional
+    iteration: float, optional : Default is 40
     The number of convex iterations to optomize the solution
     If iteration is not specified, then the default iteration is 100. Which redcues to a satisfactory error threshold.
     
     
-    minval: float, optional
+    minval: float, optional : Default is None
     A small number to be used to replace zeros
     If minval is not specified, then the default minval is 1e-3. Worked well in practice with compositional transforms.
     
-    
+    maxval: bool, optional : Default is true
+    If maxval is true then values in completed matrix are clipped to be at max the values they exsisted at before imputation
     
     Returns
     -------
@@ -82,9 +83,19 @@ def complete_matrix(data,rank=2,iteration=40,tol=1e-8,minval=None):
     # return imputed matrix
     x, s, y, _ = optspace.optspace(otum, r=rank, niter=iteration, tol=tol)
     completed=x.dot(s).dot(y.T)
+    
+    #clip high values
+    if maxval==True:
+        shape=list(completed.shape)
+        for x in range(0, shape[0]):
+            for y in range(0, shape[1]):
+                if completed[x, y]>otum[x, y]:
+                    completed[x, y]=otum[x, y]
+    
     #clip values below min
     if minval!=None:
         completed[completed<minval]=minval
+    
     return completed
 
 def biplot(data,r,time=False):
