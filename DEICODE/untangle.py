@@ -17,7 +17,7 @@ from gneiss.util import match
 from DEICODE import optspace
 
 
-def complete_matrix(data,rank=2,iteration=40,tol=1e-8,minval=None,maxval=True):
+def complete_matrix(data,rank=2,iteration=40,tol=1e-8,minval=None,maxval=None,clip_high=True):
     
     
     """
@@ -41,8 +41,11 @@ def complete_matrix(data,rank=2,iteration=40,tol=1e-8,minval=None,maxval=True):
     A small number to be used to replace zeros
     If minval is not specified, then the default minval is 1e-3. Worked well in practice with compositional transforms.
     
-    maxval: bool, optional : Default is true
+    clip_high: bool, optional : Default is true
     If maxval is true then values in completed matrix are clipped to be at max the values they exsisted at before imputation
+    
+    clip_high: float, optional : Default is None
+    If maxval is true then values in completed matrix are clipped to be at maxval
     
     Returns
     -------
@@ -85,13 +88,21 @@ def complete_matrix(data,rank=2,iteration=40,tol=1e-8,minval=None,maxval=True):
     completed=x.dot(s).dot(y.T)
     
     #clip high values
-    if maxval==True:
+    if clip_high==True:
         shape=list(completed.shape)
         for x in range(0, shape[0]):
             for y in range(0, shape[1]):
                 if completed[x, y]>otum[x, y]:
                     completed[x, y]=otum[x, y]
-    
+
+    #clip high values
+    if maxval!=None:
+        shape=list(completed.shape)
+        for x in range(0, shape[0]):
+            for y in range(0, shape[1]):
+                if otum[x, y]==0 and completed[x, y]>maxval:
+                    completed[x, y]=maxval
+
     #clip values below min
     if minval!=None:
         completed[completed<minval]=minval
