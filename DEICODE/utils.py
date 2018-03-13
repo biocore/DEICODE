@@ -17,6 +17,10 @@ from scipy.optimize import minimize
 # Set random state
 rand = np.random.RandomState(42)
 
+
+
+
+
 def block_diagonal_gaus(ncols, nrows, nblocks,overlap=0,minval=0,maxval=1.0):
     
     """ 
@@ -153,44 +157,70 @@ def plot_pcoa(otupcoadfs,mapping,catvis,fig_fontsize=12,suptit_=None,method='bra
     
     """
     
-    if len(otupcoadfs)==1:
-        fig, ax1 = plt.subplots(ncols=1, nrows=1, figsize=(8, 8)) 
-        otupcoadf=otupcoadfs[0]
-        title='Mean Sequences Per Sample:'+str(np.mean(otupcoadf.sum())).split('.')[0]
-        pcaplot=pcoa(DistanceMatrix(pdist(otupcoadf.as_matrix().T,method),list(otupcoadf.columns))).samples[['PC1','PC2','PC3']]
-        pcaplot[catvis]=list(mapping.T[catvis])
-        for ((key, grp)) in pcaplot.groupby(catvis):
-            ax1.scatter(grp['PC1'], grp['PC2'], color=next(ax1._get_lines.prop_cycler)['color'], label=key, s=50)
-        ax1.set_xticks([])
-        ax1.set_yticks([])
-        ax1.legend(loc=2,prop={'size':16},bbox_to_anchor=(1.0, 1.0))
-        ax1.set_title(title,fontsize=fig_fontsize,y=1.05)
-        ax1.set_ylabel('$PC-1$',fontsize=fig_fontsize-2)
-        ax1.set_xlabel('$PC-2$',fontsize=fig_fontsize-2) 
-        if suptit_!=None:
-            plt.suptitle(suptit_,y=1.05,fontsize=fig_fontsize+8)
-        return fig
-        
-    else:
-        fig, axn = plt.subplots(ncols=len(otupcoadfs), nrows=1, figsize=(15, 5)) 
-
-        for ax1,(count_,otupcoadf) in zip(axn.flat,enumerate(otupcoadfs)):
-            title=str(np.mean(otupcoadf.sum())).split('.')[0]+' Sequences Per Sample'
+    if  all(isinstance(item, str) for item in list(mapping.T[catvis])) or all(isinstance(item, bool) for item in list(mapping.T[catvis])):
+        if len(otupcoadfs)==1:
+            fig, ax1 = plt.subplots(ncols=1, nrows=1, figsize=(8, 8)) 
+            otupcoadf=otupcoadfs[0]
+            title='Mean Sequences Per Sample:'+str(np.mean(otupcoadf.sum())).split('.')[0]
             pcaplot=pcoa(DistanceMatrix(pdist(otupcoadf.as_matrix().T,method),list(otupcoadf.columns))).samples[['PC1','PC2','PC3']]
             pcaplot[catvis]=list(mapping.T[catvis])
             for ((key, grp)) in pcaplot.groupby(catvis):
                 ax1.scatter(grp['PC1'], grp['PC2'], color=next(ax1._get_lines.prop_cycler)['color'], label=key, s=50)
             ax1.set_xticks([])
             ax1.set_yticks([])
-            if count_==len(otupcoadfs)-1:
-                ax1.legend(loc=2,prop={'size':16},bbox_to_anchor=(1.0, 1.0))
+            ax1.legend(loc=2,prop={'size':16},bbox_to_anchor=(1.0, 1.0))
             ax1.set_title(title,fontsize=fig_fontsize,y=1.05)
             ax1.set_ylabel('$PC-1$',fontsize=fig_fontsize-2)
             ax1.set_xlabel('$PC-2$',fontsize=fig_fontsize-2) 
-        if suptit_!=None:
-            plt.suptitle(suptit_,y=1.05,fontsize=fig_fontsize+8)
-        return fig
-    
+            if suptit_!=None:
+                plt.suptitle(suptit_,y=1.05,fontsize=fig_fontsize+8)
+            return fig
+            
+        else:
+            fig, axn = plt.subplots(ncols=len(otupcoadfs), nrows=1, figsize=(15, 5)) 
+
+            for ax1,(count_,otupcoadf) in zip(axn.flat,enumerate(otupcoadfs)):
+                title=str(np.mean(otupcoadf.sum())).split('.')[0]+' Sequences Per Sample'
+                pcaplot=pcoa(DistanceMatrix(pdist(otupcoadf.as_matrix().T,method),list(otupcoadf.columns))).samples[['PC1','PC2','PC3']]
+                pcaplot[catvis]=list(mapping.T[catvis])
+                for ((key, grp)) in pcaplot.groupby(catvis):
+                    ax1.scatter(grp['PC1'], grp['PC2'], color=next(ax1._get_lines.prop_cycler)['color'], label=key, s=50)
+                ax1.set_xticks([])
+                ax1.set_yticks([])
+                if count_==len(otupcoadfs)-1:
+                    ax1.legend(loc=2,prop={'size':16},bbox_to_anchor=(1.0, 1.0))
+                ax1.set_title(title,fontsize=fig_fontsize,y=1.05)
+                ax1.set_ylabel('$PC-1$',fontsize=fig_fontsize-2)
+                ax1.set_xlabel('$PC-2$',fontsize=fig_fontsize-2) 
+            if suptit_!=None:
+                plt.suptitle(suptit_,y=1.05,fontsize=fig_fontsize+8)
+            return fig
+    else:
+        if len(otupcoadfs)==1:
+            otupcoadf=otupcoadfs[0]
+            pcaplot=pcoa(DistanceMatrix(pdist(otupcoadf.as_matrix().T,method),list(otupcoadf.columns))).samples[['PC1','PC2','PC3']]
+            pcaplot[catvis]=list(mapping.T[catvis])
+            fig, (ax1) = plt.subplots(ncols=1, nrows=1, figsize=(8, 6),sharey=False)
+            pcaplot.plot.scatter(x='PC1', y='PC2', c=str(catvis),cmap='RdBu_r', s=50,ax=ax1);
+            ax1.set_xlabel('$PC-1$')
+            ax1.set_ylabel('$PC-2$')
+            ax1.set_xticks([])
+            ax1.set_yticks([])
+            return fig 
+        else:
+            fig, axn = plt.subplots(ncols=len(otupcoadfs), nrows=1, figsize=(15, 5)) 
+            for ax1,(count_,otupcoadf) in zip(axn.flat,enumerate(otupcoadfs)):
+                title=str(np.mean(otupcoadf.sum())).split('.')[0]+' Sequences Per Sample'
+                pcaplot=pcoa(DistanceMatrix(pdist(otupcoadf.as_matrix().T,method),list(otupcoadf.columns))).samples[['PC1','PC2','PC3']]
+                pcaplot[catvis]=list(mapping.T[catvis])
+                pcaplot.plot.scatter(x='PC1', y='PC2', c=str(catvis),cmap='RdBu_r', s=50,ax=ax1);
+                ax1.set_xlabel('$PC-1$')
+                ax1.set_ylabel('$PC-2$')
+                ax1.set_xticks([])
+                ax1.set_yticks([])
+                ax1.set_title(title,fontsize=fig_fontsize,y=1.05)
+            return fig 
+
 def mean_KL(a,b):
     
     """
@@ -355,3 +385,104 @@ def minimize_model(x0,bnds,X_true_):
 
     model_fit=minimize(add_noise_min,x0, bounds=bnds)
     return model_fit
+
+
+def build_grad_model(hoced,hsced,inten,spar,sigma,C_,num_samples,num_features):
+        
+    rank = 2**3 - 1
+    gradient = np.linspace(0, 10, num_samples)
+    mu = np.linspace(0, 10, num_features)
+    xs = [norm.pdf(gradient, loc=mu[i], scale=sigma)
+          for i in range(len(mu))]
+    table = np.vstack(xs).T
+    table = pd.DataFrame(table)
+    table.index = table.index.astype(np.str)
+    table.columns = table.columns.astype(np.str)
+    table=table*C_
+    X_true=table.values.T.copy()
+    
+    X_noise=X_true.copy()
+    X_noise=np.array(X_noise)
+    # add Homoscedastic noise
+    if hoced is not None:
+        err = hoced * np.ones_like(X_noise.copy())
+        X_noise = rand.normal(X_noise.copy(), err)
+    
+    # add Heteroscedastic noise
+    if hsced is not None:
+        err = hsced * np.ones_like(X_noise)
+        i = rand.randint(0, err.shape[0], 5000)
+        j = rand.randint(0, err.shape[1], 5000)
+        err[i, j] = inten
+        X_noise = abs(rand.normal(X_noise, err))
+        
+    # Induce low-density into the matrix
+    if spar is not None:
+        mask = np.random.randint(0,spar,size=X_noise.shape).astype(np.bool)
+        rand_zeros = np.random.rand(*X_noise.shape)*0
+        X_noise[mask] = rand_zeros[mask]
+        
+    # make a mock mapping data
+    mappning_=pd.DataFrame(np.array([x for x in range(0,num_samples)]),columns=['Gradient'],index=['sample_'+str(x) for x in range(0,num_samples)])
+    mappning_=mappning_.apply(pd.to_numeric, errors='ignore')
+
+    #return the base truth and noisy data 
+    return X_true,X_noise,mappning_
+
+def minimize_model_grad(x0,bnds,X_true_):
+
+
+    def add_noise_min_grad(x_o,X_true=X_true_):
+
+        #build model and minmize kl-div
+
+        hoced=x_o[0]
+        hsced=x_o[1]
+        inten=x_o[2]
+        spar=x_o[3]
+        sigma = x_o[4]
+        C_ = x_o[5]
+        
+        num_samples=int(X_true.shape[0])
+        num_features=int(X_true.shape[1])
+
+        rank = 2**3 - 1
+        gradient = np.linspace(0, 10, num_samples)
+        mu = np.linspace(0, 10, num_features)
+        xs = [norm.pdf(gradient, loc=mu[i], scale=sigma)
+              for i in range(len(mu))]
+        table = np.vstack(xs).T
+        table = pd.DataFrame(table)
+        table.index = table.index.astype(np.str)
+        table.columns = table.columns.astype(np.str)
+        table=table*C_
+
+        X_noise=table.values.T.copy()
+        # add Homoscedastic noise
+        if hoced is not None:
+            X_noise=np.array(X_noise)
+            err = hoced * np.ones_like(X_noise.copy())
+            X_noise = rand.normal(X_noise.copy(), err)
+
+        # add Heteroscedastic noise
+        if hsced is not None:
+            err = hsced * np.ones_like(X_noise)
+            i = rand.randint(0, err.shape[0], 5000)
+            j = rand.randint(0, err.shape[1], 5000)
+            err[i, j] = inten
+            X_noise = abs(rand.normal(X_noise, err))
+            
+        # Induce low-density into the matrix
+        if spar is not None:
+            mask = np.random.randint(0,spar,size=X_noise.shape).astype(np.bool)
+            rand_zeros = np.random.rand(*X_noise.shape)*0
+            X_noise[mask] = rand_zeros[mask]
+
+
+        #return the noisy data 
+        return mean_squared_error(X_true.T,X_noise) 
+    
+    model_fit=minimize(add_noise_min_grad,x0, bounds=bnds)
+    
+    return model_fit
+
