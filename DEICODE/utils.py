@@ -10,6 +10,8 @@ from skbio.stats.ordination import pcoa
 from scipy.spatial.distance import pdist, squareform
 #blocks
 from scipy.stats import norm
+from numpy.random import poisson, lognormal
+from skbio.stats.composition import closure
 from scipy import stats
 #minimize model perams
 from sklearn.metrics import mean_squared_error
@@ -17,11 +19,37 @@ from scipy.optimize import minimize
 # Set random state
 rand = np.random.RandomState(42)
 
+def Homoscedastic(X_noise,intensity):
+    
+    X_noise=np.array(X_noise)
+    err = intensity * np.ones_like(X_noise.copy())
+    X_noise = rand.normal(X_noise.copy(), err)
+    
+    return X_noise
 
 
+def Heteroscedastic(X_noise,intensity):
+    
+    err = intensity * np.ones_like(X_noise)
+    i = rand.randint(0, err.shape[0], 5000)
+    j = rand.randint(0, err.shape[1], 5000)
+    err[i, j] = intensity
+    X_noise = abs(rand.normal(X_noise, err))
+    
+    return X_noise
+
+def Subsample(X_noise,spar,num_samples):
+    
+    # subsample
+    mu=spar*closure(X_noise.T).T
+    X_noise=np.vstack([poisson(lognormal(np.log(mu[:,i]),1)) for i in range(num_samples)]).T
+    # add sparsity
+    
+    
+    return X_noise
 
 
-def block_diagonal_gaus(ncols, nrows, nblocks,overlap=0,minval=0,maxval=1.0):
+def block_diagonal_gaus(ncols,nrows,nblocks,overlap=0,minval=0,maxval=1.0):
     
     """ 
     Generate block diagonal with Gaussian distributed values within blocks.
@@ -78,14 +106,12 @@ def block_diagonal_gaus(ncols, nrows, nblocks,overlap=0,minval=0,maxval=1.0):
     block_cols = ncols // nblocks
     block_rows = nrows // nblocks
     for b in range(nblocks-1):
+    
+        gradient = np.linspace(5, 5, block_rows) # samples (bock_rows)
+        mu = np.linspace(0, 10, block_cols+overlap) # features (block_cols+overlap)
+        sigma = 2.0
+        xs = [norm.pdf(gradient, loc=mu[i], scale=sigma) for i in range(len(mu))]
         
-        
-        
-        gradient = np.linspace(5, 5, block_rows)
-        mu = np.linspace(0, 10, block_cols+overlap)
-        sigma = 4
-        xs = [norm.pdf(gradient, loc=mu[i], scale=sigma)
-              for i in range(len(mu))]
         B = np.vstack(xs).T*maxval
                 
         #B = np.random.uniform(minval,maxval,size=(block_rows, block_cols))
@@ -106,8 +132,6 @@ def block_diagonal_gaus(ncols, nrows, nblocks,overlap=0,minval=0,maxval=1.0):
             elif (B.shape)==(mat[lower_row:upper_row, int(lower_col-int(overlap/2)):int(upper_col+int(overlap/2)-1)].shape):    
                 mat[lower_row:upper_row, int(lower_col-int(overlap/2)):int(upper_col+int(overlap/2)-1)] = B
 
-
-    
     upper_col=int(upper_col-overlap)
     # Make last block fill in the remainder
     gradient = np.linspace(5, 5, nrows-upper_row)
@@ -248,7 +272,7 @@ def mean_KL(a,b):
             
     return kl
 
-def build_block_model(rank,hoced,hsced,inten,spar,C_,num_samples,num_features,overlap=0,mapping_on=True):
+def build_block_model(rank,hoced,hsced,spar,C_,num_samples,num_features,overlap=0,mapping_on=True):
     
     """
     Generates hetero and homo scedastic noise on base truth block diagonal with Gaussian distributed values within blocks.
@@ -310,26 +334,13 @@ def build_block_model(rank,hoced,hsced,inten,spar,C_,num_samples,num_features,ov
                                ,columns=['example'],index=['sample_'+str(x) for x in range(0,num_samples-2)])
 
     X_noise=X_true.copy()
+    X_noise=np.array(X_noise)
     # add Homoscedastic noise
-    if hoced is not None:
-        X_noise=np.array(X_noise)
-        err = hoced * np.ones_like(X_noise.copy())
-        X_noise = rand.normal(X_noise.copy(), err)
-    
+    X_noise=Homoscedastic(X_noise,hoced)
     # add Heteroscedastic noise
-    if hsced is not None:
-        err = hsced * np.ones_like(X_noise)
-        i = rand.randint(0, err.shape[0], 5000)
-        j = rand.randint(0, err.shape[1], 5000)
-        err[i, j] = inten
-        X_noise = abs(rand.normal(X_noise, err))
-
+    X_noise=Heteroscedastic(X_noise,hsced)
     # Induce low-density into the matrix
-    if spar is not None:
-        mask = np.random.randint(0,spar,size=X_noise.shape).astype(np.bool)
-        rand_zeros = np.random.rand(*X_noise.shape)*0
-        X_noise[mask] = rand_zeros[mask]
-
+    X_noise=Subsample(X_noise,spar,num_samples)
 
     #return the base truth and noisy data
     if mapping_on==True:
@@ -344,10 +355,9 @@ def minimize_model(x0,bnds,X_true_):
         rank=3
         hoced=x_o[1]
         hsced=x_o[2]
-        inten=x_o[3]
-        spar=x_o[4]
-        C_=x_o[5]
-        overlap_=x_o[6]
+        spar=x_o[3]
+        C_=x_o[4]
+        overlap_=x_o[5]
 
         num_samples=int(X_true.shape[0])
         num_features=int(X_true.shape[1])
@@ -359,25 +369,13 @@ def minimize_model(x0,bnds,X_true_):
                                ,columns=['example'],index=['sample_'+str(x) for x in range(0,num_samples-2)])
 
         X_noise=X_true.copy()
+        X_noise=np.array(X_noise)
         # add Homoscedastic noise
-        if hoced is not None:
-            X_noise=np.array(X_noise)
-            err = hoced * np.ones_like(X_noise.copy())
-            X_noise = rand.normal(X_noise.copy(), err)
-
+        X_noise=Homoscedastic(X_noise,hoced)
         # add Heteroscedastic noise
-        if hsced is not None:
-            err = hsced * np.ones_like(X_noise)
-            i = rand.randint(0, err.shape[0], 5000)
-            j = rand.randint(0, err.shape[1], 5000)
-            err[i, j] = inten
-            X_noise = abs(rand.normal(X_noise, err))
-
+        X_noise=Heteroscedastic(X_noise,hsced)
         # Induce low-density into the matrix
-        if spar is not None:
-            mask = np.random.randint(0,spar,size=X_noise.shape).astype(np.bool)
-            rand_zeros = np.random.rand(*X_noise.shape)*0
-            X_noise[mask] = rand_zeros[mask]
+        X_noise=Subsample(X_noise,spar,num_samples)
 
         #return the noisy data
         return mean_squared_error(X_true.T,X_noise) 
@@ -387,8 +385,9 @@ def minimize_model(x0,bnds,X_true_):
     return model_fit
 
 
-def build_grad_model(hoced,hsced,inten,spar,sigma,C_,num_samples,num_features):
-        
+def build_grad_model(hoced,hsced,spar,sigma,C_,num_samples,num_features):
+    
+    
     rank = 2**3 - 1
     gradient = np.linspace(0, 10, num_samples)
     mu = np.linspace(0, 10, num_features)
@@ -404,23 +403,11 @@ def build_grad_model(hoced,hsced,inten,spar,sigma,C_,num_samples,num_features):
     X_noise=X_true.copy()
     X_noise=np.array(X_noise)
     # add Homoscedastic noise
-    if hoced is not None:
-        err = hoced * np.ones_like(X_noise.copy())
-        X_noise = rand.normal(X_noise.copy(), err)
-    
+    X_noise=Homoscedastic(X_noise,hoced)
     # add Heteroscedastic noise
-    if hsced is not None:
-        err = hsced * np.ones_like(X_noise)
-        i = rand.randint(0, err.shape[0], 5000)
-        j = rand.randint(0, err.shape[1], 5000)
-        err[i, j] = inten
-        X_noise = abs(rand.normal(X_noise, err))
-        
+    X_noise=Heteroscedastic(X_noise,hsced)
     # Induce low-density into the matrix
-    if spar is not None:
-        mask = np.random.randint(0,spar,size=X_noise.shape).astype(np.bool)
-        rand_zeros = np.random.rand(*X_noise.shape)*0
-        X_noise[mask] = rand_zeros[mask]
+    X_noise=Subsample(X_noise,spar,num_samples)
         
     # make a mock mapping data
     mappning_=pd.DataFrame(np.array([x for x in range(0,num_samples)]),columns=['Gradient'],index=['sample_'+str(x) for x in range(0,num_samples)])
@@ -428,6 +415,7 @@ def build_grad_model(hoced,hsced,inten,spar,sigma,C_,num_samples,num_features):
 
     #return the base truth and noisy data 
     return X_true,X_noise,mappning_
+
 
 def minimize_model_grad(x0,bnds,X_true_):
 
@@ -438,10 +426,9 @@ def minimize_model_grad(x0,bnds,X_true_):
 
         hoced=x_o[0]
         hsced=x_o[1]
-        inten=x_o[2]
-        spar=x_o[3]
-        sigma = x_o[4]
-        C_ = x_o[5]
+        spar=x_o[2]
+        sigma = x_o[3]
+        C_ = x_o[4]
         
         num_samples=int(X_true.shape[0])
         num_features=int(X_true.shape[1])
@@ -458,26 +445,13 @@ def minimize_model_grad(x0,bnds,X_true_):
         table=table*C_
 
         X_noise=table.values.T.copy()
+        X_noise=np.array(X_noise)
         # add Homoscedastic noise
-        if hoced is not None:
-            X_noise=np.array(X_noise)
-            err = hoced * np.ones_like(X_noise.copy())
-            X_noise = rand.normal(X_noise.copy(), err)
-
+        X_noise=Homoscedastic(X_noise,hoced)
         # add Heteroscedastic noise
-        if hsced is not None:
-            err = hsced * np.ones_like(X_noise)
-            i = rand.randint(0, err.shape[0], 5000)
-            j = rand.randint(0, err.shape[1], 5000)
-            err[i, j] = inten
-            X_noise = abs(rand.normal(X_noise, err))
-            
+        X_noise=Heteroscedastic(X_noise,hsced)
         # Induce low-density into the matrix
-        if spar is not None:
-            mask = np.random.randint(0,spar,size=X_noise.shape).astype(np.bool)
-            rand_zeros = np.random.rand(*X_noise.shape)*0
-            X_noise[mask] = rand_zeros[mask]
-
+        X_noise=Subsample(X_noise,spar,num_samples)
 
         #return the noisy data 
         return mean_squared_error(X_true.T,X_noise) 
@@ -485,4 +459,14 @@ def minimize_model_grad(x0,bnds,X_true_):
     model_fit=minimize(add_noise_min_grad,x0, bounds=bnds)
     
     return model_fit
+
+
+
+
+
+
+
+
+
+
 
