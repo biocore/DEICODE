@@ -1,4 +1,4 @@
-from DEICODE.optspace import (G, F_t, gradF_t, Gp, getoptT, getoptS, optspace,
+from DEICODE.opt_space import (G, F_t, gradF_t, Gp, getoptT, getoptS, optspace,
                               coptspace, impute_running_mean,
                               _impute_running_mean_helper)
 import numpy as np
