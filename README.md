@@ -4,33 +4,27 @@
 [![Coverage Status](https://coveralls.io/repos/github/cjm007/DEICODE/badge.svg?branch=master)](https://coveralls.io/github/cjm007/DEICODE?branch=master)
 [![DOI](https://zenodo.org/badge/72654142.svg)](https://zenodo.org/badge/latestdoi/72654142)
 
-
-Canonically pronounced decode
-
 DEICODE is a toolbox for imputing unknown values in partially observed omics datasets.
 
 This project provides a demonstration of these tools in 16S rRNA sequencing data. 
 
-
 ## Installation
 
-To install the latest version, run the following command
+To install the latest stable version, run the following command
 
     pip install DEICODE
     
-To install the most up to date version of gneiss, run the following command
+To install the most up to date version of DEICODE, run the following command
 
     pip install git+https://github.com/cjm007/DEICODE.git
 
-## Introduction
-
-[Introduction](https://github.com/cjm007/DEICODE/blob/master/Examples/Introduction.ipynb)
-
 ## Examples (Tutorials)
 
-[Sponge Biom Example](https://github.com/cjm007/DEICODE/blob/master/Examples/sponge_biom.ipynb)
+[Keyboard Cluster Simulations](https://github.com/cjm007/DEICODE/blob/master/Examples/Latent_low_rank_simulations.ipynb)
 
-[Infant Biom Example](https://github.com/cjm007/DEICODE/blob/master/Examples/infant_biom.ipynb)
+[88 Soils Gradient Simulations](https://github.com/cjm007/DEICODE/blob/master/Examples/Gradient_Simulations.ipynb)
+
+[Sponge Life Stage Case Study](https://github.com/cjm007/DEICODE/blob/master/Examples/sponge_biom.ipynb)
 
 ## Credits
 
