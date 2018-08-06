@@ -64,8 +64,8 @@ with open('DEICODE/__init__.py', 'rb') as f:
     hit = _version_re.search(f.read().decode('utf-8')).group(1)
     version = str(ast.literal_eval(hit))
 
-# fix numpy install 
-pip.main(['install', 'numpy'])
+# fix numpy install, errors out removed!
+#pip.main(['install', 'numpy'])
     
 setup(name='DEICODE',
       version=version,
