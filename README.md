@@ -8,20 +8,12 @@ DEICODE is a toolbox for imputing unknown values in partially observed omics dat
 This project provides a demonstration of these tools in 16S rRNA sequencing data. 
 
 ## Installation
-
-To install the latest stable version, run the following command
-
-    pip install DEICODE
     
 To install the most up to date version of DEICODE, run the following command
 
     pip install git+https://github.com/cjm007/DEICODE.git
 
-## Examples (Tutorials)
-
-[Keyboard Cluster Simulations](https://github.com/cjm007/DEICODE/blob/master/Examples/Latent_low_rank_simulations.ipynb)
-
-[88 Soils Gradient Simulations](https://github.com/cjm007/DEICODE/blob/master/Examples/Gradient_Simulations.ipynb)
+## Example 
 
 [Sponge Life Stage Case Study](https://github.com/cjm007/DEICODE/blob/master/Examples/sponge_biom.ipynb)
 

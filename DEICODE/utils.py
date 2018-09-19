@@ -13,11 +13,41 @@ from scipy.stats import norm
 from numpy.random import poisson, lognormal
 from skbio.stats.composition import closure
 from scipy import stats
+from scipy.special import kl_div
+
 #minimize model perams
 from sklearn.metrics import mean_squared_error
 from scipy.optimize import minimize
 # Set random state
 rand = np.random.RandomState(42)
+
+def rclr(logdf:'Input dataframe or numpy array of all features in rows and all samples in columns')->'Output is robust clr':
+    np.seterr(all='ignore')
+    if isinstance(logdf, pd.DataFrame):
+        logdf=logdf.copy().as_matrix() # covert df 
+        start=logdf.copy()
+        logdf=np.log(logdf) #log of all values
+    else:
+        start=logdf.copy()
+        logdf=np.log(logdf) #log of all values
+
+    logdf_mask = np.array(
+        [False] * logdf.shape[0] * logdf.shape[1] 
+        ).reshape(logdf.shape)
+    logdf_mask[logdf_mask != -np.inf] = True # convert in to zero
+    # sum of rows (features)
+    m = np.ma.array(logdf, mask=logdf_mask)
+    beta = m.mean(axis=0)
+    logdf = logdf - beta
+
+    # sum of columns (samples)
+    m = np.ma.array(logdf, mask=logdf_mask)
+    gamma = m.mean(axis=1)
+    rclr = (logdf.T - gamma.T).T
+
+    rclr[start==0.0]=np.nan # ensure start values are nan before return
+    
+    return rclr.data.astype(np.float64)
 
 def Homoscedastic(X_noise,intensity):
     
@@ -264,14 +294,14 @@ def mean_KL(a,b):
     
     """
 
-    kl = []
-    for i in a.index:
-
-        kl += [stats.entropy(a.loc[i].values,
-                             b.loc[i].values)]
+    div_=kl_div(a,b)
+    mask = np.array(
+            [False] * div_.shape[0] * div_.shape[1] 
+            ).reshape(div_.shape)
+    mask[div_ == np.inf] = True # convert in to zero
+    div_ = np.ma.array(div_, mask=mask).mean()
+    return div_.mean()
             
-    return kl
-
 def build_block_model(rank,hoced,hsced,spar,C_,num_samples,num_features,overlap=0,mapping_on=True):
     
     """

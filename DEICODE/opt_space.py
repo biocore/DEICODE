@@ -50,8 +50,8 @@ def coptspace(M_E, r, niter, tol):
     Assumes that the first column is nonzero.
     """
     # calculate the E better
-    E = (M_E > 0)[:, 1:]
-    M_E[M_E == 0] = np.nan
+    E = (M_E != 0)[:, 1:]
+    #M_E[M_E == 0] = np.nan
     # impute M_E to replace with means
 
     M_E = np.exp(impute_running_mean(np.log(M_E)))
@@ -77,7 +77,11 @@ def optspace(M_E, r, niter, tol):
     -------
     X, S, Y
     """
-    E = (np.abs(M_E) > 1e-10).astype(np.int)
+    M_E=M_E.copy() #ensure I am not editing the org data
+    #E = np.isfinite(M_E).astype(np.int)
+    M_E[np.isnan(M_E)]=0
+    E = (np.abs(M_E) > 0).astype(np.int)
+
     return _optspace(M_E, E, r, niter, tol, sign=-1)
 
 
@@ -91,9 +95,8 @@ def _optspace(M_E, E, r, niter, tol, sign=1):
     -------
     X, S, Y
     """
-    rescal_param = np.sqrt( (np.count_nonzero(E) * r) / (norm(M_E, 'fro') ** 2) ) ;
-
-    M_E = M_E * rescal_param ;
+    rescal_param = np.sqrt( (np.count_nonzero(E) * r) / (norm(M_E, 'fro') ** 2) ) 
+    M_E = M_E * rescal_param 
     # TODO: Add in trimming for rows and columns
 
     X0, S0, Y0 = svds(M_E, r, which='LM')

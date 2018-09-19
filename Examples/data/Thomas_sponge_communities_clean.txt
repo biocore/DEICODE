@@ -1,0 +1,229 @@
+	Collection Timestamp	Country	Depth	Environment 	Host Name	Host ID	Latitude	Longitude	Processing Lab 	pH	Life Stage	Temp 	Salinity
+1740.Webster.2.C9.126.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	938	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.2.C11.128.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	940	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.D1.319.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	Unknown	ENVO:reef	sponges	924	-18.68543	146.51218	ZZ	Unknown	Larvae	28	Unknown
+1740.Webster.4.E11.341.EMP.Thomas.sponges.16S.L008	2011-01-02 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	804	-18.59297	46.48359	Upright -80 Rack 3C15	Unknown	Larvae	28	Unknown
+1740.Webster.4.C8.314.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	Unknown	ENVO:reef	sponges	898	-18.68543	146.51218	ZZ	Unknown	Larvae	28	Unknown
+1740.Webster.4.F5.347.EMP.Thomas.sponges.16S.L008	2013-01-15 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	949	-18.81723	147.63252	Taken in Jan 13 after DR fieldtrip	Unknown	Adult	28.5	Unknown
+1740.Webster.3.E8.244.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	725	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.2.G3.168.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	977	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.F3.345.EMP.Thomas.sponges.16S.L008	2011-01-06 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	799	-18.59297	46.48359	Upright -80 Rack 3C17	Unknown	Larvae	28	Unknown
+1740.Webster.3.H5.277.EMP.Thomas.sponges.16S.L008	2011-10-19 00:00:00	GAZ:Australia	16.0	ENVO:reef	sponges	758	-15.3363	123.5129	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.3.G9.269.EMP.Thomas.sponges.16S.L008	1998-10-19 00:00:00	GAZ:Australia	3.2	ENVO:reef	sponges	750	-20.428829999999998	116.95966999999999	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.2.G2.167.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	976	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.2.D4.133.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	948	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.2.H1.178.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	969	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.D10.328.EMP.Thomas.sponges.16S.L008	2010-12-20 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	788	-18.59297	46.48359	Upright -80 Rack 3C10	Unknown	Larvae	28	Unknown
+1740.Webster.2.E12.153.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	998	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.G4.264.EMP.Thomas.sponges.16S.L008	2011-10-10 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	745	-15.332279999999999	124.105	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.4.C6.312.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	Unknown	ENVO:reef	sponges	658	-18.68543	146.51218	ZZ	Unknown	Larvae	28	Unknown
+1740.Webster.2.G8.173.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	961	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.D12.330.EMP.Thomas.sponges.16S.L008	2010-12-22 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	805	-18.59297	46.48359	Upright -80 Rack 3C11	Unknown	Larvae	28	Unknown
+1740.Webster.2.E4.145.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	996	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.C12.224.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	705	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.3.G12.272.EMP.Thomas.sponges.16S.L008	2011-10-19 00:00:00	GAZ:Australia	16.0	ENVO:reef	sponges	753	-15.3363	123.5129	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.3.E5.241.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	722	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.2.D8.137.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	988	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.2.F3.156.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	992	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.E9.339.EMP.Thomas.sponges.16S.L008	2010-12-31 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	802	-18.59297	46.48359	Upright -80 Rack 3C14	Unknown	Larvae	28	Unknown
+1740.Webster.2.G9.174.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	962	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.C9.221.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	702	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.2.E2.143.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	994	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.A5.287.EMP.Thomas.sponges.16S.L008	1984-06-27 00:00:00	GAZ:Australia	22.0	ENVO:reef	Unknown	647	-18.6397	147.04775	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.3.D11.235.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	716	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.3.H8.280.EMP.Thomas.sponges.16S.L008	2011-10-20 00:00:00	GAZ:Australia	13.0	ENVO:reef	sponges	761	-15.505170000000001	123.60483	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.2.H3.180.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	974	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.A4.192.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	673	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.A12.294.EMP.Thomas.sponges.16S.L008	2012-08-15 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	771	-9.75403	143.41833	ZZ	Unknown	Adult	27.6	Unknown
+1740.Webster.2.H7.184.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	665	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.C5.311.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	Unknown	ENVO:reef	sponges	657	-18.68543	146.51218	ZZ	Unknown	Larvae	28	Unknown
+1740.Webster.3.C8.220.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	701	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.3.G10.270.EMP.Thomas.sponges.16S.L008	2011-10-14 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	751	-15.332279999999999	124.105	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.2.F4.157.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	993	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.D4.228.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	709	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.3.E11.247.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	728	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.3.D3.227.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	708	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.3.F11.259.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	740	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.3.B11.211.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	692	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.F2.344.EMP.Thomas.sponges.16S.L008	2011-01-05 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	798	-18.59297	46.48359	Upright -80 Rack 3C17	Unknown	Larvae	28	Unknown
+1740.Webster.2.D3.132.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	947	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.F6.348.EMP.Thomas.sponges.16S.L008	2013-01-15 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	950	-18.81723	147.63252	Taken in Jan 13 after DR fieldtrip	Unknown	Adult	28.5	Unknown
+1740.Webster.3.B3.203.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	684	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.E6.336.EMP.Thomas.sponges.16S.L008	2010-12-28 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	796	-18.59297	46.48359	Upright -80 Rack 3C13	Unknown	Larvae	28	Unknown
+1740.Webster.3.H4.276.EMP.Thomas.sponges.16S.L008	2011-10-15 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	757	-15.33242	124.243	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.4.B12.306.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	918	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.2.C7.124.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	944	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.2.H9.186.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	667	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.B4.298.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	5.0	ENVO:reef	sponges	651	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.4.B7.301.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	9.0	ENVO:reef	sponges	655	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.2.D9.138.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	989	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.2.H8.185.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	666	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.2.G10.175.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	963	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.E1.331.EMP.Thomas.sponges.16S.L008	2010-12-23 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	806	-18.59297	46.48359	Upright -80 Rack 3C11	Unknown	Larvae	28	Unknown
+1740.Webster.3.G8.268.EMP.Thomas.sponges.16S.L008	1998-10-24 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	749	-20.4135	116.84467	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.4.F4.346.EMP.Thomas.sponges.16S.L008	2011-01-07 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	800	-18.59297	46.48359	Upright -80 Rack 3C17	Unknown	Larvae	28	Unknown
+1740.Webster.2.E10.151.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	987	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.D2.226.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	707	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.3.H3.275.EMP.Thomas.sponges.16S.L008	2011-10-15 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	756	-15.33242	124.243	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.2.G1.166.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	972	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.D7.231.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	712	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.2.F12.165.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	971	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.2.H4.181.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	975	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.2.G6.171.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	956	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.E7.337.EMP.Thomas.sponges.16S.L008	2010-12-29 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	797	-18.59297	46.48359	Upright -80 Rack 3C13	Unknown	Larvae	28	Unknown
+1740.Webster.2.E7.148.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	981	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.D6.324.EMP.Thomas.sponges.16S.L008	2010-12-16 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	784	-18.59297	46.48359	Upright -80 Rack 3C8	Unknown	Larvae	28	Unknown
+1740.Webster.4.A6.288.EMP.Thomas.sponges.16S.L008	1984-05-19 00:00:00	GAZ:Australia	10.0	ENVO:reef	Unknown	648	-19.79372	149.17307	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.3.E10.246.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	727	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.4.B11.305.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	917	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.4.F8.350.EMP.Thomas.sponges.16S.L008	2013-01-15 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	952	-18.81723	147.63252	Taken in Jan 13 after DR fieldtrip	Unknown	Larvae	28.5	Unknown
+1740.Webster.3.D6.230.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	711	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.2.H10.187.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	668	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.3.F2.250.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	731	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.3.D1.225.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	706	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.3.E9.245.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	726	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.3.A3.191.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	672	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.B3.297.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	5.0	ENVO:reef	sponges	650	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.2.H5.182.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	663	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.2.F8.161.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	964	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.D8.326.EMP.Thomas.sponges.16S.L008	2010-12-18 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	786	-18.59297	46.48359	Upright -80 Rack 3C9	Unknown	Larvae	28	Unknown
+1740.Webster.3.F8.256.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	737	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.4.D7.325.EMP.Thomas.sponges.16S.L008	2010-12-17 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	785	-18.59297	46.48359	Upright -80 Rack 3C8	Unknown	Larvae	28	Unknown
+1740.Webster.4.B2.296.EMP.Thomas.sponges.16S.L008	2012-08-15 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	773	-9.75403	143.41833	ZZ	Unknown	Adult	27.6	Unknown
+1740.Webster.4.A10.292.EMP.Thomas.sponges.16S.L008	2012-08-15 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	769	-9.75403	143.41833	ZZ	Unknown	Adult	27.6	Unknown
+1740.Webster.3.A9.197.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	678	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.D5.323.EMP.Thomas.sponges.16S.L008	2010-12-15 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	783	-18.59297	46.48359	Upright -80 Rack 3C8	Unknown	Larvae	28	Unknown
+1740.Webster.4.D9.327.EMP.Thomas.sponges.16S.L008	2010-12-19 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	787	-18.59297	46.48359	Upright -80 Rack 3C9	Unknown	Larvae	28	Unknown
+1740.Webster.3.C10.222.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	703	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.2.F7.160.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	960	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.F7.349.EMP.Thomas.sponges.16S.L008	2013-01-15 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	951	-18.81723	147.63252	Taken in Jan 13 after DR fieldtrip	Unknown	Adult	28.5	Unknown
+1740.Webster.2.H11.188.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	669	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.E3.333.EMP.Thomas.sponges.16S.L008	2010-12-25 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	791	-18.59297	46.48359	Upright -80 Rack 3C12	Unknown	Larvae	28	Unknown
+1740.Webster.4.E12.342.EMP.Thomas.sponges.16S.L008	2011-01-03 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	792	-18.59297	46.48359	Upright -80 Rack 3C16	Unknown	Larvae	28	Unknown
+1740.Webster.2.D10.139.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	990	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.C12.318.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	Unknown	ENVO:reef	sponges	923	-18.68543	146.51218	ZZ	Unknown	Larvae	28	Unknown
+1740.Webster.3.G1.261.EMP.Thomas.sponges.16S.L008	2011-10-23 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	742	-16.053079999999998	123.35887	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.2.E9.150.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	986	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.B8.208.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	689	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.3.G5.265.EMP.Thomas.sponges.16S.L008	2006-09-21 00:00:00	GAZ:Australia	12.9	ENVO:reef	sponges	746	-14.19085	121.80665	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.3.E3.239.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	720	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.4.B6.300.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	9.0	ENVO:reef	sponges	654	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.4.A1.283.EMP.Thomas.sponges.16S.L008	1990-07-17 00:00:00	GAZ:Australia	Unknown	ENVO:reef	sponges	764	-15.833329999999998	124.63333	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.2.E1.142.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	1002	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.C10.316.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	Unknown	ENVO:reef	sponges	921	-18.68543	146.51218	ZZ	Unknown	Larvae	28	Unknown
+1740.Webster.3.B1.201.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	682	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.D11.329.EMP.Thomas.sponges.16S.L008	2010-12-21 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	789	-18.59297	46.48359	Upright -80 Rack 3C10	Unknown	Larvae	28	Unknown
+1740.Webster.3.C11.223.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	704	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.3.F12.260.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	741	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.2.F6.159.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	959	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.2.F1.154.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	999	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.D5.229.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	710	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.2.E11.152.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	997	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.E8.338.EMP.Thomas.sponges.16S.L008	2010-12-30 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	801	-18.59297	46.48359	Upright -80 Rack 3C14	Unknown	Larvae	28	Unknown
+1740.Webster.2.F2.155.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	991	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.A11.293.EMP.Thomas.sponges.16S.L008	2012-08-15 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	770	-9.75403	143.41833	ZZ	Unknown	Adult	27.6	Unknown
+1740.Webster.2.G4.169.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	978	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.A12.200.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	681	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.3.E7.243.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	724	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.3.E6.242.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	723	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.3.D8.232.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	713	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.3.A1.189.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	670	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.3.G2.262.EMP.Thomas.sponges.16S.L008	2011-10-14 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	743	-15.332279999999999	124.105	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.2.D5.134.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	982	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.G3.263.EMP.Thomas.sponges.16S.L008	2011-10-23 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	744	-16.053079999999998	123.35887	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.3.B5.205.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	686	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.3.D10.234.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	715	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.2.E5.146.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	979	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.C4.216.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	697	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.3.H9.281.EMP.Thomas.sponges.16S.L008	2011-10-19 00:00:00	GAZ:Australia	16.0	ENVO:reef	sponges	762	-15.3363	123.5129	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.4.E5.335.EMP.Thomas.sponges.16S.L008	2010-12-27 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	795	-18.59297	46.48359	Upright -80 Rack 3C12	Unknown	Larvae	28	Unknown
+1740.Webster.3.B7.207.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	688	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.2.E6.147.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	980	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.F5.253.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	734	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.4.A9.291.EMP.Thomas.sponges.16S.L008	2012-08-15 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	768	-9.75403	143.41833	ZZ	Unknown	Adult	27.6	Unknown
+1740.Webster.3.G6.266.EMP.Thomas.sponges.16S.L008	2006-09-21 00:00:00	GAZ:Australia	5.8	ENVO:reef	sponges	747	-14.177320000000002	121.88157	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.3.C2.214.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	695	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.F10.352.EMP.Thomas.sponges.16S.L008	2013-01-15 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	954	-18.81723	147.63252	Taken in Jan 13 after DR fieldtrip	Unknown	Larvae	28.5	Unknown
+1740.Webster.3.C5.217.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	698	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.3.E12.248.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	729	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.3.H2.274.EMP.Thomas.sponges.16S.L008	1999-08-27 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	755	-20.515	116.67033	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.2.G7.172.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	957	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.2.H6.183.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	664	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.2.H2.179.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	973	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.B10.304.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	9.0	ENVO:reef	sponges	896	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.2.F11.164.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	970	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.B9.209.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	690	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.B5.299.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	9.0	ENVO:reef	sponges	653	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.3.A6.194.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	675	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.3.H7.279.EMP.Thomas.sponges.16S.L008	1999-09-03 00:00:00	GAZ:Australia	9.0	ENVO:reef	sponges	760	-20.649829999999998	116.43683	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.2.C12.129.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	941	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.F1.249.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	730	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.3.E4.240.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	721	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.4.A8.290.EMP.Thomas.sponges.16S.L008	2012-08-15 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	767	-9.75403	143.41833	ZZ	Unknown	Adult	27.6	Unknown
+1740.Webster.3.H1.273.EMP.Thomas.sponges.16S.L008	1998-10-27 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	754	-20.4295	116.87799999999999	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.4.E4.334.EMP.Thomas.sponges.16S.L008	2010-12-26 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	794	-18.59297	46.48359	Upright -80 Rack 3C12	Unknown	Larvae	28	Unknown
+1740.Webster.2.E8.149.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	985	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.G7.267.EMP.Thomas.sponges.16S.L008	2006-09-21 00:00:00	GAZ:Australia	12.8	ENVO:reef	sponges	748	-14.17705	121.8817	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.4.B9.303.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	9.0	ENVO:reef	sponges	895	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.4.D4.322.EMP.Thomas.sponges.16S.L008	2010-12-14 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	782	-18.59297	46.48359	Upright -80 Rack 3C7	Unknown	Larvae	28	Unknown
+1740.Webster.2.C5.122.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	937	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.E2.238.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	719	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.4.D3.321.EMP.Thomas.sponges.16S.L008	2010-12-13 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	808	-18.59297	46.48359	Upright -80 Rack 3C7	Unknown	Larvae	28	Unknown
+1740.Webster.2.F10.163.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	966	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.2.D1.130.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	942	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.C1.307.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	919	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.4.A7.289.EMP.Thomas.sponges.16S.L008	1984-06-27 00:00:00	GAZ:Australia	22.0	ENVO:reef	Unknown	649	-18.6397	147.04775	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.3.F7.255.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	736	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.3.B10.210.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	691	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.3.F9.257.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	738	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.2.C6.123.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	943	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.E1.237.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	718	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.2.F9.162.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	965	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.B12.212.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	693	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.C9.315.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	Unknown	ENVO:reef	sponges	899	-18.68543	146.51218	ZZ	Unknown	Larvae	28	Unknown
+1740.Webster.4.F1.343.EMP.Thomas.sponges.16S.L008	2011-01-04 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	793	-18.59297	46.48359	Upright -80 Rack 3C16	Unknown	Larvae	28	Unknown
+1740.Webster.3.F3.251.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	732	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.2.F5.158.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	958	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.H6.278.EMP.Thomas.sponges.16S.L008	2010-10-22 00:00:00	GAZ:Australia	2.0	ENVO:reef	sponges	759	-15.33242	125.77433	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.3.A11.199.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	680	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.3.F6.254.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	735	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.3.H10.282.EMP.Thomas.sponges.16S.L008	2011-10-19 00:00:00	GAZ:Australia	16.0	ENVO:reef	sponges	763	-15.3363	123.5129	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.2.G11.176.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	967	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.B4.204.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	685	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.2.E3.144.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	995	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.2.G5.170.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	955	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.C4.310.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	Unknown	ENVO:reef	sponges	656	-18.68543	146.51218	ZZ	Unknown	Larvae	28	Unknown
+1740.Webster.3.C3.215.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	696	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.4.E10.340.EMP.Thomas.sponges.16S.L008	2011-01-01 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	803	-18.59297	46.48359	Upright -80 Rack 3C15	Unknown	Larvae	28	Unknown
+1740.Webster.2.G12.177.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	968	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.2.D6.135.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	983	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.A5.193.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	674	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.2.D2.131.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	946	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.A2.284.EMP.Thomas.sponges.16S.L008	1998-10-23 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	765	-20.4515	116.84066999999999	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.3.C6.218.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	699	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.3.C7.219.EMP.Thomas.sponges.16S.L008	2012-06-14 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	700	-18.81707	147.63232	ZZ	Unknown	Adult	23.3	Unknown
+1740.Webster.2.D12.141.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	1001	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.4.F9.351.EMP.Thomas.sponges.16S.L008	2013-01-15 00:00:00	GAZ:Australia	12.0	ENVO:reef	sponges	953	-18.81723	147.63252	Taken in Jan 13 after DR fieldtrip	Unknown	Larvae	28.5	Unknown
+1740.Webster.3.A8.196.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	677	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.D2.320.EMP.Thomas.sponges.16S.L008	2010-12-12 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	807	-18.59297	46.48359	Upright -80 Rack 3C6	Unknown	Larvae	28	Unknown
+1740.Webster.4.C7.313.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	Unknown	ENVO:reef	sponges	897	-18.68543	146.51218	ZZ	Unknown	Larvae	28	Unknown
+1740.Webster.2.D11.140.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	1000	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.B2.202.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	683	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.B1.295.EMP.Thomas.sponges.16S.L008	2012-08-15 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	772	-9.75403	143.41833	ZZ	Unknown	Adult	27.6	Unknown
+1740.Webster.3.A10.198.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	679	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.3.C1.213.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	694	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.3.D9.233.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	714	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.2.D7.136.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	984	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.F10.258.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	739	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.3.G11.271.EMP.Thomas.sponges.16S.L008	2011-10-24 00:00:00	GAZ:Australia	0.0	ENVO:reef	sponges	752	-15.87005	123.66516999999999	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.4.A3.285.EMP.Thomas.sponges.16S.L008	1998-10-29 00:00:00	GAZ:Australia	8.0	ENVO:reef	sponges	766	-20.465999999999998	116.82817	ZZ	Unknown	Adult	Unknown	Unknown
+1740.Webster.2.C10.127.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	939	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.D12.236.EMP.Thomas.sponges.16S.L008	2012-04-23 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	717	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.3.A2.190.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	671	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.2.C8.125.EMP.Thomas.sponges.16S.L008	2012-01-14 00:00:00	GAZ:Australia	1.0	ENVO:reef	sponges	945	-18.84478	147.64401999999998	Upright -80 Rack 4BA3	Unknown	Larvae	28	Unknown
+1740.Webster.3.F4.252.EMP.Thomas.sponges.16S.L008	2012-04-21 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	733	-18.5996	146.49222	ZZ	Unknown	Adult	28.6	Unknown
+1740.Webster.3.A7.195.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	676	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.E2.332.EMP.Thomas.sponges.16S.L008	2010-12-24 00:00:00	GAZ:Madagascar	Unknown	ENVO:reef	sponges	790	-18.59297	46.48359	Upright -80 Rack 3C12	Unknown	Larvae	28	Unknown
+1740.Webster.4.C2.308.EMP.Thomas.sponges.16S.L008	2012-12-16 00:00:00	GAZ:Australia	1.5	ENVO:reef	sponges	920	-18.68543	146.51218	ZZ	Unknown	Adult	28.4	Unknown
+1740.Webster.3.B6.206.EMP.Thomas.sponges.16S.L008	2012-04-09 00:00:00	GAZ:Taiwan	10.0	ENVO:reef	sponges	687	-16.75408	145.98733000000001	ZZ	Unknown	Adult	26.8	Unknown
+1740.Webster.4.A4.286.EMP.Thomas.sponges.16S.L008	1984-07-29 00:00:00	GAZ:Australia	20.0	ENVO:reef	Unknown	646	-18.81707	147.63232	ZZ	Unknown	Adult	Unknown	Unknown

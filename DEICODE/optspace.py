@@ -17,12 +17,7 @@ class OptSpace(object):
             rank=matrix_rank(data)
             if rank>=min(data.shape):
                 rank=min(data.shape)-1
-    
-        if maxval=='mean_iter':
-            maxval=data.T.sum(1)/(data.T!=0).sum(1)
-        if maxval=='mean':
-            maxval=np.mean(data.T.sum(1)/(data.T!=0).sum(1))
-    
+
         self.rank=rank
         self.iteration=iteration
         self.tol=tol

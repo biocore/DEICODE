@@ -157,7 +157,8 @@ class TestOptspace(unittest.TestCase):
         npt.assert_allclose(Y, exp_Y)
 
     def test_coptspace(self):
-        M0 = loadmat(get_data_path('large_test.mat'))['M0']
+        pass # dep! will delete soon 
+        '''M0 = loadmat(get_data_path('large_test.mat'))['M0']
         M_E = loadmat(get_data_path('large_test.mat'))['M_E']
         M_E = np.array(M_E.todense())
 
@@ -176,7 +177,7 @@ class TestOptspace(unittest.TestCase):
 
         res = norm(err, 'fro') / np.sqrt(m*n)
         exp = 0.00446289395349
-        assert_array_almost_equal(res, exp,decimal=3)
+        assert_array_almost_equal(res, exp,decimal=3)'''
 
 
 if __name__ == "__main__":
