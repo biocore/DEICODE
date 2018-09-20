@@ -14,9 +14,9 @@ from scipy.sparse import coo_matrix
 from skbio.stats.composition import _gram_schmidt_basis, ilr, clr_inv
 from scipy.stats import norm
 from scipy import sparse
-from DEICODE.ilr_pca import sparse_matmul
-from DEICODE.ilr_pca import get_batch
-from DEICODE.ilr_pca import ilr_to_clr
+from deicode._ilrpca import sparse_matmul
+from deicode._ilrpca import get_batch
+from deicode._ilrpca import ilr_to_clr
 
 class ILR_PCA(object):
     
@@ -282,4 +282,3 @@ class ILR_PCA(object):
             etable[etable<minval]=minval
 
         return etable
-

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # ----------------------------------------------------------------------------
-# Copyright (c) 2016--, DEICODE development team.
+# Copyright (c) 2016--, deicode development team.
 #
 # Distributed under the terms of the Modified BSD License.
 #
@@ -60,21 +60,21 @@ with open('README.md') as f:
 # https://github.com/mitsuhiko/flask/blob/master/setup.py
 _version_re = re.compile(r'__version__\s+=\s+(.*)')
 
-with open('DEICODE/__init__.py', 'rb') as f:
+with open('deicode/__init__.py', 'rb') as f:
     hit = _version_re.search(f.read().decode('utf-8')).group(1)
     version = str(ast.literal_eval(hit))
 
 # fix numpy install, errors out removed!
 #pip.main(['install', 'numpy'])
     
-setup(name='DEICODE',
+setup(name='deicode',
       version=version,
       license='BSD',
       description=description,
       long_description=long_description,
-      author="DEICODE development team",
+      author="deicode development team",
       author_email="cameronmartino@gmail.com",
-      maintainer="DEICODE development team",
+      maintainer="deicode development team",
       maintainer_email="cameronmartino@gmail.com",
       packages=find_packages(),
       setup_requires=['numpy >= 1.9.2'],

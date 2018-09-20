@@ -6,8 +6,8 @@ from scipy.sparse.linalg import svds
 from skbio.stats.composition import (ilr, ilr_inv, clr_inv,
                                      _gram_schmidt_basis)
 
-
 def impute_running_mean(X):
+    """ TODO """
     return np.vstack(
         [
             _impute_running_mean_helper(X[i, :])
@@ -33,40 +33,7 @@ def _impute_running_mean_helper(x):
         if np.isnan(x[i]):
             x_[i] = x_[:i].mean()
     return x_
-
-def coptspace(M_E, r, niter, tol):
-    """
-    Parameters
-    ----------
-    M_E, r, niter, tol
-
-    Returns
-    -------
-    M : np.array
-       Completed matrix.
-
-    Note
-    ----
-    Assumes that the first column is nonzero.
-    """
-    # calculate the E better
-    E = (M_E != 0)[:, 1:]
-    #M_E[M_E == 0] = np.nan
-    # impute M_E to replace with means
-
-    M_E = np.exp(impute_running_mean(np.log(M_E)))
-    n, D = M_E.shape
-    basis = _gram_schmidt_basis(D)
-    basis = basis[::-1, :]
-    basis = clr_inv(basis)
-
-
-    # perform ilr
-    M_E = ilr(M_E, basis=basis)
-    X, S, Y, dist =  _optspace(M_E, E, r, niter, tol, sign=1)
-    M = ilr_inv(X.dot(S).dot(Y.T), basis=basis)
-    return M
-
+    
 def optspace(M_E, r, niter, tol):
     """
     Parameters

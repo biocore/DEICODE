@@ -6,30 +6,29 @@ from scipy.sparse.linalg import svds
 from numpy.linalg import matrix_rank
 from skbio.stats.composition import (ilr, ilr_inv, clr_inv,
                                      _gram_schmidt_basis)
+from deicode._optspace import optspace
+from .base import _BaseImpute
 
-from DEICODE.opt_space import optspace
+class OptSpace(_BaseImpute):
 
-class OptSpace(object):
-
-    def __init__(self,data,rank=None,iteration=40,tol=1e-8,minval=None,maxval=None,clip_high=True):
-        
-        if rank==None:
-            rank=matrix_rank(data)
-            if rank>=min(data.shape):
-                rank=min(data.shape)-1
-
+    def __init__(self,rank=None
+                ,iteration=5,tol=1e-8
+                ,clip_high=True):
+        """ TODO """
         self.rank=rank
         self.iteration=iteration
         self.tol=tol
-        self.minval=minval
-        self.maxval=maxval
         self.clip_high=clip_high
-        self.data=data
-        
         return
 
-    def complete(self):
-        
+    def fit(self,X):
+        """Fit the model to X_sparse """
+        X_sparse=X.copy().astype(np.float64)
+        self.X_sparse=X_sparse
+        self._fit()
+        return self
+    
+    def _fit(self):
         
         """
             
@@ -82,7 +81,7 @@ class OptSpace(object):
         .. [2] Mazumder R, Hastie T, Tibshirani R. 2010. Spectral Regularization Algorithms for Learning Large Incomplete Matrices. J Mach Learn Res 11:2287–2322.
         .. [3] Pending Publication; Martino and Morton
         
-        Examples
+        Examples TODO
         --------
         >>> import numpy as np
         >>> from skbio.stats.impute import complete
@@ -93,38 +92,27 @@ class OptSpace(object):
         
         """
         
-        otum=self.data.copy().astype(np.float64) # make copy for imputation, check type
-        
-        # return imputed matrix
-        x, s, y, _ = optspace(otum, r=self.rank, niter=self.iteration, tol=self.tol)
-        completed=x.dot(s).dot(y.T)
-        
-        #clip high values
-        if self.clip_high==True:
-            shape=list(completed.shape)
-            for x in range(0, shape[0]):
-                for y in range(0, shape[1]):
-                    if completed[x, y]>otum[x, y]:
-                        completed[x, y]=otum[x, y]
+        # make copy for imputation, check type  
+        X_sparse=self.X_sparse
 
-        #clip high values with iter
-        if self.maxval is not None and isinstance(self.maxval, (list, tuple, np.ndarray)):
-            shape=list(completed.shape)
-            for x in range(0, shape[0]):
-                for y,maxval_ in zip(range(0, shape[1]),self.maxval):
-                    if otum[x, y]==0 and completed[x, y]>maxval_:
-                        completed[x, y]=maxval_
-    
-        #clip high values with float (if both None skip)
-        if self.maxval is not None and isinstance(self.maxval, (int, float)):
-            shape=list(completed.shape)
-            for x in range(0, shape[0]):
-                for y in range(0, shape[1]):
-                    if otum[x, y]==0 and completed[x, y]>self.maxval:
-                        completed[x, y]=self.maxval
-        
-        #clip values below min
-        if self.minval!=None:
-            completed[completed<self.minval]=self.minval
-        
-        return completed
+        #make rank if none
+        if self.rank==None:
+            self.rank=matrix_rank(X_sparse)
+            if self.rank>=min(X_sparse.shape):
+                self.rank=min(X_sparse.shape)-1
+
+        # return solved matrix
+        U, s_, V, _  = optspace(X_sparse, r=self.rank, niter=self.iteration, tol=self.tol)
+        solution=U.dot(s_).dot(V.T)
+
+        self.solution=solution
+        self.feature_weights=V
+        self.sample_weights=U
+        self.s=s_ 
+         
+    def fit_transform(self,X):
+        """ Returns the solution of fit directly"""
+        X_sparse=X.copy().astype(np.float64)
+        self.X_sparse=X_sparse
+        self._fit()
+        return self.solution  

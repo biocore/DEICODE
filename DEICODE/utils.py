@@ -14,7 +14,6 @@ from numpy.random import poisson, lognormal
 from skbio.stats.composition import closure
 from scipy import stats
 from scipy.special import kl_div
-from sklearn.metrics import mutual_info_score
 
 #minimize model perams
 from sklearn.metrics import mean_squared_error
@@ -22,36 +21,33 @@ from scipy.optimize import minimize
 # Set random state
 rand = np.random.RandomState(42)
 
-def rclr(logdf:'Input dataframe or numpy array of all features in rows and all samples in columns')->'Output is robust clr':
-    np.seterr(all='ignore')
-    if isinstance(logdf, pd.DataFrame):
-        logdf=logdf.copy().as_matrix() # covert df 
-        start=logdf.copy()
-        logdf=np.log(logdf) #log of all values
-    else:
-        start=logdf.copy()
-        logdf=np.log(logdf) #log of all values
-
-    logdf_mask = np.array(
-        [False] * logdf.shape[0] * logdf.shape[1] 
-        ).reshape(logdf.shape)
-    logdf_mask[logdf_mask != -np.inf] = True # convert in to zero
-    # sum of rows (features)
-    m = np.ma.array(logdf, mask=logdf_mask)
-    beta = m.mean(axis=0)
-    logdf = logdf - beta
-
-    # sum of columns (samples)
-    m = np.ma.array(logdf, mask=logdf_mask)
-    gamma = m.mean(axis=1)
-    rclr = (logdf.T - gamma.T).T
-
-    rclr[start==0.0]=np.nan # ensure start values are nan before return
+def mean_KL(a,b):
     
-    return rclr.data.astype(np.float64)
+    """
+    Returns the KL divergence between matrix A and B
+    
+    Parameters
+    ----------
+    
+    a : dataframe
+    
+    b : dataframe
+    
+    
+    Returns
+    -------
+    KL Divergence as list over samples
+    
+    """
+    kl = []
+    a=np.array(a.copy())
+    b=np.array(b.copy())
+    for i in range(a.shape[0]):
+        kl += [kl_div(a[i],b[i])]
+    return np.mean(kl)         
 
 def Homoscedastic(X_noise,intensity):
-    
+    """ TODO """
     X_noise=np.array(X_noise)
     err = intensity * np.ones_like(X_noise.copy())
     X_noise = rand.normal(X_noise.copy(), err)
@@ -60,7 +56,7 @@ def Homoscedastic(X_noise,intensity):
 
 
 def Heteroscedastic(X_noise,intensity):
-    
+    """ TODO """
     err = intensity * np.ones_like(X_noise)
     i = rand.randint(0, err.shape[0], 5000)
     j = rand.randint(0, err.shape[1], 5000)
@@ -70,13 +66,12 @@ def Heteroscedastic(X_noise,intensity):
     return X_noise
 
 def Subsample(X_noise,spar,num_samples):
-    
+    """ TODO """
     # subsample
     mu=spar*closure(X_noise.T).T
     X_noise=np.vstack([poisson(lognormal(np.log(mu[:,i]),1)) for i in range(num_samples)]).T
     # add sparsity
-    
-    
+
     return X_noise
 
 
@@ -178,131 +173,6 @@ def block_diagonal_gaus(ncols,nrows,nblocks,overlap=0,minval=0,maxval=1.0):
     
     return mat
 
-def plot_pcoa(otupcoadfs,mapping,catvis,fig_fontsize=12,suptit_=None,method='braycurtis'):
-    
-    
-    """
-    Plots several PCoA plots in one figure
-    
-    Parameters
-    ----------
-    
-    otupcoadfs : list of pandas dataframes
-        Dataframes to plot
-    
-    mapping : pandas dataframe
-        A mapping dataframe containing the values to plot
-    
-    catvis : str
-        The column name in the mapping file to plot
-    
-    fig_fontsize : int
-        font size of the figure
-    
-    suptit_ : (False) Bool or str
-        If str is passed then there will be a sup title
-    
-    method : int
-        dissimilarity metric
-    
-    
-    Returns
-    -------
-    matplotlib figure
-    
-    """
-    
-    if  all(isinstance(item, str) for item in list(mapping.T[catvis])) or all(isinstance(item, bool) for item in list(mapping.T[catvis])):
-        if len(otupcoadfs)==1:
-            fig, ax1 = plt.subplots(ncols=1, nrows=1, figsize=(8, 8)) 
-            otupcoadf=otupcoadfs[0]
-            title='Mean Sequences Per Sample:'+str(np.mean(otupcoadf.sum())).split('.')[0]
-            pcaplot=pcoa(DistanceMatrix(pdist(otupcoadf.as_matrix().T,method),list(otupcoadf.columns))).samples[['PC1','PC2','PC3']]
-            pcaplot[catvis]=list(mapping.T[catvis])
-            for ((key, grp)) in pcaplot.groupby(catvis):
-                ax1.scatter(grp['PC1'], grp['PC2'], color=next(ax1._get_lines.prop_cycler)['color'], label=key, s=50)
-            ax1.set_xticks([])
-            ax1.set_yticks([])
-            ax1.legend(loc=2,prop={'size':16},bbox_to_anchor=(1.0, 1.0))
-            ax1.set_title(title,fontsize=fig_fontsize,y=1.05)
-            ax1.set_ylabel('$PC-1$',fontsize=fig_fontsize-2)
-            ax1.set_xlabel('$PC-2$',fontsize=fig_fontsize-2) 
-            if suptit_!=None:
-                plt.suptitle(suptit_,y=1.05,fontsize=fig_fontsize+8)
-            return fig
-            
-        else:
-            fig, axn = plt.subplots(ncols=len(otupcoadfs), nrows=1, figsize=(15, 5)) 
-
-            for ax1,(count_,otupcoadf) in zip(axn.flat,enumerate(otupcoadfs)):
-                title=str(np.mean(otupcoadf.sum())).split('.')[0]+' Sequences Per Sample'
-                pcaplot=pcoa(DistanceMatrix(pdist(otupcoadf.as_matrix().T,method),list(otupcoadf.columns))).samples[['PC1','PC2','PC3']]
-                pcaplot[catvis]=list(mapping.T[catvis])
-                for ((key, grp)) in pcaplot.groupby(catvis):
-                    ax1.scatter(grp['PC1'], grp['PC2'], color=next(ax1._get_lines.prop_cycler)['color'], label=key, s=50)
-                ax1.set_xticks([])
-                ax1.set_yticks([])
-                if count_==len(otupcoadfs)-1:
-                    ax1.legend(loc=2,prop={'size':16},bbox_to_anchor=(1.0, 1.0))
-                ax1.set_title(title,fontsize=fig_fontsize,y=1.05)
-                ax1.set_ylabel('$PC-1$',fontsize=fig_fontsize-2)
-                ax1.set_xlabel('$PC-2$',fontsize=fig_fontsize-2) 
-            if suptit_!=None:
-                plt.suptitle(suptit_,y=1.05,fontsize=fig_fontsize+8)
-            return fig
-    else:
-        if len(otupcoadfs)==1:
-            otupcoadf=otupcoadfs[0]
-            pcaplot=pcoa(DistanceMatrix(pdist(otupcoadf.as_matrix().T,method),list(otupcoadf.columns))).samples[['PC1','PC2','PC3']]
-            pcaplot[catvis]=list(mapping.T[catvis])
-            fig, (ax1) = plt.subplots(ncols=1, nrows=1, figsize=(8, 6),sharey=False)
-            pcaplot.plot.scatter(x='PC1', y='PC2', c=str(catvis),cmap='RdBu_r', s=50,ax=ax1);
-            ax1.set_xlabel('$PC-1$')
-            ax1.set_ylabel('$PC-2$')
-            ax1.set_xticks([])
-            ax1.set_yticks([])
-            return fig 
-        else:
-            fig, axn = plt.subplots(ncols=len(otupcoadfs), nrows=1, figsize=(15, 5)) 
-            for ax1,(count_,otupcoadf) in zip(axn.flat,enumerate(otupcoadfs)):
-                title=str(np.mean(otupcoadf.sum())).split('.')[0]+' Sequences Per Sample'
-                pcaplot=pcoa(DistanceMatrix(pdist(otupcoadf.as_matrix().T,method),list(otupcoadf.columns))).samples[['PC1','PC2','PC3']]
-                pcaplot[catvis]=list(mapping.T[catvis])
-                pcaplot.plot.scatter(x='PC1', y='PC2', c=str(catvis),cmap='RdBu_r', s=50,ax=ax1);
-                ax1.set_xlabel('$PC-1$')
-                ax1.set_ylabel('$PC-2$')
-                ax1.set_xticks([])
-                ax1.set_yticks([])
-                ax1.set_title(title,fontsize=fig_fontsize,y=1.05)
-            return fig 
-
-def mean_KL(a,b):
-    
-    """
-    Returns the KL divergence between matrix A and B
-    
-    Parameters
-    ----------
-    
-    a : dataframe
-    
-    b : dataframe
-    
-    
-    Returns
-    -------
-    KL Divergence as list over samples
-    
-    """
-    kl = []
-    a=np.array(a.copy())
-    b=np.array(b.copy())
-    for i in range(a.shape[0]):
-        kl += [kl_div(a[i],b[i])]
-    return np.mean(kl)         
-
-    
-
 def build_block_model(rank,hoced,hsced,spar,C_,num_samples,num_features,overlap=0,mapping_on=True):
     
     """
@@ -380,9 +250,9 @@ def build_block_model(rank,hoced,hsced,spar,C_,num_samples,num_features,overlap=
         return X_true,X_noise
 
 def minimize_model(x0,bnds,X_true_):
-    
+    """ TODO """
     def add_noise_min(x_o,X_true=X_true_):
-
+        """ TODO """
         rank=3
         hoced=x_o[1]
         hsced=x_o[2]
@@ -417,7 +287,7 @@ def minimize_model(x0,bnds,X_true_):
 
 
 def build_grad_model(hoced,hsced,spar,sigma,C_,num_samples,num_features):
-    
+    """ TODO """
     
     rank = 2**3 - 1
     gradient = np.linspace(0, 10, num_samples)
@@ -449,10 +319,10 @@ def build_grad_model(hoced,hsced,spar,sigma,C_,num_samples,num_features):
 
 
 def minimize_model_grad(x0,bnds,X_true_):
-
+    """ TODO """
 
     def add_noise_min_grad(x_o,X_true=X_true_):
-
+        """ TODO """
         #build model and minmize kl-div
 
         hoced=x_o[0]

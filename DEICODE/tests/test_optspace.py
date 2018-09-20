@@ -1,5 +1,4 @@
-from DEICODE.opt_space import (G, F_t, gradF_t, Gp, getoptT, getoptS, optspace,
-                              coptspace, impute_running_mean,
+from deicode._optspace import (G, F_t, gradF_t, Gp, getoptT, getoptS, optspace, impute_running_mean,
                               _impute_running_mean_helper)
 import numpy as np
 from numpy.random import randn, rand
@@ -156,28 +155,6 @@ class TestOptspace(unittest.TestCase):
 
         npt.assert_allclose(Y, exp_Y)
 
-    def test_coptspace(self):
-        pass # dep! will delete soon 
-        '''M0 = loadmat(get_data_path('large_test.mat'))['M0']
-        M_E = loadmat(get_data_path('large_test.mat'))['M_E']
-        M_E = np.array(M_E.todense())
-
-        E = (np.abs(M_E) > 1e-10).astype(np.int)
-        # force in a spike in
-        o = np.ones(E.shape[0])
-        E = np.vstack((E.T, o)).T[:, ::-1]
-
-        M0 = ilr_inv(M0)
-        M0 = M0.astype(np.float)
-        M_E = np.multiply(M0, E)
-
-        M_r = coptspace(M_E, r=3, niter=21, tol=1e-8)
-        err = M_r - M0
-        n, m = M0.shape
-
-        res = norm(err, 'fro') / np.sqrt(m*n)
-        exp = 0.00446289395349
-        assert_array_almost_equal(res, exp,decimal=3)'''
 
 
 if __name__ == "__main__":
