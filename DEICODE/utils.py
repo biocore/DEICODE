@@ -14,6 +14,7 @@ from numpy.random import poisson, lognormal
 from skbio.stats.composition import closure
 from scipy import stats
 from scipy.special import kl_div
+from sklearn.metrics import mutual_info_score
 
 #minimize model perams
 from sklearn.metrics import mean_squared_error
@@ -293,15 +294,15 @@ def mean_KL(a,b):
     KL Divergence as list over samples
     
     """
+    kl = []
+    a=np.array(a.copy())
+    b=np.array(b.copy())
+    for i in range(a.shape[0]):
+        kl += [kl_div(a[i],b[i])]
+    return np.mean(kl)         
 
-    div_=kl_div(a,b)
-    mask = np.array(
-            [False] * div_.shape[0] * div_.shape[1] 
-            ).reshape(div_.shape)
-    mask[div_ == np.inf] = True # convert in to zero
-    div_ = np.ma.array(div_, mask=mask).mean()
-    return div_.mean()
-            
+    
+
 def build_block_model(rank,hoced,hsced,spar,C_,num_samples,num_features,overlap=0,mapping_on=True):
     
     """

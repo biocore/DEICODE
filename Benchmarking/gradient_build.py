@@ -71,8 +71,8 @@ for sigma_ in [1.0,1.3,1.7,2.0]:
         base_truth,X_noise_sparse,mapping=build_grad_model(model_fit.x[0],model_fit.x[1], sub_depth
                                                            , sigma_
                                                            , sub_depth
-                                                    ,otutabledf.shape[0]
-                                                      ,1000)
+                                                    ,200
+                                                      ,4000)
         base_truth=pd.DataFrame(base_truth
                                 ,index=[(sigma_,sub_,'OTU_'+str(x)) for x in range(base_truth.shape[0])]
                                ,columns=['sample_'+str(x) for x in range(base_truth.shape[1])])

@@ -62,7 +62,7 @@ otutabledf.to_dense().to_csv("cluster_models/base_model_keyboard_table.csv",sep=
 mappingdf.to_dense().to_csv("cluster_models/base_model_keyboard_meta.csv",sep=',', encoding='utf-8')
 
 ######### build the model #########
-x0 = [3, .5, .5, 1e2, 1e2,1e1]
+x0 = [3, 20, 20, 1e2, 1e2,1e1]
 bnds = ((3,3),(0,1e2),(0,2e3),(0,1e10),(0,5e1),(1,10))
 model_fit=minimize_model(x0,bnds,np.array(otutabledf.T[:104].T.as_matrix()))
 
@@ -77,7 +77,7 @@ for rank_,overlap_ in zip([2,2,2,2],
         
         #run model with fit variables and new variants
         base_truth,X_noise_sub=build_block_model(rank_,  model_fit.x[1], model_fit.x[2], model_peram, model_peram
-                                                 ,100,2500,overlap=overlap_
+                                                 ,200,4000,overlap=overlap_
                                                  ,mapping_on=False)
         base_truth=pd.DataFrame(base_truth
                                 ,index=[(rank_,overlap_,sub_,'OTU_'+str(x)) for x in range(base_truth.shape[0])]
