@@ -21,7 +21,5 @@ To install the most up to date version of DEICODE, run the following command
 
 - Transforms and PCoA : [Scikit-bio](https://github.com/biocore/scikit-bio)
 - Machine Learning : [Scikit-learn](https://github.com/scikit-learn/scikit-learn)
-- Source Imputation: [Fancy Impute](https://github.com/hammerlab/fancyimpute)
+- Other Imputation Methods: [Fancy Impute](https://github.com/hammerlab/fancyimpute)
 - Data For Examples : [Qiita](https://qiita.ucsd.edu/)
-
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcjm007%2FDEICODE.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcjm007%2FDEICODE?ref=badge_large)
