@@ -9,9 +9,9 @@ from skbio.stats import subsample_counts
 #MOCK data generation
 from gneiss.util import match
 from gneiss.sort import niche_sort
-from DEICODE.utils import block_diagonal_gaus
-from DEICODE.utils import build_block_model
-from DEICODE.utils import minimize_model
+from deicode.utils import block_diagonal_gaus
+from deicode.utils import build_block_model
+from deicode.utils import minimize_model
 #compostional transform
 from skbio.stats.composition import clr
 
