@@ -26,7 +26,7 @@ install:
   - sudo pip install coveralls
 script:
   - source activate test_env
-  - nosetests -v DEICODE
+  - nosetests -v deicode
 notifications:
   webhooks:
     on_success: change

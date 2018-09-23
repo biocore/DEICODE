@@ -4,10 +4,13 @@
 omit =
     */tests*
     */__init__.py
-    */DEICODE/untangle.py
+    */deicode/_ilrpca.py                                           
+    */deicode/ILRPCA.py 
+    */deicode/GaPNMF.py   
+    */deicode/utils.py 
 source = DEICODE
 branch = True
-include = */DEICODE/*
+include = */deicode/*
 
 [report]
 exclude_lines =
@@ -17,4 +20,7 @@ exclude_lines =
 omit =
     */tests*
     */__init__.py
-    */DEICODE/untangle.py
+    */deicode/_ilrpca.py
+    */deicode/ILRPCA.py    
+    */deicode/GaPNMF.py
+    */deicode/utils.py     
