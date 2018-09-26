@@ -28,7 +28,7 @@ for rank_ in set(subsampled.index.get_level_values('rank')): #iter by rank (only
             basetmp=base_truth.loc[(rank_,power_,depth_,),:].copy().T #get the base truth data for that subset
 
             #run optspace
-            X_sparse=rclr(center=False).fit_transform(subtmp.copy()) # take the robust clr transform
+            X_sparse=rclr().fit_transform(subtmp.copy()) # take the robust clr transform
             opt=OptSpace(rank=rank_,iteration=5,tol=1e-5).fit(X_sparse)
             solution=opt.transform()
             

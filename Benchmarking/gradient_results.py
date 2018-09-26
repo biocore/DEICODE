@@ -28,7 +28,7 @@ for width_ in set(subsampled.index.get_level_values('band_width')): #iter by ran
         basetmp=base_truth.loc[(width_,depth_,),:].copy().T #get the base truth data for that subset
     
         #run optspace
-        X_sparse=rclr(center=False).fit_transform(subtmp.copy()) # take the robust clr transform
+        X_sparse=rclr().fit_transform(subtmp.copy()) # take the robust clr transform
         opt=OptSpace(rank=5,iteration=5,tol=1e-5).fit(X_sparse)
         solution=opt.transform()
         
