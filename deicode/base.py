@@ -17,7 +17,7 @@ class _BaseImpute(object):
         """ Apply imputation to X_sparse
         TODO - add checks!!!
         """
-        return self.solution
+        return self.sample_weights
 
 
 class _BaseTransform(object):

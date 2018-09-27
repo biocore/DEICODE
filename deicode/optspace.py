@@ -4,6 +4,7 @@ from numpy.matlib import repmat
 from numpy.linalg import norm
 from scipy.sparse.linalg import svds
 from numpy.linalg import matrix_rank
+from scipy.spatial import distance
 from skbio.stats.composition import (ilr, ilr_inv, clr_inv,
                                      _gram_schmidt_basis)
 from deicode._optspace import optspace
@@ -12,13 +13,11 @@ from .base import _BaseImpute
 class OptSpace(_BaseImpute):
 
     def __init__(self,rank=None
-                ,iteration=5,tol=1e-8
-                ,clip_high=True):
+                ,iteration=5,tol=1e-5):
         """ TODO """
         self.rank=rank
         self.iteration=iteration
         self.tol=tol
-        self.clip_high=clip_high
         return
 
     def fit(self,X):
@@ -50,13 +49,7 @@ class OptSpace(_BaseImpute):
         minval: float, optional : Default is None
         A small number to be used to replace zeros
         If minval is not specified, then the default minval is 1e-3. Worked well in practice with compositional transforms.
-        
-        clip_high: bool, optional : Default is true
-        If maxval is true then values in completed matrix are clipped to be at max the values they exsisted at before imputation
-        
-        clip_high: float, optional : Default is None
-        If maxval is true then values in completed matrix are clipped to be at maxval
-        
+
         Returns
         -------
         numpy.ndarray, np.float64
@@ -105,6 +98,7 @@ class OptSpace(_BaseImpute):
         U, s_, V, _  = optspace(X_sparse, r=self.rank, niter=self.iteration, tol=self.tol)
         solution=U.dot(s_).dot(V.T)
 
+        self.distance=distance.cdist(U,U)
         self.solution=solution
         self.feature_weights=V
         self.sample_weights=U
@@ -115,4 +109,4 @@ class OptSpace(_BaseImpute):
         X_sparse=X.copy().astype(np.float64)
         self.X_sparse=X_sparse
         self._fit()
-        return self.solution  
+        return self.sample_weights 

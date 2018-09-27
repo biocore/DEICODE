@@ -22,6 +22,13 @@ from scipy.optimize import minimize
 # Set random state
 rand = np.random.RandomState(42)
 
+def get_taxa(dftmp):
+    """ TODO """
+    dftmp.columns=['kingdom', 'phylum', 'class', 'order', 
+                             'family', 'genus', 'species']
+    dftmp['taxonomy'] = dftmp[dftmp.columns].apply(lambda x: ';'.join(x), axis=1)
+    return dftmp
+
 def get_enriched_labels(feature_plot,cutoff=0):
     """ TODO """
     #make copies
@@ -165,7 +172,6 @@ def block_diagonal_gaus(ncols,nrows,nblocks,overlap=0,minval=0,maxval=1.0):
     xs = [norm.pdf(gradient, loc=mu[i], scale=sigma)
           for i in range(len(mu))]
     mat = np.vstack(xs).T
-    
     
     block_cols = ncols // nblocks
     block_rows = nrows // nblocks

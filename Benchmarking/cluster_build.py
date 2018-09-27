@@ -14,7 +14,7 @@ from deicode.utils import build_block_model
 from deicode.utils import minimize_model
 #compostional transform
 from skbio.stats.composition import clr
-
+from deicode.utils import mean_KL
 
 # import observation data
 in_biom='cluster_models/keyboard.biom' #import biom file
@@ -61,10 +61,22 @@ otutabledf=observed_table.copy()
 otutabledf.to_dense().to_csv("cluster_models/base_model_keyboard_table.csv",sep=',', encoding='utf-8')
 mappingdf.to_dense().to_csv("cluster_models/base_model_keyboard_meta.csv",sep=',', encoding='utf-8')
 
+print(otutabledf.sum(axis=1).mean())
+print(otutabledf.sum(axis=0).mean())
+
 ######### build the model #########
 x0 = [3, 20, 20, 1e2, 1e2,1e1]
 bnds = ((3,3),(0,1e2),(0,2e3),(0,1e10),(0,5e1),(1,10))
 model_fit=minimize_model(x0,bnds,np.array(otutabledf.T[:104].T.as_matrix()))
+
+base_truth,X_noise_sub=build_block_model(3,  model_fit.x[1], 
+                                         model_fit.x[2], model_fit.x[3]
+                                         , model_fit.x[4]
+                                         ,otutabledf.shape[1]
+                                         ,otutabledf.shape[0]
+                                         ,overlap=model_fit.x[5]
+                                         ,mapping_on=False)
+print(mean_KL(closure(X_noise_sub+1),closure(otutabledf+1)))
 
 save_base=[]
 save_sub=[]
