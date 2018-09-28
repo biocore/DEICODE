@@ -1,5 +1,4 @@
-import numpy as np
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 
 
 class _BaseImpute(object):
@@ -10,7 +9,7 @@ class _BaseImpute(object):
     """
     @abstractmethod
     def fit(self):
-        """ Placeholder for fit this 
+        """ Placeholder for fit this
         should be implemetned by sub-method"""
 
     def transform(self):
@@ -27,10 +26,10 @@ class _BaseTransform(object):
     """
     @abstractmethod
     def fit(self):
-        """ Placeholder for fit this 
-        should be implemetned by sub-method"""        
+        """ Placeholder for fit this
+        should be implemetned by sub-method"""
 
     def transform(self):
         """ Apply imputation to X_sparse
-        """  
+        """
         return self.X_sp
