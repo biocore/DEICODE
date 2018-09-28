@@ -92,7 +92,7 @@ def mean_KL(a,b):
     return np.mean(kl)         
 
 def Homoscedastic(X_noise,intensity):
-    """ TODO """
+    """ uniform normally dist. noise """
     X_noise=np.array(X_noise)
     err = intensity * np.ones_like(X_noise.copy())
     X_noise = rand.normal(X_noise.copy(), err)
@@ -101,7 +101,7 @@ def Homoscedastic(X_noise,intensity):
 
 
 def Heteroscedastic(X_noise,intensity):
-    """ TODO """
+    """ non-uniform normally dist. noise """
     err = intensity * np.ones_like(X_noise)
     i = rand.randint(0, err.shape[0], 5000)
     j = rand.randint(0, err.shape[1], 5000)
@@ -111,7 +111,7 @@ def Heteroscedastic(X_noise,intensity):
     return X_noise
 
 def Subsample(X_noise,spar,num_samples):
-    """ TODO """
+    """ yij ~ PLN( lambda_{ij}, /phi ) """
     # subsample
     mu=spar*closure(X_noise.T).T
     X_noise=np.vstack([poisson(lognormal(np.log(mu[:,i]),1)) for i in range(num_samples)]).T

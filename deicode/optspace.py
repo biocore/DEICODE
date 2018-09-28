@@ -12,7 +12,7 @@ from .base import _BaseImpute
 
 class OptSpace(_BaseImpute):
 
-    def __init__(self,rank=None
+    def __init__(self,rank=2
                 ,iteration=5,tol=1e-5):
         """
             
@@ -33,7 +33,10 @@ class OptSpace(_BaseImpute):
         data: numpy.ndarray - a matrix of counts of shape (M,N)
         N = Features (i.e. OTUs, metabolites)
         M = Samples
-        
+
+        iteration: int, optional : Default is 2
+        The underlying rank of the default set to 2 as the default to prevent overfitting.
+
         iteration: float, optional : Default is 5
         The number of convex iterations to optomize the solution
         If iteration is not specified, then the default iteration is 5. Which redcues to a satisfactory error threshold.
