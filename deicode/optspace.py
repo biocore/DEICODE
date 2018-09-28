@@ -119,10 +119,10 @@ class OptSpace(_BaseImpute):
             if self.rank>=min(X_sparse.shape):
                 self.rank=min(X_sparse.shape)-1
 
-        if np.count_nonzero(np.isinf(test_))!=0:
+        if np.count_nonzero(np.isinf(X_sparse))!=0:
             raise ValueError('Data-table contains either np.inf or -np.inf') 
         
-        if self.rank>np.min(X_sparse.shape)
+        if self.rank>np.min(X_sparse.shape):
             raise ValueError('The rank must be significantly less than the minimum shape of the input table')
 
         # return solved matrix
