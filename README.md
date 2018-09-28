@@ -9,7 +9,7 @@
     
 To install the most up to date version of DEICODE, run the following command
 
-    pip install git+https://github.com/cjm007/DEICODE.git
+    pip install git+https://github.com/cameronmartino/DEICODE.git
 
 ## Examples
 
