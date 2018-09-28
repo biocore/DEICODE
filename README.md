@@ -27,7 +27,8 @@ import numpy as np
 
 # rclr preprocessing
 
-# data : numpy.ndarray - a array of counts with shape (M,N)
+# numpy.ndarray - a array of counts (samples,features) with shape (M,N) where N>M
+data=np.array([[3, 3, 0], [0, 4, 2], [3, 0, 1]]) 
 table_norm=rclr().fit_transform(data)
 
 # OptSpace (RPCA)
@@ -41,7 +42,7 @@ result=opt.solution # numpy.ndarray - (U*S*V.transpose()) of shape (M,N)
 # or 
 
 U,s,V=OptSpace().fit_transform(table_norm)
-result=np.dot(np.dot(U,s),v.T) # numpy.ndarray - of shape (M,N)
+result=np.dot(np.dot(U,s),V.T) # numpy.ndarray - of shape (M,N)
 
 ```
 
