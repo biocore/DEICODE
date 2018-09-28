@@ -37,12 +37,10 @@ opt=OptSpace().fit(table_rclr)
 U=opt.sample_weights # numpy.ndarray - "Sample Loadings" 
 V=opt.feature_weights # numpy.ndarray - "Feature Loadings" 
 s=opt.s # numpy.ndarray - The singular values
-result=opt.solution # numpy.ndarray - (U*S*V.transpose()) of shape (M,N)
 
-# or 
+# or directly transform
 
 U,s,V=OptSpace().fit_transform(table_rclr)
-result=np.dot(np.dot(U,s),V.T) # numpy.ndarray - of shape (M,N)
 
 ```
 
