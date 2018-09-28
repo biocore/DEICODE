@@ -7,7 +7,7 @@ deicode is a tool box for running Robust Aitchison RPCA on sparse omics datasets
 
 ## Installation
     
-To install the most up to date version of DEICODE, run the following command
+To install the most up to date version of deicode, run the following command
 
     pip install git+https://github.com/cameronmartino/DEICODE.git
 
@@ -28,12 +28,12 @@ import numpy as np
 # rclr preprocessing
 
 # numpy.ndarray - a array of counts (samples,features) with shape (M,N) where N>M
-data=np.array([[3, 3, 0], [0, 4, 2], [3, 0, 1]]) 
-table_norm=rclr().fit_transform(data)
+table=np.array([[3, 3, 0], [0, 4, 2], [3, 0, 1]]) 
+table_rclr=rclr().fit_transform(table)
 
 # OptSpace (RPCA)
 
-opt=OptSpace().fit(table_norm)
+opt=OptSpace().fit(table_rclr)
 U=opt.sample_weights # numpy.ndarray - "Sample Loadings" 
 V=opt.feature_weights # numpy.ndarray - "Feature Loadings" 
 s=opt.s # numpy.ndarray - The singular values
@@ -41,7 +41,7 @@ result=opt.solution # numpy.ndarray - (U*S*V.transpose()) of shape (M,N)
 
 # or 
 
-U,s,V=OptSpace().fit_transform(table_norm)
+U,s,V=OptSpace().fit_transform(table_rclr)
 result=np.dot(np.dot(U,s),V.T) # numpy.ndarray - of shape (M,N)
 
 ```

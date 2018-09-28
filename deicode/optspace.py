@@ -30,7 +30,7 @@ class OptSpace(_BaseImpute):
         Parameters
         ----------
         
-        data: numpy.ndarray - a matrix of counts of shape (M,N)
+        X: numpy.ndarray - a rclr preprocessed matrix of shape (M,N)
         N = Features (i.e. OTUs, metabolites)
         M = Samples
 
@@ -77,7 +77,34 @@ class OptSpace(_BaseImpute):
         
         Examples 
         --------
-        TODO
+        
+        >>> from deicode.optspace import OptSpace
+        >>> from deicode.preprocessing import rclr
+        >>> import numpy as np
+
+        rclr preprocessing
+        
+        numpy.ndarray - a array of counts (samples,features) with shape (M,N) where N>M
+        >>> data=np.array([[3, 3, 0], [0, 4, 2], [3, 0, 1]]) 
+        >>> table_rclr=rclr().fit_transform(data)
+
+        OptSpace (RPCA)
+
+        >>> opt=OptSpace().fit(table_rclr)
+        numpy.ndarray - "Sample Loadings" 
+        >>> U=opt.sample_weights 
+        numpy.ndarray - "Feature Loadings" 
+        >>> V=opt.feature_weights 
+        numpy.ndarray - The singular values
+        >>> s=opt.s 
+        numpy.ndarray - (U*S*V.transpose()) of shape (M,N)
+        >>> result=opt.solution 
+
+        or
+
+        >>> U,s,V=OptSpace().fit_transform(table_rclr)
+        numpy.ndarray - fully dense (no zeros) of shape (M,N)
+        >>> result=np.dot(np.dot(U,s),V.T) 
         
         """
 
