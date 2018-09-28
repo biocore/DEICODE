@@ -19,26 +19,31 @@ To install the most up to date version of DEICODE, run the following command
 
 ## Usage
 
-    from deicode.optspace import OptSpace
-    from deicode.preprocessing import rclr
-    import numpy as np
+```python
 
-    # rclr preprocessing
+from deicode.optspace import OptSpace
+from deicode.preprocessing import rclr
+import numpy as np
 
-    table_norm=rclr().fit_transform(otutabledf.copy())
+# rclr preprocessing
 
-    # OptSpace (RPCA)
+# data : numpy.ndarray - a array of counts with shape (M,N)
+table_norm=rclr().fit_transform(data)
 
-    opt=OptSpace().fit(table_norm)
-    U=opt.sample_weights # numpy.ndarray - "Sample Loadings" 
-    V=opt.feature_weights # numpy.ndarray - "Feature Loadings" 
-    s=opt.s # numpy.ndarray - The singular values
-    result=opt.solution # numpy.ndarray - (U*S*V.transpose()) of shape (M,N)
-    
-    # or 
+# OptSpace (RPCA)
 
-    U,s,V=OptSpace().fit_transform(table_norm)
-    result=np.dot(np.dot(U,s),v.T)
+opt=OptSpace().fit(table_norm)
+U=opt.sample_weights # numpy.ndarray - "Sample Loadings" 
+V=opt.feature_weights # numpy.ndarray - "Feature Loadings" 
+s=opt.s # numpy.ndarray - The singular values
+result=opt.solution # numpy.ndarray - (U*S*V.transpose()) of shape (M,N)
+
+# or 
+
+U,s,V=OptSpace().fit_transform(table_norm)
+result=np.dot(np.dot(U,s),v.T) # numpy.ndarray - of shape (M,N)
+
+```
 
 ## Simulation Benchmarking 
 
