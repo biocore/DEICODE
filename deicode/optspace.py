@@ -34,7 +34,7 @@ class OptSpace(_BaseImpute):
         N = Features (i.e. OTUs, metabolites)
         M = Samples
 
-        iteration: int, optional : Default is 2
+        rank: int, optional : Default is 2
         The underlying rank of the default set to 2 as the default to prevent overfitting.
 
         iteration: float, optional : Default is 5
@@ -113,12 +113,6 @@ class OptSpace(_BaseImpute):
         if np.count_nonzero(X_sparse)==0 and np.count_nonzero(~np.isnan(X_sparse))==0: 
             raise ValueError('Data-table contains no missing data in the format np.nan or 0') 
 
-        #make rank if none set a rank 
-        if self.rank==None:
-            self.rank=matrix_rank(X_sparse)
-            if self.rank>=min(X_sparse.shape):
-                self.rank=min(X_sparse.shape)-1
-
         if np.count_nonzero(np.isinf(X_sparse))!=0:
             raise ValueError('Data-table contains either np.inf or -np.inf') 
         
@@ -136,11 +130,16 @@ class OptSpace(_BaseImpute):
         self.s=s_ 
          
     def fit_transform(self,X):
+
         """ 
-        Returns the solution of fit directly
+        Returns the final SVD of  
+
+        U: numpy.ndarray - "Sample Loadings" or the unitary matrix having left singular vectors as columns. Of shape (M,rank)
+        s: numpy.ndarray - The singular values, sorted in non-increasing order. Of shape (rank,rank).
+        V: numpy.ndarray - "Feature Loadings" or Unitary matrix having right singular vectors as rows. Of shape (N,rank)
 
         """
         X_sparse=X.copy().astype(np.float64)
         self.X_sparse=X_sparse
         self._fit()
-        return self.sample_weights 
+        return self.sample_weights,self.s,self.feature_weights
