@@ -3,37 +3,7 @@ from numpy import inf
 from numpy.matlib import repmat
 from numpy.linalg import norm
 from scipy.sparse.linalg import svds
-from skbio.stats.composition import (ilr, ilr_inv, clr_inv,
-                                     _gram_schmidt_basis)
 
-def impute_running_mean(X):
-    """ TODO """
-    return np.vstack(
-        [
-            _impute_running_mean_helper(X[i, :])
-            for i in range(X.shape[0])
-        ]
-    )
-
-def _impute_running_mean_helper(x):
-    """ Replaces all infs with the running geometric mean.
-
-    Parameters
-    ----------
-    x : np.array
-       Compositions with some zeros.
-
-    Returns
-    -------
-    x_: np.array
-       Imputed compositions
-    """
-    x_ = x.copy()
-    for i in range(1, len(x)):
-        if np.isnan(x[i]):
-            x_[i] = x_[:i].mean()
-    return x_
-    
 def optspace(M_E, r, niter, tol):
     """
     Parameters
@@ -45,7 +15,6 @@ def optspace(M_E, r, niter, tol):
     X, S, Y
     """
     M_E=M_E.copy() #ensure I am not editing the org data
-    #E = np.isfinite(M_E).astype(np.int)
     M_E[np.isnan(M_E)]=0
     E = (np.abs(M_E) > 0).astype(np.int)
 
@@ -64,7 +33,7 @@ def _optspace(M_E, E, r, niter, tol, sign=1):
     """
     rescal_param = np.sqrt( (np.count_nonzero(E) * r) / (norm(M_E, 'fro') ** 2) ) 
     M_E = M_E * rescal_param 
-    # TODO: Add in trimming for rows and columns
+    # TODO: Possibly add in trimming for rows and columns
 
     X0, S0, Y0 = svds(M_E, r, which='LM')
 
@@ -74,7 +43,6 @@ def _optspace(M_E, E, r, niter, tol, sign=1):
     X0 = X0 * np.sqrt(n)
     Y0 = Y0 * np.sqrt(m)
     S0 = S0 / eps
-    # wtf does 10000 come from
     m0 = 10000
     rho = eps * n
     X, Y = X0, Y0.T;
@@ -158,7 +126,11 @@ def gradF_t(X, Y, S, M_E, E, m0, rho):
 
 def Gp(X, m0, r):
     """
+    Parameters
+    ----------
     X, m0, r
+
+
     """
     z = np.sum(X**2, axis=1) /(2 * m0 * r)
     z = 2 * np.multiply(np.exp( (z-1)**2 ), (z-1))
@@ -170,7 +142,12 @@ def Gp(X, m0, r):
 
 
 def getoptT(X, W, Y, Z, S, M_E, E, m0, rho):
-    """ X, W, Y, Z, S, M_E, E, m0, rho """
+    """ 
+    Parameters
+    ----------
+    X, W, Y, Z, S, M_E, E, m0, rho 
+    """
+
     norm2WZ = norm(W, 'fro')**2 + norm(Z, 'fro')**2
 
     # this is the resolution limit (t > 2**-20
@@ -189,7 +166,12 @@ def getoptT(X, W, Y, Z, S, M_E, E, m0, rho):
 
 
 def getoptS(X, Y, M_E, E):
-    """ X, Y, M_E, E """
+    """     
+    Parameters
+    ----------
+    X, Y, M_E, E 
+
+    """
     n, r = X.shape
 
     C = np.ravel(X.T.dot(M_E).dot(Y))
@@ -204,7 +186,6 @@ def getoptS(X, Y, M_E, E):
             A[:, ind] = np.ravel(temp)
 
     S = np.linalg.lstsq(A, C, rcond=1e-12)[0]
-    # rcond = np.finfo(np.double).eps*int(max(A.shape)))[0]
     S = S.reshape((r, r)).T
 
     return S

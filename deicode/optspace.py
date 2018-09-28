@@ -14,10 +14,74 @@ class OptSpace(_BaseImpute):
 
     def __init__(self,rank=None
                 ,iteration=5,tol=1e-5):
-        """ TODO """
+        """
+            
+        OptSpace is a matrix completion algorithm based on a singular value 
+        decomposition (SVD) optimized on a local manifold. It has been shown to 
+        be quite robust to noise in low rank datasets (1). The objective function that 
+        it is trying to optimize over is given by:
+            
+            min(P|(Y-U*S*V^{T})|_{2}^{2}
+
+        U and V are matrices that are trying to be estimated and S is analogous to a 
+        matrix of eigenvalues. Y are the observed values and P is a function such that
+        the errors between Y and USV are only computed on the nonzero entries.
+        
+        Parameters
+        ----------
+        
+        data: numpy.ndarray - a matrix of counts of shape (M,N)
+        N = Features (i.e. OTUs, metabolites)
+        M = Samples
+        
+        iteration: float, optional : Default is 5
+        The number of convex iterations to optomize the solution
+        If iteration is not specified, then the default iteration is 5. Which redcues to a satisfactory error threshold.
+
+        tol: float, optional : Default is 1e-5
+        Error reduction break, if the error reduced is less than this value it will return the solution 
+        
+        Returns
+        -------
+        U: numpy.ndarray - "Sample Loadings" or the unitary matrix having left singular vectors as columns. Of shape (M,rank)
+        s: numpy.ndarray - The singular values, sorted in non-increasing order. Of shape (rank,rank).
+        V: numpy.ndarray - "Feature Loadings" or Unitary matrix having right singular vectors as rows. Of shape (N,rank)
+        solution: numpy.ndarray - (U*S*V.transpose()) of shape (M,N)
+        distance: numpy.ndarray - Distance between each pair of the two collections of inputs. Of shape (M,M)
+        
+        Raises
+        ------
+        ValueError
+
+        Raises an error if input is not either pandas dataframe or numpy.ndarray TODO
+            `ValueError: Input data is should be type numpy.ndarray`.
+
+        Raises an error if input shape (M,N) where N>M TODO
+            `ValueError: Data-table contains more samples than features, most likely your data is transposed`.     
+
+        Raises an error if input data does not contain any nans or zeros TODO
+            `ValueError: Data-table contains no missing data in the format np.nan or 0`.
+
+        Raises an error if input data contains infs TODO  
+            `ValueError: Data-table contains either np.inf or -np.inf`.
+
+        Raises an error if input data and rank violates min(M,N)<rank TODO  
+            `ValueError: The rank must be significantly less than the minimum shape of the input table`.
+
+        References
+        ----------
+        .. [1] Keshavan RH, Oh S, Montanari A. 2009. Matrix completion from a few entries2009 IEEE International Symposium on Information Theory
+        
+        Examples 
+        --------
+        TODO
+        
+        """
+
         self.rank=rank
         self.iteration=iteration
         self.tol=tol
+
         return
 
     def fit(self,X):
@@ -29,70 +93,31 @@ class OptSpace(_BaseImpute):
     
     def _fit(self):
         
-        """
-            
-        Replace all zeros with small non-zero values. Using a collaborative filtering based matrix completion method.
-        A replacement for adding only small values to data before performing transforms.
-        Also useful for removing sparsity constraints when performing downstream analysis.
-        
-        ----------
-        
-        data: array_like a matrix of counts
-        rows = Features (i.e. OTUs, metabolites)
-        columns = Samples
-        
-        iteration: float, optional : Default is 40
-        The number of convex iterations to optomize the solution
-        If iteration is not specified, then the default iteration is 100. Which redcues to a satisfactory error threshold.
-        
-        
-        minval: float, optional : Default is None
-        A small number to be used to replace zeros
-        If minval is not specified, then the default minval is 1e-3. Worked well in practice with compositional transforms.
-
-        Returns
-        -------
-        numpy.ndarray, np.float64
-        A completely dense matrix of counts
-        
-        
-        Raises
-        ------
-        ValueError
-        Raises an error if input is a pandas dataframe and not a numpy array
-        `ValueError: Lengths must match to compare`.
-        
-        
-        Notes
-        -----
-        Assumes a low-rank underlying matrix, this means it performs poorly in gradient like tables. Future high-rank completion methods can overcome this.
-        
-        
-        References
-        ----------
-        .. [1] Rubinsteyn A, Feldman S. 2016. fancyimpute: Version 0.0.16.
-        .. [2] Mazumder R, Hastie T, Tibshirani R. 2010. Spectral Regularization Algorithms for Learning Large Incomplete Matrices. J Mach Learn Res 11:2287–2322.
-        .. [3] Pending Publication; Martino and Morton
-        
-        Examples TODO
-        --------
-        >>> import numpy as np
-        >>> from skbio.stats.impute import complete
-        >>> X = np.array([[.2,.4,.4, 0],[0,.5,.5,0]])
-        >>> complete(X)
-        array([[ 0.2       ,  0.4       ,  0.4       ,  0.001     ],
-        [ 0.23683603,  0.5       ,  0.5       ,  0.00118418]])
-        
-        """
-        
         # make copy for imputation, check type  
         X_sparse=self.X_sparse
 
-        #make rank if none
+        if type(X_sparse) is not np.ndarray:
+            X_sparse=np.array(X_sparse)
+            if type(X_sparse) is not np.ndarray:
+                raise ValueError('Input data is should be type numpy.ndarray') 
+                
+        if X_sparse.shape[0]>X_sparse.shape[1]:
+            raise ValueError('Data-table contains more samples than features, most likely your data is transposed') 
+
+        if np.count_nonzero(X_sparse)==0 and np.count_nonzero(~np.isnan(X_sparse))==0: 
+            raise ValueError('Data-table contains no missing data in the format np.nan or 0') 
+
+        #make rank if none set a rank 
         if self.rank==None:
             self.rank=matrix_rank(X_sparse)
             if self.rank>=min(X_sparse.shape):
                 self.rank=min(X_sparse.shape)-1
+
+        if np.count_nonzero(np.isinf(test_))!=0:
+            raise ValueError('Data-table contains either np.inf or -np.inf') 
+        
+        if self.rank>np.min(X_sparse.shape)
+            raise ValueError('The rank must be significantly less than the minimum shape of the input table')
 
         # return solved matrix
         U, s_, V, _  = optspace(X_sparse, r=self.rank, niter=self.iteration, tol=self.tol)

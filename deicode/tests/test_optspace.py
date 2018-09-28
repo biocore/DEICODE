@@ -1,5 +1,4 @@
-from deicode._optspace import (G, F_t, gradF_t, Gp, getoptT, getoptS, optspace, impute_running_mean,
-                              _impute_running_mean_helper)
+from deicode._optspace import (G, F_t, gradF_t, Gp, getoptT, getoptS, optspace)
 import numpy as np
 from numpy.random import randn, rand
 from numpy.linalg import norm
@@ -137,25 +136,6 @@ class TestOptspace(unittest.TestCase):
         res = norm(err, 'fro') / np.sqrt(m*n)
         exp = 0.0010701845536
         assert_array_almost_equal(res, exp,decimal=3)
-
-    def test_impute_running_mean_helper(self):
-        x = np.array([1, 2, np.nan, 4])
-        y = _impute_running_mean_helper(x)
-        exp_y = np.array([1, 2, 1.5, 4])
-        npt.assert_allclose(y, exp_y)
-
-    def test_impute_running_mean(self):
-        X = np.array(
-            [[1, 2, np.nan, 4],
-             [1, np.nan, 3, 4]]
-        )
-        Y = impute_running_mean(X)
-        exp_Y = np.array([[1, 2, 1.5, 4],
-                          [1, 1, 3, 4]])
-
-        npt.assert_allclose(Y, exp_Y)
-
-
 
 if __name__ == "__main__":
     unittest.main()
