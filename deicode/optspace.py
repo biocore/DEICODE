@@ -53,19 +53,19 @@ class OptSpace(_BaseImpute):
         ------
         ValueError
 
-        Raises an error if input is not either pandas dataframe or numpy.ndarray TODO
+        Raises an error if input is not either pandas dataframe or numpy.ndarray 
             `ValueError: Input data is should be type numpy.ndarray`.
 
-        Raises an error if input shape (M,N) where N>M TODO
+        Raises an error if input shape (M,N) where N>M 
             `ValueError: Data-table contains more samples than features, most likely your data is transposed`.     
 
-        Raises an error if input data does not contain any nans or zeros TODO
+        Raises an error if input data does not contain any nans or zeros 
             `ValueError: Data-table contains no missing data in the format np.nan or 0`.
 
-        Raises an error if input data contains infs TODO  
+        Raises an error if input data contains infs   
             `ValueError: Data-table contains either np.inf or -np.inf`.
 
-        Raises an error if input data and rank violates min(M,N)<rank TODO  
+        Raises an error if input data and rank violates min(M,N)<rank   
             `ValueError: The rank must be significantly less than the minimum shape of the input table`.
 
         References
@@ -85,7 +85,10 @@ class OptSpace(_BaseImpute):
         return
 
     def fit(self,X):
-        """Fit the model to X_sparse """
+        """
+        Fit the model to X_sparse 
+        """
+
         X_sparse=X.copy().astype(np.float64)
         self.X_sparse=X_sparse
         self._fit()
@@ -130,7 +133,10 @@ class OptSpace(_BaseImpute):
         self.s=s_ 
          
     def fit_transform(self,X):
-        """ Returns the solution of fit directly"""
+        """ 
+        Returns the solution of fit directly
+
+        """
         X_sparse=X.copy().astype(np.float64)
         self.X_sparse=X_sparse
         self._fit()

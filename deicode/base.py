@@ -15,7 +15,6 @@ class _BaseImpute(object):
 
     def transform(self):
         """ Apply imputation to X_sparse
-        TODO - add checks!!!
         """
         return self.sample_weights
 
@@ -33,6 +32,5 @@ class _BaseTransform(object):
 
     def transform(self):
         """ Apply imputation to X_sparse
-        TODO - add checks!!!
         """  
         return self.X_sp
