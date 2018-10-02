@@ -1,6 +1,7 @@
 from biom import load_table
 import pandas as pd
 import numpy as np
+import skbio
 import os
 from deicode.optspace import OptSpace
 from deicode.preprocessing import rclr
@@ -25,31 +26,33 @@ def RPCA(in_biom: str, output_dir: str,
     table = table.to_dataframe().T.drop_duplicates()
     # rclr preprocessing and OptSpace (RPCA)
     opt = OptSpace(rank=3).fit(rclr().fit_transform(table.copy()))
-    # Sample Loadings
-    sample_loading = pd.DataFrame(opt.sample_weights, index=table.index)
-    sample_loading = sample_loading.rename(columns={0: 1, 1: 2, 2: 3})
+
     # Feature Loadings
     feature_loading = pd.DataFrame(opt.feature_weights, index=table.columns)
     feature_loading = feature_loading.rename(columns={0: 1, 1: 2, 2: 3})
-    # make Emperor stype output
-    add_ = pd.DataFrame(np.array([[np.nan] * len(sample_loading.columns),
-                                  [np.nan] * len(sample_loading.columns),
-                                  opt.eigenvalues,
-                                  opt.explained_variance_ratio]),
-                        index=['',
-                               '',
-                               'eigvals',
-                               '% variation explained'],
-                        columns=sample_loading.columns)
-    sample_loading = pd.concat([sample_loading, add_], axis=0)
-    sample_loading.index.name = 'pc vector number'
+
+    # Sample Loadings
+    sample_loading = pd.DataFrame(opt.sample_weights, index=table.index)
+    sample_loading = sample_loading.rename(columns={0: 'PC1', 1: 'PC2', 2: 'PC3'})
+
+    proportion_explained = pd.Series(opt.explained_variance_ratio,
+                                     index=['PC1', 'PC2', 'PC3'])
+    eigvals = pd.Series(np.array([0.50, 0.25, 0.25]),
+                        index=['PC1', 'PC2', 'PC3'])
+    ord_res = skbio.OrdinationResults(
+            'PCoA',
+            'Principal Coordinate Analysis',
+            eigvals,
+            sample_loading,
+            proportion_explained=proportion_explained)
+
     # distance
     pd.DataFrame(opt.distance, table.index,
                  table.index).to_csv(os.path.join(output_dir,
                                                   'distance.txt'), sep='\t')
     # write files to output folder
     feature_loading.to_csv(os.path.join(output_dir, 'feature.txt'), sep='\t')
-    sample_loading.to_csv(os.path.join(output_dir, 'sample.txt'), sep='\t')
+    ord_res.write(os.path.join(output_dir, 'RPCA_Ordination.txt'))
 
 
 if __name__ == '__main__':

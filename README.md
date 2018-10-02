@@ -6,7 +6,7 @@
 deicode is a tool box for running Robust Aitchison RPCA on sparse omics datasets, linking specific features (i.e. microbes or metabolites) to beta-diversity ordination.
 
 ## Installation
-    
+
 To install the most up to date version of deicode, run the following command
 
     pip install git+https://github.com/cameronmartino/DEICODE.git
@@ -60,13 +60,13 @@ U,s,V=OptSpace().fit_transform(table_rclr)
 
 ```
 
-## Simulation Benchmarking 
+## Simulation Benchmarking
 
 [rclr preprocessing](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/simulations.ipynb)
 
-## Other Resources 
+## Other Resources
 
-The code for OptSpace was translated to python [MATLAB package](http://swoh.web.engr.illinois.edu/software/optspace/code.html) maintained by Sewoong Oh (UIUC).
+The code for OptSpace was translated to python from a [MATLAB package](http://swoh.web.engr.illinois.edu/software/optspace/code.html) maintained by Sewoong Oh (UIUC).
 
 - Transforms and PCoA : [Scikit-bio](https://github.com/biocore/scikit-bio)
 - Data For Examples : [Qiita](https://qiita.ucsd.edu/)
