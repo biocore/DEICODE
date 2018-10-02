@@ -19,6 +19,22 @@ To install the most up to date version of deicode, run the following command
 
 ## Usage
 
+Command line
+```sh
+    deicode_rpca --help
+    Usage: deicode_rpca [OPTIONS]
+
+    Runs RPCA with an rclr preprocessing step
+
+    Options:
+    --in_biom TEXT              Input table in biom format.
+    --output_dir TEXT           Location of output files.
+    --min_sample_depth INTEGER  Minimum Sample Sequencing Depth Cut Off
+                                default=500
+    --help                      Show this message and exit.
+```
+
+Python
 ```python
 
 from deicode.optspace import OptSpace
@@ -53,5 +69,4 @@ U,s,V=OptSpace().fit_transform(table_rclr)
 The code for OptSpace was translated to python [MATLAB package](http://swoh.web.engr.illinois.edu/software/optspace/code.html) maintained by Sewoong Oh (UIUC).
 
 - Transforms and PCoA : [Scikit-bio](https://github.com/biocore/scikit-bio)
-- Other Imputation Methods: [Fancy Impute](https://github.com/hammerlab/fancyimpute)
 - Data For Examples : [Qiita](https://qiita.ucsd.edu/)

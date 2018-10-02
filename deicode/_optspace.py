@@ -40,7 +40,7 @@ def _optspace(M_E, E, r, niter, tol, sign=1):
 
     n, m = M_E.shape
     nnz = np.count_nonzero(E)
-    eps = nnz / np.sqrt(m*n)
+    eps = nnz / np.sqrt(m * n)
     X0 = X0 * np.sqrt(n)
     Y0 = Y0 * np.sqrt(m)
     S0 = S0 / eps
@@ -57,17 +57,17 @@ def _optspace(M_E, E, r, niter, tol, sign=1):
 
         # Line search for the optimum jump length
         t = getoptT(X, W, Y, Z, S, M_E, E, m0, rho)
-        X = X - sign*t*W
-        Y = Y - sign*t*Z
+        X = X - sign * t * W
+        Y = Y - sign * t * Z
 
         S = getoptS(X, Y, M_E, E)
 
         # Compute the distortion
         ft = M_E - X.dot(S).dot(Y.T)
-        dist[i+1] = norm(np.multiply(ft, E), 'fro')/np.sqrt(nnz)
-        if(dist[i+1] < tol):
+        dist[i + 1] = norm(np.multiply(ft, E), 'fro') / np.sqrt(nnz)
+        if(dist[i + 1] < tol):
             break
-    S = S/rescal_param
+    S = S / rescal_param
     return X, S, Y, dist
 
 
@@ -98,7 +98,7 @@ def G(X, m0, r):
     X, m0, r
     """
     z = np.sum(X**2, axis=1) / (2 * m0 * r)
-    y = np.exp((z-1)**2) - 1
+    y = np.exp((z - 1)**2) - 1
     y[z < 1] = 0
     y[y == np.inf] = 0
     return y.sum()
@@ -136,8 +136,8 @@ def Gp(X, m0, r):
 
 
     """
-    z = np.sum(X**2, axis=1)/(2 * m0 * r)
-    z = 2 * np.multiply(np.exp((z-1)**2), (z-1))
+    z = np.sum(X**2, axis=1) / (2 * m0 * r)
+    z = 2 * np.multiply(np.exp((z - 1)**2), (z - 1))
 
     z[z < 0] = 0
     z = z.reshape(len(z), 1)
@@ -156,16 +156,16 @@ def getoptT(X, W, Y, Z, S, M_E, E, m0, rho):
 
     # this is the resolution limit (t > 2**-20
     n_intervals = 20
-    f = np.zeros(n_intervals+1)
+    f = np.zeros(n_intervals + 1)
     f[0] = F_t(X, Y, S, M_E, E, m0, rho)
     t = -1e-1
 
     for i in range(n_intervals):
 
-        f[i+1] = F_t(X+t*W, Y+t*Z, S, M_E, E, m0, rho)
-        if((f[i+1] - f[0]) <= .5*t*norm2WZ):
+        f[i + 1] = F_t(X + t * W, Y + t * Z, S, M_E, E, m0, rho)
+        if((f[i + 1] - f[0]) <= .5 * t * norm2WZ):
             return t
-        t = t/2
+        t = t / 2
     return t
 
 
@@ -179,10 +179,10 @@ def getoptS(X, Y, M_E, E):
     n, r = X.shape
 
     C = np.ravel(X.T.dot(M_E).dot(Y))
-    A = np.zeros((r*r, r*r))
+    A = np.zeros((r * r, r * r))
     for i in range(r):
         for j in range(r):
-            ind = j*r + i
+            ind = j * r + i
             x = X[:, i].reshape(1, len(X[:, i]))
             y = Y[:, j].reshape(len(Y[:, j]), 1)
             tmp = np.multiply((y.dot(x)).T, E)

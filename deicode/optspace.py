@@ -144,9 +144,9 @@ class OptSpace(_BaseImpute):
         # make copy for imputation, check type
         X_sparse = self.X_sparse
 
-        if type(X_sparse) is not np.ndarray:
+        if not isinstance(X_sparse, np.ndarray):
             X_sparse = np.array(X_sparse)
-            if type(X_sparse) is not np.ndarray:
+            if not isinstance(X_sparse, np.ndarray):
                 raise ValueError('Input data is should be type numpy.ndarray')
 
         if X_sparse.shape[0] > X_sparse.shape[1]:
@@ -167,6 +167,11 @@ class OptSpace(_BaseImpute):
                                niter=self.iteration, tol=self.tol)
         solution = U.dot(s_).dot(V.T)
 
+        explained_variance_ = (np.diag(s_) ** 2) / (X_sparse.shape[0] - 1)
+        ratio = explained_variance_.sum()
+        explained_variance_ratio_ = explained_variance_/ratio
+        self.eigenvalues = np.diag(s_)
+        self.explained_variance_ratio = explained_variance_ratio_
         self.distance = distance.cdist(U, U)
         self.solution = solution
         self.feature_weights = V
@@ -174,7 +179,6 @@ class OptSpace(_BaseImpute):
         self.s = s_
 
     def fit_transform(self, X):
-
         """
         Returns the final SVD of
 

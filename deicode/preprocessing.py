@@ -95,12 +95,12 @@ class rclr(_BaseTransform):
         X_log = np.log(closure(np.array(X_)))
         log_mask = np.array(
             [True] * X_log.shape[0] * X_log.shape[1]
-            ).reshape(X_log.shape)
+        ).reshape(X_log.shape)
         log_mask[np.isfinite(X_log)] = False
         # sum of rows (features)
         m = np.ma.array(X_log, mask=log_mask)
         gm = m.mean(axis=-1, keepdims=True)
-        m = (m-gm).squeeze().data
+        m = (m - gm).squeeze().data
         m[~np.isfinite(X_log)] = np.nan
         self.X_sp = m
 

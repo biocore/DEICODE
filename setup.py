@@ -11,7 +11,6 @@
 import re
 import ast
 import os
-import pip
 from setuptools import find_packages, setup
 from setuptools.command.build_ext import build_ext as _build_ext
 
@@ -50,7 +49,7 @@ classes = """
 """
 classifiers = [s.strip() for s in classes.split('\n') if s]
 
-description = ('Matrix completion toolbox for partially observed omics datasets')
+description = ('Robust Aitchison RPCA toolbox')
 
 with open('README.md') as f:
     long_description = f.read()
@@ -64,9 +63,6 @@ with open('deicode/__init__.py', 'rb') as f:
     hit = _version_re.search(f.read().decode('utf-8')).group(1)
     version = str(ast.literal_eval(hit))
 
-# fix numpy install, errors out removed!
-#pip.main(['install', 'numpy'])
-    
 setup(name='deicode',
       version=version,
       license='BSD',
@@ -81,6 +77,7 @@ setup(name='deicode',
       ext_modules=extensions,
       cmdclass={'build_ext': build_ext},
       install_requires=[
+          'Click',
           'IPython >= 3.2.0',
           'matplotlib >= 1.4.3',
           'numpy >= 1.9.2',
@@ -88,10 +85,9 @@ setup(name='deicode',
           'scipy >= 0.15.1',
           'nose >= 1.3.7',
           'scikit-bio == 0.5.1',
-          'statsmodels >= 0.8.0',
-          'scikit-learn == 0.18.1',
           'seaborn >= 0.7.1',
-          'fancyimpute >= 0.2.0',
-      ],classifiers=classifiers,
-      package_data={
-          })
+      ], entry_points='''
+        [console_scripts]
+        deicode_rpca=deicode.scripts._rpca:RPCA''',
+      classifiers=classifiers,
+      package_data={})

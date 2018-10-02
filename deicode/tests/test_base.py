@@ -1,6 +1,5 @@
 import unittest
-from skbio._base import SkbioObject, ElasticLines
-from deicode.base import _BaseTransform,_BaseImpute
+from deicode.base import _BaseTransform, _BaseImpute
 
 
 class Test_BaseTransform(unittest.TestCase):
