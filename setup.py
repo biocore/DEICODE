@@ -84,6 +84,7 @@ setup(name='deicode',
           'pandas >= 0.18.0',
           'scipy >= 0.15.1',
           'nose >= 1.3.7',
+          'scikit-learn == 0.18.1',
           'scikit-bio == 0.5.1',
           'seaborn >= 0.7.1',
       ], entry_points='''

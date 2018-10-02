@@ -5,6 +5,8 @@ flake8
 IPython>4.0.0
 notebook
 scikit-bio
+scikit-learn
+biom-format
 numpy
 scipy
 matplotlib
