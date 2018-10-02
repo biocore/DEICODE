@@ -21,7 +21,7 @@ To install the most up to date version of deicode, run the following command
 
 Command line
 ```sh
-    deicode_rpca --help
+deicode_rpca --help
     Usage: deicode_rpca [OPTIONS]
 
     Runs RPCA with an rclr preprocessing step
