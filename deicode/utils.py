@@ -24,7 +24,7 @@ def get_taxa(dftmp):
     return dftmp
 
 
-def get_enriched_labels(feature_plot, cutoff=0):
+def get_enriched_labels(feature_plot,axis=0, cutoff=0):
     """ TODO """
     # make copies
     feature_plot = feature_plot.copy()
@@ -35,11 +35,11 @@ def get_enriched_labels(feature_plot, cutoff=0):
     N_otu = np.min(
         (dict(
             Counter(
-                feature_plot[0] < -
+                feature_plot[axis] < -
                 cutoff))[True],
          dict(
             Counter(
-                feature_plot[0] > cutoff))[True]))
+                feature_plot[axis] > cutoff))[True]))
     feature_plot_low = feature_plot[:N_otu].index
     feature_plot_high = feature_plot[feature_plot.shape[0] - N_otu:].index
 

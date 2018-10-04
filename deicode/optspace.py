@@ -171,7 +171,7 @@ class OptSpace(_BaseImpute):
         ratio = explained_variance_.sum()
         explained_variance_ratio_ = explained_variance_/ratio
         self.eigenvalues = np.diag(s_)
-        self.explained_variance_ratio = explained_variance_ratio_
+        self.explained_variance_ratio = list(explained_variance_ratio_)[::-1]
         self.distance = distance.cdist(U, U)
         self.solution = solution
         self.feature_weights = V

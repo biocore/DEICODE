@@ -13,9 +13,7 @@ To install the most up to date version of deicode, run the following command
 
 ## Examples
 
-[Sponge Life Stage Case Study](https://github.com/cameronmartino/DEICODE/blob/master/Examples/sponge_biom.ipynb)
-
-[Infant Development Study](https://github.com/cameronmartino/DEICODE/blob/master/Examples/infant_gut.ipynb)
+TODO
 
 ## Usage
 
