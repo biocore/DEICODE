@@ -89,6 +89,7 @@ setup(name='deicode',
           'seaborn >= 0.9.0',
       ], entry_points='''
         [console_scripts]
-        deicode_rpca=deicode.scripts._rpca:RPCA''',
+        deicode_rpca=deicode.scripts._rpca:RPCA
+        deicode_log_ratio=deicode.scripts._logratio:logratio''',
       classifiers=classifiers,
       package_data={})

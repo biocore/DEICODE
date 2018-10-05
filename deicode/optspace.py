@@ -2,6 +2,7 @@ import numpy as np
 from deicode._optspace import optspace
 from .base import _BaseImpute
 from scipy.spatial import distance
+import warnings
 
 
 class OptSpace(_BaseImpute):
@@ -80,6 +81,10 @@ class OptSpace(_BaseImpute):
         Raises an error if input data and rank violates min(M,N)<rank
             `ValueError: The rank must be significantly less than the
             minimum shape of the input table`.
+
+        Raises an error if rank*10> M(Samples)
+            `ValueError: There are not sufficient samples to run
+            must have rank*10 samples in the table`.
 
         References
         ----------
@@ -162,6 +167,10 @@ class OptSpace(_BaseImpute):
         if self.rank > np.min(X_sparse.shape):
             raise ValueError('rank must be less than the minimum shape')
 
+        if self.rank * 10 > np.min(X_sparse.shape):
+            warnings.warn(
+                'Insufficient samples, must have rank*10 samples in the table')
+
         # return solved matrix
         U, s_, V, _ = optspace(X_sparse, r=self.rank,
                                niter=self.iteration, tol=self.tol)
@@ -169,7 +178,7 @@ class OptSpace(_BaseImpute):
 
         explained_variance_ = (np.diag(s_) ** 2) / (X_sparse.shape[0] - 1)
         ratio = explained_variance_.sum()
-        explained_variance_ratio_ = explained_variance_/ratio
+        explained_variance_ratio_ = explained_variance_ / ratio
         self.eigenvalues = np.diag(s_)
         self.explained_variance_ratio = list(explained_variance_ratio_)[::-1]
         self.distance = distance.cdist(U, U)

@@ -15,6 +15,8 @@ import click
     '--min_sample_depth',
     default=500,
     help='Minimum Sample Sequencing Depth Cut Off default=500')
+
+    
 def RPCA(in_biom: str, output_dir: str,
          min_sample_depth: int) -> None:
     """ Runs RPCA with an rclr preprocessing step"""
@@ -29,7 +31,7 @@ def RPCA(in_biom: str, output_dir: str,
 
     # Feature Loadings
     feature_loading = pd.DataFrame(opt.feature_weights, index=table.columns)
-    feature_loading = feature_loading.rename(columns={0: 1, 1: 2, 2: 3})
+    feature_loading = feature_loading.rename(columns={0: 'PC1', 1: 'PC2', 2: 'PC3'})
 
     # Sample Loadings
     sample_loading = pd.DataFrame(opt.sample_weights, index=table.index)
@@ -44,6 +46,7 @@ def RPCA(in_biom: str, output_dir: str,
             'Principal Coordinate Analysis',
             eigvals,
             sample_loading,
+            biplot_scores=feature_loading,
             proportion_explained=proportion_explained)
 
     # distance
@@ -51,8 +54,8 @@ def RPCA(in_biom: str, output_dir: str,
                  table.index).to_csv(os.path.join(output_dir,
                                                   'distance.txt'), sep='\t')
     # write files to output folder
-    feature_loading.to_csv(os.path.join(output_dir, 'feature.txt'), sep='\t')
     ord_res.write(os.path.join(output_dir, 'RPCA_Ordination.txt'))
+    return
 
 
 if __name__ == '__main__':

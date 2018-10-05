@@ -14,67 +14,6 @@ from scipy.optimize import minimize
 # Set random state
 rand = np.random.RandomState(42)
 
-
-def get_taxa(dftmp):
-    """ TODO """
-    dftmp.columns = ['kingdom', 'phylum', 'class', 'order',
-                     'family', 'genus', 'species']
-    dftmp['taxonomy'] = dftmp[dftmp.columns].apply(
-        lambda x: ';'.join(x), axis=1)
-    return dftmp
-
-
-def get_enriched_labels(feature_plot,axis=0, cutoff=0):
-    """ TODO """
-    # make copies
-    feature_plot = feature_plot.copy()
-
-    # round to avoid too many otus
-    feature_plot = np.around(feature_plot, 1)
-    # get N otus to view
-    N_otu = np.min(
-        (dict(
-            Counter(
-                feature_plot[axis] < -
-                cutoff))[True],
-         dict(
-            Counter(
-                feature_plot[axis] > cutoff))[True]))
-    feature_plot_low = feature_plot[:N_otu].index
-    feature_plot_high = feature_plot[feature_plot.shape[0] - N_otu:].index
-
-    return list(feature_plot_low) + list(feature_plot_high)
-
-
-def get_mean_abundance(plot_table, plot_map, features_enrich, plot_col):
-    """ TODO """
-    plot_table = plot_table.copy()
-    plot_map = plot_map.copy()
-    plot_table = pd.DataFrame(
-        closure(plot_table) * 100,
-        plot_table.index,
-        plot_table.columns).T.copy()
-    plot_table.columns = plot_map[plot_col]
-    plot_table = plot_table.T.groupby(plot_table.columns).mean()[
-        features_enrich].T
-    return plot_table
-
-
-def get_lowest_level(taxonomy, features_en, default_highest=-3):
-    """ TODO """
-    lowest_level = {}
-    taxonomy_enriched = taxonomy.loc[features_en, :].copy()
-    for level_ in taxonomy_enriched.columns[:default_highest]:
-        tax_tmp = taxonomy_enriched[taxonomy_enriched[level_].apply(
-            lambda x: len(x) > 3)]
-        for ind_ in taxonomy_enriched[taxonomy_enriched[level_].apply(
-                lambda x: len(x) > 3)].index:
-            name_ = tax_tmp.loc[ind_, level_].split('__')
-            name_ = name_[1] + ' (' + name_[0] + ')'
-            lowest_level[ind_] = name_
-    return lowest_level
-
-
 def mean_KL(a, b):
     """
     Returns the KL divergence between matrix A and B
