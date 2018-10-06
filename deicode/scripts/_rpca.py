@@ -16,7 +16,7 @@ import click
     default=500,
     help='Minimum Sample Sequencing Depth Cut Off default=500')
 
-    
+
 def RPCA(in_biom: str, output_dir: str,
          min_sample_depth: int) -> None:
     """ Runs RPCA with an rclr preprocessing step"""
@@ -46,7 +46,7 @@ def RPCA(in_biom: str, output_dir: str,
             'Principal Coordinate Analysis',
             eigvals,
             sample_loading,
-            biplot_scores=feature_loading,
+            features=feature_loading,
             proportion_explained=proportion_explained)
 
     # distance
