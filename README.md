@@ -19,17 +19,31 @@ TODO
 
 Command line
 ```sh
-deicode_rpca --help
-    Usage: deicode_rpca [OPTIONS]
+Usage: deicode_rpca [OPTIONS]
 
-    Runs RPCA with an rclr preprocessing step
+Runs RPCA with an rclr preprocessing step
 
-    Options:
-    --in_biom TEXT              Input table in biom format.
-    --output_dir TEXT           Location of output files.
-    --min_sample_depth INTEGER  Minimum Sample Sequencing Depth Cut Off
-                                default=500
-    --help                      Show this message and exit.
+Options:
+--in_biom TEXT              Input table in biom format.
+--output_dir TEXT           Location of output files.
+--min_sample_depth INTEGER  Minimum Sample Sequencing Depth Cut Off
+                            default=500
+--help                      Show this message and exit.
+
+Usage: deicode_log_ratio [OPTIONS]
+
+  Runs log ratios on import features from RPCA output
+
+Options:
+  --in_biom TEXT       Input table in biom format. (optional taxa in
+                       observation)
+  --in_map TEXT        Input metadata in qiime stype format.
+  --in_ord TEXT        RPCA output RPCA_Ordination.txt
+  --output_dir TEXT    Location of output files.
+  --axis INTEGER       Axis of both ordinations to use default=0
+  --n_lr INTEGER       Number of log-ratios to comput default=10
+  --tax_level INTEGER  If taxa included - choose level default=lowest
+  --help               Show this message and exit.
 ```
 
 Python
