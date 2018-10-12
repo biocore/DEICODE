@@ -101,6 +101,10 @@ def log_ratios(table_tmp, meta_tmp, feature_load, sample_load,
                                 columns=cols_)
         taxa_tmp_ = True
     else:
+        taxa_tmp=taxa_tmp.astype(str)
+        taxa_tmp[taxa_tmp=='nan']=np.nan
+        taxa_tmp[taxa_tmp=='None']=np.nan
+        taxa_tmp[taxa_tmp=='Unassigned']='__Unclassified'
         taxa_tmp_ = False
 
     if table_tmp.shape[0] > table_tmp.shape[1]:
@@ -112,7 +116,7 @@ def log_ratios(table_tmp, meta_tmp, feature_load, sample_load,
     # convert unknown taxa to "other"
     taxa_tmp = clean_taxa_table(taxa_tmp, taxa_tmp_)
     # concat features
-    feature_taxa = pd.concat([feature_load, taxa_tmp], axis=1).dropna(
+    feature_taxa = pd.concat([feature_load, taxa_tmp], axis=1, sort=True).dropna(
         subset=[axis_sort]).sort_values(axis_sort)
     # level groupby
     level_grouping = {level_: feature_taxa.groupby(level_).sum(
@@ -123,7 +127,7 @@ def log_ratios(table_tmp, meta_tmp, feature_load, sample_load,
     # get table of ratios
     log_ratios = get_log_ratios(table_tmp, top_otus, bottom_otus)
     # add that data back to the dicts
-    log_ratios = pd.concat([log_ratios, sample_load, meta_tmp], axis=1)
+    log_ratios = pd.concat([log_ratios, sample_load, meta_tmp], axis=1, sort=True)
     log_ratios['sample_ids'] = log_ratios.index
     log_ratios.reset_index(inplace=True, drop=True)
     return log_ratios
@@ -195,4 +199,4 @@ def get_log_ratios(tabledf, topd, bottomd):
                 '') +
             '})']
         log_ratios.append(pd.DataFrame(tmp_ratio, columns=col_))
-    return pd.concat(log_ratios, axis=1)
+    return pd.concat(log_ratios, axis=1, sort=True)
