@@ -70,6 +70,8 @@ for dataset_ in case_study.keys():
 
         sub_group=list(set(balance_tmp[case_study[dataset_]['factor']]))[0]
         per_group_sub=np.arange(15,start,20)
+        idx = np.round(np.linspace(0, len(per_group_sub) - 1, 5)).astype(int)
+        per_group_sub=per_group_sub[idx]
         balance_tmp_re=balance_tmp.copy()
         # sub-sample reads randomly for on group then re-balance
         for sub_count in per_group_sub[::-1]:
