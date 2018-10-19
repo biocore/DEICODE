@@ -11,10 +11,6 @@ To install the most up to date version of deicode, run the following command
 
     pip install git+https://github.com/cameronmartino/DEICODE.git
 
-## Examples
-
-TODO
-
 ## Usage
 
 Command line
@@ -24,15 +20,17 @@ Usage: deicode_rpca [OPTIONS]
 Runs RPCA with an rclr preprocessing step
 
 Options:
---in_biom TEXT              Input table in biom format.
---output_dir TEXT           Location of output files.
---min_sample_depth INTEGER  Minimum Sample Sequencing Depth Cut Off
-                            default=500
---help                      Show this message and exit.
-
+  --in_biom TEXT              Input table in biom format.
+  --output_dir TEXT           Location of output files.
+  --rank INTEGER              Rank with witch to run OptSpace. default=3
+  --min_sample_depth INTEGER  Minimum Sample Sequencing Depth Cut Off
+                              default=500
+  --help                      Show this message and exit.
+```
+```sh
 Usage: deicode_log_ratio [OPTIONS]
 
-  Runs log ratios on import features from RPCA output
+Runs log ratios on import features from RPCA output
 
 Options:
   --in_biom TEXT       Input table in biom format. (optional taxa in
@@ -72,14 +70,11 @@ U,s,V=OptSpace().fit_transform(table_rclr)
 
 ```
 
-## Simulation Benchmarking
-
-[simulations](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/simulations/simulations.ipynb)
-[case studies](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/case_studies/case_studies.ipynb)
-
 ## Other Resources
 
 The code for OptSpace was translated to python from a [MATLAB package](http://swoh.web.engr.illinois.edu/software/optspace/code.html) maintained by Sewoong Oh (UIUC).
+
+[Simulation and Case Study Benchmarking](https://github.com/cameronmartino/DEICODE/tree/master/Benchmarking)
 
 - Transforms and PCoA : [Scikit-bio](https://github.com/biocore/scikit-bio)
 - Data For Examples : [Qiita](https://qiita.ucsd.edu/)
