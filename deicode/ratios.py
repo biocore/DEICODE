@@ -117,15 +117,14 @@ def log_ratios(table_tmp, meta_tmp, feature_load, sample_load,
     taxa_tmp = clean_taxa_table(taxa_tmp, taxa_tmp_)
     # concat features
     feature_taxa = pd.concat([feature_load, taxa_tmp], axis=1, sort=True).dropna(
-        subset=[axis_sort]).sort_values(axis_sort)
+        subset=[axis_sort]).sort_values(axis_sort,ascending=False)
     # level groupby
     level_grouping = {level_: feature_taxa.groupby(level_).sum(
     ).sort_values(axis_sort) for level_ in taxa_tmp.columns}
     # get group dicts
-    top_otus, bottom_otus = bin_level_markers(
-        level_grouping, feature_taxa, level, N_show)
+    top_otus = bin_level_markers(level_grouping, feature_taxa, level, N_show)
     # get table of ratios
-    log_ratios = get_log_ratios(table_tmp, top_otus, bottom_otus)
+    log_ratios = get_log_ratios(table_tmp, top_otus)
     # add that data back to the dicts
     log_ratios = pd.concat([log_ratios, sample_load, meta_tmp], axis=1, sort=True)
     log_ratios['sample_ids'] = log_ratios.index
@@ -145,7 +144,7 @@ def clean_taxa_table(taxa_df, taxa_tmp_):
     mask = np.array([list(taxa_df[l].str.len().values)
                      for l in taxa_df.columns]).T
     mask = pd.DataFrame(mask, taxa_df.index, taxa_df.columns)
-    taxa_df[mask <= 3] = np.nan
+    taxa_df[mask < 5] = np.nan
     lowest_assigned = taxa_df.ffill(axis=1).iloc[:, -1]
     if taxa_tmp_:
         taxa_df['lowest'] = [
@@ -159,33 +158,35 @@ def clean_taxa_table(taxa_df, taxa_tmp_):
             for x, y in zip(
                 lowest_assigned,
                 lowest_assigned.index)]
-    taxa_df[mask <= 3] = '__Unclassified'
+    taxa_df[mask < 5] = '__Unclassified'
 
     return taxa_df
 
 
 def bin_level_markers(level_gp, taxmatch, level, N_show):
     """otus by taxa level given for N x_n,y_n by feature ranking"""
-    top_otus = {}
-    bottom_otus = {}
+    ratios = {}
     for i in range(N_show):
         top_ = level_gp[level].iloc[[i]].index[0]
         bottom_ = level_gp[level].iloc[[-(i + 1)]].index[0]
-        top_otus[top_] = list(taxmatch[taxmatch[level].isin([top_])].index)
-        bottom_otus[bottom_] = list(
-            taxmatch[taxmatch[level].isin([bottom_])].index)
-    return top_otus, bottom_otus
+        top_l = list(taxmatch[taxmatch[level].isin([top_])].index)
+        bottom_l = list(taxmatch[taxmatch[level].isin([bottom_])].index)       
+        ratios[(top_,bottom_)]= (top_l,bottom_l)
+
+    return ratios
 
 
-def get_log_ratios(tabledf, topd, bottomd):
+def get_log_ratios(tabledf, topd):
     """ get log ratios for observed taxa given by bin_level_markers"""
     log_ratios = []
-    for (
-            x_i, x_i_features), (y_j, y_j_features) in zip(
-            topd.items(), bottomd.items()):
-        p_x_i_y_j = tabledf.loc[:, list(x_i_features) + list(y_j_features)]
-        x_i_vector = tabledf.loc[:, x_i_features][p_x_i_y_j.T.min() > 0]
-        y_j_vector = tabledf.loc[:, y_j_features][p_x_i_y_j.T.min() > 0]
+    for (x_i,y_j),(x_i_features,y_j_features) in topd.items():
+        if not isinstance(x_i_features, (list,)):
+            x_i_features=[x_i_features]
+        if not isinstance(y_j_features, (list,)):
+            y_j_features=[y_j_features]
+        p_x_i_y_j = tabledf.loc[:, list(x_i_features)+list(y_j_features)]
+        x_i_vector = tabledf.loc[:, list(x_i_features)][p_x_i_y_j.T.min() > 0]
+        y_j_vector = tabledf.loc[:, list(y_j_features)][p_x_i_y_j.T.min() > 0]
         tmp_ratio = (np.log(x_i_vector).mean(axis=1) -
                      np.log(y_j_vector).mean(axis=1))
         col_ = [

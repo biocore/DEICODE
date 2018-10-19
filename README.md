@@ -74,7 +74,8 @@ U,s,V=OptSpace().fit_transform(table_rclr)
 
 ## Simulation Benchmarking
 
-[rclr preprocessing](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/simulations.ipynb)
+[simulations](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/simulations/simulations.ipynb)
+[case studies](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/case_studies/case_studies.ipynb)
 
 ## Other Resources
 

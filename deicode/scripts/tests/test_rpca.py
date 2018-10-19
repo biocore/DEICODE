@@ -24,9 +24,9 @@ class Test_rpca(unittest.TestCase):
         fea_exp = pd.read_table(get_data_path('feature.txt'), index_col=0)
         samp_exp = pd.read_table(get_data_path('sample.txt'), index_col=0)
 
-        assert_array_almost_equal(dist_res.as_matrix(), dist_exp.as_matrix())
-        assert_array_almost_equal(fea_res.as_matrix(), fea_exp.as_matrix())
-        assert_array_almost_equal(samp_res.as_matrix(), samp_exp.as_matrix())
+        assert_array_almost_equal(dist_res.values, dist_exp.values)
+        assert_array_almost_equal(fea_res.values, fea_exp.values)
+        assert_array_almost_equal(samp_res.values, samp_exp.values)
         self.assertEqual(result.exit_code, 0)
 
 
