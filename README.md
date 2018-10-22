@@ -1,7 +1,5 @@
 
-[![Latest Github release](https://img.shields.io/github/release/cjm007/DEICODE.svg)](https://github.com/cjm007/DEICODE/releases/latest)
-[![Build Status](https://travis-ci.org/cameronmartino/DEICODE.svg?branch=master)](https://travis-ci.org/cameronmartino/DEICODE)[![Coverage Status](https://coveralls.io/repos/github/cjm007/DEICODE/badge.svg?branch=master)](https://coveralls.io/github/cjm007/DEICODE?branch=master)
-[![DOI](https://zenodo.org/badge/72654142.svg)](https://zenodo.org/badge/latestdoi/72654142)
+[![Build Status](https://travis-ci.org/cameronmartino/DEICODE.svg?branch=master)](https://travis-ci.org/cameronmartino/DEICODE)[![Coverage Status](https://coveralls.io/repos/github/cameronmartino/DEICODE/badge.svg?branch=master)](https://coveralls.io/github/cameronmartino/DEICODE?branch=master)
 
 deicode is a tool box for running Robust Aitchison RPCA on sparse omics datasets, linking specific features (i.e. microbes or metabolites) to beta-diversity ordination.
 
@@ -13,7 +11,7 @@ To install the most up to date version of deicode, run the following command
 
 ## Qiime2 tutorial
 
-First make sure that qiime2 is installed before installing songbird.  Then run
+First make sure that qiime2 is installed before installing deicode. Then run
 
 ```
 qiime dev refresh-cache
@@ -21,7 +19,7 @@ qiime dev refresh-cache
 
 Once qiime2 is properly interfaced with deicode, you can import your biom tables
 into Artifacts.  Here we will be using the [Sleep Apnea dataset](https://qiita.ucsd.edu/study/description/10422)
-as an example. The full example run can be [found here](https://github.com/cameronmartino/DEICODE/Examples/sleep_apnea/SleepApnea-qiime2-tutorial.ipynb)
+as an example. The full example run can be [found here](https://github.com/cameronmartino/DEICODE/blob/master/Examples/sleep_apnea/SleepApnea-qiime2-tutorial.ipynb)
 
 ```
 qiime tools import \
@@ -29,7 +27,7 @@ qiime tools import \
     --output-path qiita_10422_table.biom.qza \
     --type FeatureTable[Frequency]
 ```
-You can then run the qiime2 songbird multinomial commmand as follows.
+You can then run the qiime2 deicode rpca-biplot commmand as follows.
 
 ```
 qiime deicode rpca-biplot \
@@ -48,8 +46,7 @@ qiime emperor biplot \
 ```
 You can view the resulting visualization at https://view.qiime2.org.
 It should look as follows
-Inline-style:
-![biplot](https://github.com/cameronmartino/DEICODE/Examples/sleep_apnea/qiime_view.png "biplot")
+![biplot](https://github.com/cameronmartino/DEICODE/blob/master/Examples/sleep_apnea/qiime_view.png)
 
 ## Usage
 
@@ -97,8 +94,8 @@ Options:
 
 ## Simulation Benchmarking
 
-[simulations](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/simulations/simulations.ipynb)
-[case studies](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/case_studies/case_studies.ipynb)
+* [simulations](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/simulations/simulations.ipynb)
+* [case studies](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/case_studies/case_studies.ipynb)
 
 ## Other Resources
 
