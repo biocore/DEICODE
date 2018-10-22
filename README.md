@@ -11,7 +11,6 @@ To install the most up to date version of deicode, run the following command
 
     pip install git+https://github.com/cameronmartino/DEICODE.git
 
-<<<<<<< HEAD
 ## Qiime2 tutorial
 
 First make sure that qiime2 is installed before installing songbird.  Then run
@@ -36,33 +35,10 @@ You can then run the qiime2 songbird multinomial commmand as follows.
 qiime deicode rpca-biplot \
 	--i-table redsea.biom.qza \
 	--p-min-feature-count 10 \
-  --p-min-sample-count 500 \
-	--o-coefficients coefficients.qza
+  	--p-min-sample-count 500 \
+	--o-coefficients ordination.qza
 ```
 Once you have this, you can directly visualize this in emperor
-=======
-## Usage
-
-Command line
-```sh
-Usage: deicode_rpca [OPTIONS]
-
-Runs RPCA with an rclr preprocessing step
-
-Options:
-  --in_biom TEXT              Input table in biom format.
-  --output_dir TEXT           Location of output files.
-  --rank INTEGER              Rank with witch to run OptSpace. default=3
-  --min_sample_depth INTEGER  Minimum Sample Sequencing Depth Cut Off
-                              default=500
-  --help                      Show this message and exit.
-```
-```sh
-Usage: deicode_log_ratio [OPTIONS]
-
-Runs log ratios on import features from RPCA output
->>>>>>> 0a374a2d1c2d57d32e298b975d297c0fd185f227
-
 ```
 qiime emperor biplot \
 	--i-biplot ordination.qza \
@@ -100,34 +76,19 @@ U,s,V=OptSpace().fit_transform(table_rclr)
 
 ```
 
-<<<<<<< HEAD
 Command line
 ```sh
 Usage: deicode_rpca [OPTIONS]
 
-Runs RPCA with an rclr preprocessing step
+  Runs RPCA with an rclr preprocessing step
 
 Options:
---in_biom TEXT              Input table in biom format.
---output_dir TEXT           Location of output files.
---min_sample_depth INTEGER  Minimum Sample Sequencing Depth Cut Off
-                            default=500
---help                      Show this message and exit.
-
-Usage: deicode_log_ratio [OPTIONS]
-
-  Runs log ratios on import features from RPCA output
-
-Options:
-  --in_biom TEXT       Input table in biom format. (optional taxa in
-                       observation)
-  --in_map TEXT        Input metadata in qiime stype format.
-  --in_ord TEXT        RPCA output RPCA_Ordination.txt
-  --output_dir TEXT    Location of output files.
-  --axis INTEGER       Axis of both ordinations to use default=0
-  --n_lr INTEGER       Number of log-ratios to comput default=10
-  --tax_level INTEGER  If taxa included - choose level default=lowest
-  --help               Show this message and exit.
+  --in_biom TEXT              Input table in biom format.
+  --output_dir TEXT           Location of output files.
+  --rank INTEGER              Rank with witch to run OptSpace. default=3
+  --min_sample_depth INTEGER  Minimum Sample Sequencing Depth Cut Off
+                              default=500
+  --help                      Show this message and exit.
 ```
 
 
@@ -136,8 +97,6 @@ Options:
 [simulations](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/simulations/simulations.ipynb)
 [case studies](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/case_studies/case_studies.ipynb)
 
-=======
->>>>>>> 0a374a2d1c2d57d32e298b975d297c0fd185f227
 ## Other Resources
 
 The code for OptSpace was translated to python from a [MATLAB package](http://swoh.web.engr.illinois.edu/software/optspace/code.html) maintained by Sewoong Oh (UIUC).
