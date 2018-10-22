@@ -11,6 +11,7 @@ To install the most up to date version of deicode, run the following command
 
     pip install git+https://github.com/cameronmartino/DEICODE.git
 
+<<<<<<< HEAD
 ## Qiime2 tutorial
 
 First make sure that qiime2 is installed before installing songbird.  Then run
@@ -39,6 +40,28 @@ qiime deicode rpca-biplot \
 	--o-coefficients coefficients.qza
 ```
 Once you have this, you can directly visualize this in emperor
+=======
+## Usage
+
+Command line
+```sh
+Usage: deicode_rpca [OPTIONS]
+
+Runs RPCA with an rclr preprocessing step
+
+Options:
+  --in_biom TEXT              Input table in biom format.
+  --output_dir TEXT           Location of output files.
+  --rank INTEGER              Rank with witch to run OptSpace. default=3
+  --min_sample_depth INTEGER  Minimum Sample Sequencing Depth Cut Off
+                              default=500
+  --help                      Show this message and exit.
+```
+```sh
+Usage: deicode_log_ratio [OPTIONS]
+
+Runs log ratios on import features from RPCA output
+>>>>>>> 0a374a2d1c2d57d32e298b975d297c0fd185f227
 
 ```
 qiime emperor biplot \
@@ -77,6 +100,7 @@ U,s,V=OptSpace().fit_transform(table_rclr)
 
 ```
 
+<<<<<<< HEAD
 Command line
 ```sh
 Usage: deicode_rpca [OPTIONS]
@@ -112,9 +136,13 @@ Options:
 [simulations](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/simulations/simulations.ipynb)
 [case studies](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/case_studies/case_studies.ipynb)
 
+=======
+>>>>>>> 0a374a2d1c2d57d32e298b975d297c0fd185f227
 ## Other Resources
 
 The code for OptSpace was translated to python from a [MATLAB package](http://swoh.web.engr.illinois.edu/software/optspace/code.html) maintained by Sewoong Oh (UIUC).
+
+[Simulation and Case Study Benchmarking](https://github.com/cameronmartino/DEICODE/tree/master/Benchmarking)
 
 - Transforms and PCoA : [Scikit-bio](https://github.com/biocore/scikit-bio)
 - Data For Examples : [Qiita](https://qiita.ucsd.edu/)
