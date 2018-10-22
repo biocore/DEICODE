@@ -20,33 +20,36 @@ qiime dev refresh-cache
 ```
 
 Once qiime2 is properly interfaced with deicode, you can import your biom tables
-into Artifacts.  Here we will be using the [Redsea metagenome dataset](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5315489/)
-as an example.  Starting from the songbird root folder, you can import this dataset as follows
+into Artifacts.  Here we will be using the [Sleep Apnea dataset](https://qiita.ucsd.edu/study/description/10422)
+as an example. The full example run can be [found here](https://github.com/cameronmartino/DEICODE/Examples/sleep_apnea/SleepApnea-qiime2-tutorial.ipynb)
 
 ```
 qiime tools import \
-	--input-path data/redredsea.biom \
-	--output-path redsea.biom.qza \
-	--type FeatureTable[Frequency]
+    --input-path qiita_10422_table.biom \
+    --output-path qiita_10422_table.biom.qza \
+    --type FeatureTable[Frequency]
 ```
 You can then run the qiime2 songbird multinomial commmand as follows.
 
 ```
 qiime deicode rpca-biplot \
-	--i-table redsea.biom.qza \
-	--p-min-feature-count 10 \
-  	--p-min-sample-count 500 \
-	--o-biplot ordination.qza
+    --i-table qiita_10422_table.biom.qza \
+    --p-min-feature-count 10 \
+    --p-min-sample-count 500 \
+    --o-biplot ordination.qza
 ```
 Once you have this, you can directly visualize this in emperor
 ```
 qiime emperor biplot \
-	--i-biplot ordination.qza \
-	--m-sample-metadata-file data/redsea/feature_metadata.txt \
-	--o-visualization emperor-biplot \
-	--p-number-of-features 8
+    --i-biplot ordination.qza \
+    --m-sample-metadata-file qiita_10422_metadata.tsv \
+    --o-visualization biplot.qzv \
+    --p-number-of-features 8
 ```
-You can view the resulting visualization at https://view.qiime2.org
+You can view the resulting visualization at https://view.qiime2.org.
+It should look as follows
+Inline-style:
+![biplot](https://github.com/cameronmartino/DEICODE/Examples/sleep_apnea/qiime_view.png "biplot")
 
 ## Usage
 
