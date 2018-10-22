@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 
-def log_ratios(table_tmp, meta_tmp, feature_load, sample_load, 
+def log_ratios(table_tmp, feature_load, sample_load, 
                taxa_tmp=None, axis_sort=0, N_show=3, level='lowest'):
     """"
 
@@ -11,9 +11,6 @@ def log_ratios(table_tmp, meta_tmp, feature_load, sample_load,
 
     table_tmp: pandas dataframe - a data table of shape (M,N)
                 N = Features (i.e. OTUs, metabolites) - cols
-                M = Samples - index
-    meta_tmp: pandas dataframe - a metadata table of shape (C,M)
-                C = catagories (i.e. body_site) - cols
                 M = Samples - index
     feature_load: pandas dataframe - a table of shape (P,N)
                 M = PC - cols
@@ -126,9 +123,7 @@ def log_ratios(table_tmp, meta_tmp, feature_load, sample_load,
     # get table of ratios
     log_ratios = get_log_ratios(table_tmp, top_otus)
     # add that data back to the dicts
-    log_ratios = pd.concat([log_ratios, sample_load, meta_tmp], axis=1, sort=True)
-    log_ratios['sample_ids'] = log_ratios.index
-    log_ratios.reset_index(inplace=True, drop=True)
+    log_ratios = pd.concat([sample_load, log_ratios], axis=1, sort=True)
     return log_ratios
 
 
@@ -190,7 +185,7 @@ def get_log_ratios(tabledf, topd):
         tmp_ratio = (np.log(x_i_vector).mean(axis=1) -
                      np.log(y_j_vector).mean(axis=1))
         col_ = [
-            'ln(\dfrac{' +
+            'log(\dfrac{' +
             x_i.replace(
                 '__',
                 '') +

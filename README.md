@@ -11,11 +11,71 @@ To install the most up to date version of deicode, run the following command
 
     pip install git+https://github.com/cameronmartino/DEICODE.git
 
-## Examples
+## Qiime2 tutorial
 
-TODO
+First make sure that qiime2 is installed before installing songbird.  Then run
+
+```
+qiime dev refresh-cache
+```
+
+Once qiime2 is properly interfaced with deicode, you can import your biom tables
+into Artifacts.  Here we will be using the [Redsea metagenome dataset](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5315489/)
+as an example.  Starting from the songbird root folder, you can import this dataset as follows
+
+```
+qiime tools import \
+	--input-path data/redredsea.biom \
+	--output-path redsea.biom.qza \
+	--type FeatureTable[Frequency]
+```
+You can then run the qiime2 songbird multinomial commmand as follows.
+
+```
+qiime deicode rpca-biplot \
+	--i-table redsea.biom.qza \
+	--p-min-feature-count 10 \
+  --p-min-sample-count 500 \
+	--o-coefficients coefficients.qza
+```
+Once you have this, you can directly visualize this in emperor
+
+```
+qiime emperor biplot \
+	--i-biplot ordination.qza \
+	--m-sample-metadata-file data/redsea/feature_metadata.txt \
+	--o-visualization emperor-biplot \
+	--p-number-of-features 8
+```
+You can view the resulting visualization at https://view.qiime2.org
 
 ## Usage
+
+Python
+```python
+
+from deicode.optspace import OptSpace
+from deicode.preprocessing import rclr
+import numpy as np
+
+# rclr preprocessing
+
+# numpy.ndarray - a array of counts (samples,features) with shape (M,N) where N>M
+table=np.array([[3, 3, 0], [0, 4, 2], [3, 0, 1]]) 
+table_rclr=rclr().fit_transform(table)
+
+# OptSpace (RPCA)
+
+opt=OptSpace().fit(table_rclr)
+U=opt.sample_weights # numpy.ndarray - "Sample Loadings" 
+V=opt.feature_weights # numpy.ndarray - "Feature Loadings" 
+s=opt.s # numpy.ndarray - The singular values
+
+# or directly transform
+
+U,s,V=OptSpace().fit_transform(table_rclr)
+
+```
 
 Command line
 ```sh
@@ -46,31 +106,6 @@ Options:
   --help               Show this message and exit.
 ```
 
-Python
-```python
-
-from deicode.optspace import OptSpace
-from deicode.preprocessing import rclr
-import numpy as np
-
-# rclr preprocessing
-
-# numpy.ndarray - a array of counts (samples,features) with shape (M,N) where N>M
-table=np.array([[3, 3, 0], [0, 4, 2], [3, 0, 1]]) 
-table_rclr=rclr().fit_transform(table)
-
-# OptSpace (RPCA)
-
-opt=OptSpace().fit(table_rclr)
-U=opt.sample_weights # numpy.ndarray - "Sample Loadings" 
-V=opt.feature_weights # numpy.ndarray - "Feature Loadings" 
-s=opt.s # numpy.ndarray - The singular values
-
-# or directly transform
-
-U,s,V=OptSpace().fit_transform(table_rclr)
-
-```
 
 ## Simulation Benchmarking
 

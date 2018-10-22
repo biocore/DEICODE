@@ -86,10 +86,12 @@ setup(name='deicode',
           'nose >= 1.3.7',
           'scikit-learn >= 0.18.1',
           'scikit-bio >= 0.5.1',
-          'seaborn >= 0.9.0',
-      ], entry_points='''
-        [console_scripts]
-        deicode_rpca=deicode.scripts._rpca:RPCA
-        deicode_log_ratio=deicode.scripts._logratio:logratio''',
+          'seaborn >= 0.9.0',],
       classifiers=classifiers,
-      package_data={})
+      entry_points={
+          'qiime2.plugins': ['q2-deicode=deicode.q2.plugin_setup:plugin'],
+          'console_scripts': ['deicode_rpca=deicode.scripts._rpca:RPCA',
+                              'deicode_log_ratio=deicode.scripts._logratio:logratio']
+      },
+      package_data={},
+      zip_safe=False)

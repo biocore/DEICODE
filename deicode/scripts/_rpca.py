@@ -1,10 +1,11 @@
 from biom import load_table
 import pandas as pd
 import numpy as np
-import skbio
+from skbio import  OrdinationResults, stats
 import os
 from deicode.optspace import OptSpace
 from deicode.preprocessing import rclr
+from scipy.spatial.distance import euclidean
 import click
 
 
@@ -22,8 +23,9 @@ def RPCA(in_biom: str, output_dir: str,
          min_sample_depth: int, rank: int) -> None:
     """ Runs RPCA with an rclr preprocessing step"""
 
+    # import table
     table = load_table(in_biom)
-
+    # filter sample to min depth
     def sample_filter(val, id_, md): return sum(val) > min_sample_depth
     table = table.filter(sample_filter, axis='sample')
     table = table.to_dataframe().T.drop_duplicates()
@@ -34,6 +36,7 @@ def RPCA(in_biom: str, output_dir: str,
     # Feature Loadings
     feature_loading = pd.DataFrame(opt.feature_weights, index=table.columns)
     feature_loading = feature_loading.rename(columns=rename_cols)
+    feature_loading.sort_values('PC1', inplace=True, ascending=True)
 
     # Sample Loadings
     sample_loading = pd.DataFrame(opt.sample_weights, index=table.index)
@@ -43,22 +46,18 @@ def RPCA(in_biom: str, output_dir: str,
                                      index=list(rename_cols.values()))
     eigvals = pd.Series(opt.eigenvalues,
                         index=list(rename_cols.values()))
-    ord_res = skbio.OrdinationResults(
-            'PCoA',
+    # save ordination results 
+    ord_res = OrdinationResults(
+            'PCoA', 
             'Principal Coordinate Analysis',
-            eigvals,
-            sample_loading,
-            features=feature_loading,
-            proportion_explained=proportion_explained)
-
-    # distance
-    pd.DataFrame(opt.distance, table.index,
-                 table.index).to_csv(os.path.join(output_dir,
-                                                  'Robust_Aitchison_Distance.tsv'), sep='\t')
+            eigvals.copy(),
+            sample_loading.copy(),
+            features=feature_loading.copy(),
+            proportion_explained=proportion_explained.copy())
     # write files to output folder
     ord_res.write(os.path.join(output_dir, 'RPCA_Ordination.txt'))
-    return
 
+    return
 
 if __name__ == '__main__':
     RPCA()
