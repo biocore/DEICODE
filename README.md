@@ -48,7 +48,6 @@ qiime emperor biplot \
 ```
 You can view the resulting visualization at https://view.qiime2.org.
 It should look as follows
-Inline-style:
 ![biplot](https://github.com/cameronmartino/DEICODE/blob/master/Examples/sleep_apnea/qiime_view.png)
 
 ## Usage
