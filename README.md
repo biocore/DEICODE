@@ -36,7 +36,7 @@ qiime deicode rpca-biplot \
 	--i-table redsea.biom.qza \
 	--p-min-feature-count 10 \
   	--p-min-sample-count 500 \
-	--o-coefficients ordination.qza
+	--o-biplot ordination.qza
 ```
 Once you have this, you can directly visualize this in emperor
 ```
