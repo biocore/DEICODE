@@ -13,7 +13,7 @@ To install the most up to date version of deicode, run the following command
 
 ## Qiime2 tutorial
 
-First make sure that qiime2 is installed before installing songbird.  Then run
+First make sure that qiime2 is installed before installing deicode. Then run
 
 ```
 qiime dev refresh-cache
@@ -29,7 +29,7 @@ qiime tools import \
     --output-path qiita_10422_table.biom.qza \
     --type FeatureTable[Frequency]
 ```
-You can then run the qiime2 songbird multinomial commmand as follows.
+You can then run the qiime2 deicode rpca-biplot commmand as follows.
 
 ```
 qiime deicode rpca-biplot \
@@ -49,7 +49,7 @@ qiime emperor biplot \
 You can view the resulting visualization at https://view.qiime2.org.
 It should look as follows
 Inline-style:
-![biplot](https://github.com/cameronmartino/DEICODE/Examples/sleep_apnea/qiime_view.png "biplot")
+![biplot](https://github.com/cameronmartino/DEICODE/blob/master/Examples/sleep_apnea/qiime_view.png)
 
 ## Usage
 
