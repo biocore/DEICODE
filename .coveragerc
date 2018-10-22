@@ -5,7 +5,11 @@ omit =
     */tests*
     */__init__.py
     */deicode/optspace.py
-    */deicode/utils.py 
+    */deicode/utils.py
+    *deicode/scripts/_logratio.py
+    *deicode/q2/plugin_setup.py
+    *deicode/ratios.py
+    *deicode/q2/_method.py 
 source = DEICODE
 branch = True
 include = */deicode/*
@@ -19,4 +23,8 @@ omit =
     */tests*
     */__init__.py
     */deicode/optspace.py
-    */deicode/utils.py     
+    */deicode/utils.py 
+    *deicode/scripts/_logratio.py
+    *deicode/q2/plugin_setup.py
+    *deicode/ratios.py
+    *deicode/q2/_method.py    
