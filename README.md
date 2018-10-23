@@ -1,5 +1,6 @@
 
-[![Build Status](https://travis-ci.org/cameronmartino/DEICODE.svg?branch=master)](https://travis-ci.org/cameronmartino/DEICODE)[![Coverage Status](https://coveralls.io/repos/github/cameronmartino/DEICODE/badge.svg?branch=master)](https://coveralls.io/github/cameronmartino/DEICODE?branch=master)
+[![Build Status](https://travis-ci.org/cameronmartino/DEICODE.svg?branch=master)](https://travis-ci.org/cameronmartino/DEICODE)
+[![Coverage Status](https://coveralls.io/repos/github/cameronmartino/DEICODE/badge.svg)](https://coveralls.io/github/cameronmartino/DEICODE)
 
 deicode is a tool box for running Robust Aitchison RPCA on sparse omics datasets, linking specific features to beta-diversity ordination.
 
