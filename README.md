@@ -20,7 +20,7 @@ qiime dev refresh-cache
 
 Once qiime2 is properly interfaced with deicode, you can import your biom tables
 into Artifacts.  Here we will be using the [Sleep Apnea dataset](https://qiita.ucsd.edu/study/description/10422)
-as an example. The full example run can be [found here](https://github.com/cameronmartino/DEICODE/blob/master/Examples/sleep_apnea/SleepApnea-qiime2-tutorial.ipynb)
+as an example. The full example run can be [found here](https://github.com/cameronmartino/DEICODE/blob/master/ipynb/sleep_apnea/SleepApnea-qiime2-tutorial.ipynb)
 
 ```
 qiime tools import \
@@ -47,7 +47,7 @@ qiime emperor biplot \
 ```
 You can view the resulting visualization at https://view.qiime2.org.
 It should look as follows
-![biplot](https://github.com/cameronmartino/DEICODE/blob/master/Examples/sleep_apnea/qiime_view.png)
+![biplot](https://github.com/cameronmartino/DEICODE/blob/master/ipynb/sleep_apnea/qiime_view.png)
 
 ## Usage
 
