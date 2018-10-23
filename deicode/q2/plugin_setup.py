@@ -32,7 +32,8 @@ plugin.methods.register_function(
     parameters={
         'rank': Int,
         'min_sample_count': Int,
-        'min_feature_count': Int
+        'min_feature_count': Int,
+        'axis_sort': Str
     },
     outputs=[
         ('biplot', PCoAResults % Properties("biplot"))

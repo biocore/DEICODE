@@ -8,7 +8,8 @@ from deicode.preprocessing import rclr
 
 def rpca_biplot(table: biom.Table, rank: int=3, 
                 min_sample_count: int=500, 
-                min_feature_count: int=10) -> skbio.OrdinationResults:
+                min_feature_count: int=10,
+                axis_sort: str='PC1') -> skbio.OrdinationResults:
 
     """ Runs RPCA with an rclr preprocessing step"""
 
@@ -17,7 +18,6 @@ def rpca_biplot(table: biom.Table, rank: int=3,
     table = table.filter(sample_filter, axis='sample')
     table = table.to_dataframe().T.drop_duplicates()
     table = table.T[table.sum()>min_feature_count].T
-    table
 
     # rclr preprocessing and OptSpace (RPCA)
     opt = OptSpace(rank=rank).fit(rclr().fit_transform(table.copy()))
@@ -32,10 +32,20 @@ def rpca_biplot(table: biom.Table, rank: int=3,
     sample_loading = pd.DataFrame(opt.sample_weights, index=table.index)
     sample_loading = sample_loading.rename(columns=rename_cols)
 
+    # % var explained
     proportion_explained = pd.Series(opt.explained_variance_ratio,
                                      index=list(rename_cols.values()))
+    # eigan-vals
     eigvals = pd.Series(opt.eigenvalues,
                         index=list(rename_cols.values()))
+
+    # if the rank is two add PC3 of zeros
+    if rank==2:
+        feature_loading['PC3']=[0]*len(feature_loading.index)
+        sample_loading['PC3']=[0]*len(sample_loading.index)
+        eigvals.loc['PC3']=0
+        proportion_explained.loc['PC3']=0
+
     # save ordination results 
     short_method_name = 'rpca_biplot'
     long_method_name = '(Robust Aitchison) RPCA Biplot'
