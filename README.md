@@ -4,6 +4,8 @@
 
 deicode is a tool box for running Robust Aitchison RPCA on sparse omics datasets, linking specific features to beta-diversity ordination.
 
+Note that deicode is not compatible with python 2, and is compatible with Python 3.4 or later. deicode is currently in alpha. We are actively developing it, and backward-incompatible interface changes may arise.
+
 ## Installation
 
 To install the most up to date version of deicode, run the following command
@@ -11,6 +13,8 @@ To install the most up to date version of deicode, run the following command
     pip install git+https://github.com/cameronmartino/DEICODE.git
 
 ## Qiime2 tutorial
+
+[Sleep Apnea Biplots](https://github.com/cameronmartino/DEICODE/blob/master/ipynb/sleep_apnea/SleepApnea-qiime2-tutorial.ipynb)
 
 First make sure that qiime2 is installed before installing deicode. Then run
 
@@ -20,7 +24,7 @@ qiime dev refresh-cache
 
 Once qiime2 is properly interfaced with deicode, you can import your biom tables
 into Artifacts.  Here we will be using the [Sleep Apnea dataset](https://qiita.ucsd.edu/study/description/10422)
-as an example. The full example run can be [found here](https://github.com/cameronmartino/DEICODE/blob/master/ipynb/sleep_apnea/SleepApnea-qiime2-tutorial.ipynb)
+as an example.
 
 ```
 qiime tools import \
@@ -49,49 +53,9 @@ You can view the resulting visualization at https://view.qiime2.org.
 It should look as follows
 ![biplot](https://github.com/cameronmartino/DEICODE/blob/master/ipynb/sleep_apnea/qiime_view.png)
 
-## Usage
+## Python Tutorial
 
-Python
-```python
-
-from deicode.optspace import OptSpace
-from deicode.preprocessing import rclr
-import numpy as np
-
-# rclr preprocessing
-
-# numpy.ndarray - a array of counts (samples,features) with shape (M,N) where N>M
-table=np.array([[3, 3, 0], [0, 4, 2], [3, 0, 1]]) 
-table_rclr=rclr().fit_transform(table)
-
-# OptSpace (RPCA)
-
-opt=OptSpace().fit(table_rclr)
-U=opt.sample_weights # numpy.ndarray - "Sample Loadings" 
-V=opt.feature_weights # numpy.ndarray - "Feature Loadings" 
-s=opt.s # numpy.ndarray - The singular values
-
-# or directly transform
-
-U,s,V=OptSpace().fit_transform(table_rclr)
-
-```
-
-Command line
-```sh
-Usage: deicode_rpca [OPTIONS]
-
-  Runs RPCA with an rclr preprocessing step
-
-Options:
-  --in_biom TEXT              Input table in biom format.
-  --output_dir TEXT           Location of output files.
-  --rank INTEGER              Rank with witch to run OptSpace. default=3
-  --min_sample_depth INTEGER  Minimum Sample Sequencing Depth Cut Off
-                              default=500
-  --help                      Show this message and exit.
-```
-
+[Sleep Apnea Log Ratio Tutorial](https://github.com/cameronmartino/DEICODE/blob/master/ipynb/sleep_apnea/SleepApnea-python-tutorial.ipynb)
 
 ## Simulation Benchmarking
 
