@@ -12,9 +12,13 @@ To install the most up to date version of deicode, run the following command
 
     pip install git+https://github.com/cameronmartino/DEICODE.git
 
-## Qiime2 tutorial
+## Tutorials
 
-[Sleep Apnea Biplots](https://github.com/cameronmartino/DEICODE/blob/master/ipynb/sleep_apnea/SleepApnea-qiime2-tutorial.ipynb)
+* [What is Robust Aitchison RPCA](https://github.com/cameronmartino/DEICODE/blob/master/ipynb/introduction.ipynb)
+
+### Qiime2 tutorial
+
+* [Sleep Apnea Biplots](https://github.com/cameronmartino/DEICODE/blob/master/ipynb/sleep_apnea/SleepApnea-qiime2-tutorial.ipynb)
 
 First make sure that qiime2 is installed before installing deicode. Then run
 
@@ -53,9 +57,9 @@ You can view the resulting visualization at https://view.qiime2.org.
 It should look as follows
 ![biplot](https://github.com/cameronmartino/DEICODE/blob/master/ipynb/sleep_apnea/qiime_view.png)
 
-## Python Tutorial
+### Python Tutorial
 
-[Sleep Apnea Log Ratio Tutorial](https://github.com/cameronmartino/DEICODE/blob/master/ipynb/sleep_apnea/SleepApnea-python-tutorial.ipynb)
+* [Sleep Apnea Log Ratio Tutorial](https://github.com/cameronmartino/DEICODE/blob/master/ipynb/sleep_apnea/SleepApnea-python-tutorial.ipynb)
 
 ## Simulation Benchmarking
 
