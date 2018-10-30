@@ -85,7 +85,7 @@ setup(name='deicode',
           'scipy >= 0.19.1',
           'nose >= 1.3.7',
           'scikit-learn >= 0.18.1',
-          'scikit-bio >= 0.5.1',
+          'scikit-bio > 0.5.3',
           'seaborn >= 0.9.0',],
       classifiers=classifiers,
       entry_points={

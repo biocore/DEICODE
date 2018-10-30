@@ -8,6 +8,7 @@ from scipy.stats import norm
 from numpy.random import poisson, lognormal
 from skbio.stats.composition import closure
 from scipy.special import kl_div
+from scipy.stats import entropy
 # minimize model perams
 from sklearn.metrics import mean_squared_error
 from scipy.optimize import minimize
@@ -37,7 +38,6 @@ def mean_KL(a, b):
     for i in range(a.shape[0]):
         kl += [kl_div(a[i], b[i])]
     return np.mean(kl)
-
 
 def Homoscedastic(X_noise, intensity):
     """ uniform normally dist. noise """

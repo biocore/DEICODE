@@ -113,7 +113,7 @@ def log_ratios(table_tmp, feature_load, sample_load,
     # convert unknown taxa to "other"
     taxa_tmp = clean_taxa_table(taxa_tmp, taxa_tmp_)
     # concat features
-    feature_taxa = pd.concat([feature_load, taxa_tmp], axis=1, sort=True).dropna(
+    feature_taxa = pd.concat([feature_load, taxa_tmp], axis=1).dropna(
         subset=[axis_sort]).sort_values(axis_sort,ascending=False)
     # level groupby
     level_grouping = {level_: feature_taxa.groupby(level_).sum(
@@ -123,7 +123,7 @@ def log_ratios(table_tmp, feature_load, sample_load,
     # get table of ratios
     log_ratios = get_log_ratios(table_tmp, top_otus)
     # add that data back to the dicts
-    log_ratios = pd.concat([sample_load, log_ratios], axis=1, sort=True)
+    log_ratios = pd.concat([sample_load, log_ratios], axis=1)
     return log_ratios
 
 
@@ -195,4 +195,4 @@ def get_log_ratios(tabledf, topd):
                 '') +
             '})']
         log_ratios.append(pd.DataFrame(tmp_ratio, columns=col_))
-    return pd.concat(log_ratios, axis=1, sort=True)
+    return pd.concat(log_ratios, axis=1)
