@@ -9,12 +9,11 @@ from skbio.stats import subsample_counts
 #MOCK data generation
 from gneiss.util import match
 from gneiss.sort import niche_sort
-from deicode.utils import block_diagonal_gaus
-from deicode.utils import build_block_model
-from deicode.utils import minimize_model
+from simulations import block_diagonal_gaus
+from simulations import build_block_model
+from simulations import minimize_model
 #compostional transform
 from skbio.stats.composition import clr
-from deicode.utils import mean_KL
 
 # import observation data
 in_biom='cluster_models/keyboard.biom' #import biom file

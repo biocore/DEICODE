@@ -3,7 +3,7 @@ import numpy as np
 from biom import Table
 from skbio import OrdinationResults
 from deicode.q2._method import rpca_biplot
-from deicode.utils import build_block_model
+from simulations import build_block_model
 
 class Testrpca_biplot(unittest.TestCase):
 
