@@ -10,6 +10,10 @@ Note that deicode is not compatible with python 2, and is compatible with Python
 
 To install the most up to date version of deicode, run the following command
 
+    # stable version (currently v.0.1.0)
+    pip install deicode
+
+    # dev. version
     pip install git+https://github.com/cameronmartino/DEICODE.git
 
 ## Tutorials
