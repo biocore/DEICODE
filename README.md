@@ -63,14 +63,14 @@ It should look as follows
 
 ## Simulation Benchmarking
 
-* [simulations](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/simulations/simulations.ipynb)
-* [case studies](https://github.com/cameronmartino/DEICODE/blob/master/Benchmarking/case_studies/case_studies.ipynb)
+* [simulations](https://github.com/cameronmartino/DEICODE/tree/master/benchmarking/simulations)
+* [case studies](https://github.com/cameronmartino/DEICODE/tree/master/benchmarking/case_studies)
 
 ## Other Resources
 
 The code for OptSpace was translated to python from a [MATLAB package](http://swoh.web.engr.illinois.edu/software/optspace/code.html) maintained by Sewoong Oh (UIUC).
 
-[Simulation and Case Study Benchmarking](https://github.com/cameronmartino/DEICODE/tree/master/Benchmarking)
+[Simulation and Case Study Benchmarking](https://github.com/cameronmartino/DEICODE/tree/master/benchmarking)
 
 - Transforms and PCoA : [Scikit-bio](https://github.com/biocore/scikit-bio)
 - Data For Examples : [Qiita](https://qiita.ucsd.edu/)
