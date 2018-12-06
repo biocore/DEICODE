@@ -67,10 +67,6 @@ class OptSpace(_BaseImpute):
         Raises an error if input is not either dataframe or np.ndarray
             `ValueError: Input data is should be type numpy.ndarray`.
 
-        Raises an error if input shape (M,N) where N>M
-            `ValueError: Data-table contains more samples than features,
-            most likely your data is transposed`.
-
         Raises an error if input data does not contain any nans or zeros
             `ValueError: Data-table contains no missing
             data in the format np.nan or 0`.
@@ -153,9 +149,6 @@ class OptSpace(_BaseImpute):
             X_sparse = np.array(X_sparse)
             if not isinstance(X_sparse, np.ndarray):
                 raise ValueError('Input data is should be type numpy.ndarray')
-
-        if X_sparse.shape[0] > X_sparse.shape[1]:
-            raise ValueError('Data-table contains more samples than features')
 
         if (np.count_nonzero(X_sparse) == 0 and
                 np.count_nonzero(~np.isnan(X_sparse)) == 0):
