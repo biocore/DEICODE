@@ -54,6 +54,7 @@ Once you have this, you can directly visualize this in emperor
 qiime emperor biplot \
     --i-biplot ordination.qza \
     --m-sample-metadata-file qiita_10422_metadata.tsv \
+    --m-feature-metadata-file taxonomy.qza \
     --o-visualization biplot.qzv \
     --p-number-of-features 8
 ```
