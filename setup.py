@@ -12,21 +12,40 @@ import re
 import ast
 import os
 from setuptools import find_packages, setup
-from setuptools.command.build_ext import build_ext as _build_ext
-
-
-class build_ext(_build_ext):
-    def finalize_options(self):
-        _build_ext.finalize_options(self)
-        # Prevent numpy from thinking it is still in its setup process:
-        __builtins__.__NUMPY_SETUP__ = False
-        import numpy
-        self.include_dirs.append(numpy.get_include())
-
 
 # Dealing with Cython
 USE_CYTHON = os.environ.get('USE_CYTHON', False)
 ext = '.pyx' if USE_CYTHON else '.c'
+
+# bootstrap numpy intall
+#https://stackoverflow.com/questions/51546255/
+# python-package-setup-setup-py-with-customisation
+# -to-handle-wrapped-fortran
+from setuptools.command.install import install
+from setuptools.command.develop import develop
+from setuptools.command.egg_info import egg_info
+
+def custom_command():
+    import sys
+    if sys.platform in ['darwin', 'linux']:
+        os.system('pip install numpy>=1.12.1')
+
+class CustomInstallCommand(install):
+    def run(self):
+        install.run(self)
+        custom_command()
+
+
+class CustomDevelopCommand(develop):
+    def run(self):
+        develop.run(self)
+        custom_command()
+
+
+class CustomEggInfoCommand(egg_info):
+    def run(self):
+        egg_info.run(self)
+        custom_command()
 
 extensions = [
 ]
@@ -49,11 +68,10 @@ classes = """
 """
 classifiers = [s.strip() for s in classes.split('\n') if s]
 
-description = ('Robust Aitchison RPCA toolbox')
+description = ('Robust Aitchison compositional biplots from sparse count data')
 
 with open('README.md') as f:
     long_description = f.read()
-
 
 # version parsing from __init__ pulled from Flask's setup.py
 # https://github.com/mitsuhiko/flask/blob/master/setup.py
@@ -73,14 +91,12 @@ setup(name='deicode',
       maintainer="deicode development team",
       maintainer_email="cameronmartino@gmail.com",
       packages=find_packages(),
-      setup_requires=['numpy >= 1.9.2'],
       ext_modules=extensions,
-      cmdclass={'build_ext': build_ext},
       install_requires=[
+          'numpy >= 1.12.1',
           'Click',
           'IPython >= 3.2.0',
           'matplotlib >= 1.4.3',
-          'numpy >= 1.12.1',
           'pandas >= 0.10.0',
           'scipy >= 0.19.1',
           'nose >= 1.3.7',
@@ -90,8 +106,10 @@ setup(name='deicode',
       classifiers=classifiers,
       entry_points={
           'qiime2.plugins': ['q2-deicode=deicode.q2.plugin_setup:plugin'],
-          'console_scripts': ['deicode_rpca=deicode.scripts._rpca:RPCA',
-                              'deicode_log_ratio=deicode.scripts._logratio:logratio']
+          'console_scripts': ['deicode_rpca=deicode.scripts._rpca:RPCA']
       },
       package_data={},
+      cmdclass={'install': CustomInstallCommand,
+                'develop': CustomDevelopCommand,
+                'egg_info': CustomEggInfoCommand,},
       zip_safe=False)
