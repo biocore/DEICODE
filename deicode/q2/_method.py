@@ -9,7 +9,7 @@ from deicode.preprocessing import rclr
 def rpca_biplot(table: biom.Table, rank: int=3, 
                 min_sample_count: int=500, 
                 min_feature_count: int=10,
-                axis_sort: str='PC1') -> skbio.OrdinationResults:
+                iterations: int=5) -> skbio.OrdinationResults:
 
     """ Runs RPCA with an rclr preprocessing step"""
 
@@ -20,7 +20,7 @@ def rpca_biplot(table: biom.Table, rank: int=3,
     table = table.T[table.sum()>min_feature_count].T
 
     # rclr preprocessing and OptSpace (RPCA)
-    opt = OptSpace(rank=rank).fit(rclr().fit_transform(table.copy()))
+    opt = OptSpace(rank=rank, iteration=iterations).fit(rclr().fit_transform(table.copy()))
     rename_cols={i-1:'PC'+str(i) for i in range(1,rank+1)}
     
     # Feature Loadings
