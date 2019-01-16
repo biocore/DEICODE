@@ -22,8 +22,9 @@ plugin = qiime2.plugin.Plugin(
     version=__version__,
     website="https://github.com/cameronmartino/DEICODE",
     # citations=[citations['martino-unpublished']],
-    short_description=('Plugin for Robust Aitchison RPCA on counts.'),
-    description=('This is a QIIME 2 plugin supporting Robust Aitchison RPCA on '
+    short_description=('Plugin for Robust Aitchison compositional'
+                       ' biplots from sparse count data.'),
+    description=('This is a QIIME 2 plugin supporting Robust Aitchison on '
                  'feature tables'),
     package='deicode')
 

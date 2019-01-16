@@ -7,7 +7,7 @@ notebook
 scikit-bio
 scikit-learn
 biom-format
-numpy
+numpy>=1.12.1
 scipy
 matplotlib
 pandas
