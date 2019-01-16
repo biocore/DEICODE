@@ -65,7 +65,7 @@ with open('deicode/__init__.py', 'rb') as f:
 
 setup(name='deicode',
       version=version,
-      license='BSD',
+      license='BSD-3-Clause',
       description=description,
       long_description=long_description,
       author="deicode development team",
