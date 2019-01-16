@@ -28,19 +28,17 @@ from setuptools.command.egg_info import egg_info
 def custom_command():
     import sys
     if sys.platform in ['darwin', 'linux']:
-        os.system('pip install numpy>=1.12.1')
+        os.system('pip install numpy')
 
 class CustomInstallCommand(install):
     def run(self):
         install.run(self)
         custom_command()
 
-
 class CustomDevelopCommand(develop):
     def run(self):
         develop.run(self)
         custom_command()
-
 
 class CustomEggInfoCommand(egg_info):
     def run(self):
@@ -102,11 +100,13 @@ setup(name='deicode',
           'nose >= 1.3.7',
           'scikit-learn >= 0.18.1',
           'scikit-bio > 0.5.3',
-          'seaborn >= 0.9.0',],
+          'seaborn >= 0.9.0',
+          'biom-format',
+          'h5py',],
       classifiers=classifiers,
       entry_points={
           'qiime2.plugins': ['q2-deicode=deicode.q2.plugin_setup:plugin'],
-          'console_scripts': ['deicode_rpca=deicode.scripts._rpca:RPCA']
+          'console_scripts': ['deicode=deicode.scripts._rpca:RPCA']
       },
       package_data={},
       cmdclass={'install': CustomInstallCommand,
