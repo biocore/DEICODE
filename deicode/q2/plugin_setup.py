@@ -5,6 +5,7 @@
 #
 # The full license is in the file COPYING.txt, distributed with this software.
 # ----------------------------------------------------------------------------
+
 import qiime2.plugin
 import qiime2.sdk
 from deicode import __version__
@@ -33,7 +34,7 @@ plugin.methods.register_function(
         'rank': Int,
         'min_sample_count': Int,
         'min_feature_count': Int,
-        'axis_sort': Str
+        'iterations': Int,
     },
     outputs=[
         ('biplot', PCoAResults % Properties("biplot"))
@@ -42,7 +43,11 @@ plugin.methods.register_function(
         'table': 'Input table of counts.',
     },
     parameter_descriptions={
-        'rank': ('The underlying low-rank structure')
+        'rank': ('The underlying low-rank structure (suggested: 1 < rank < 10)'),
+        'min_sample_count': ('Minimum sum cutoff of sample across all features'),
+        'min_feature_count': ('Minimum sum cutoff of features across all samples'),
+        'iterations': ('The number of iterations to optomize the solution' 
+                       ' (suggested to below 100, beware of overfitting)'),
     },
     output_descriptions={
         'biplot': ('A biplot of the (Robust Aitchison) RPCA feature loadings')
