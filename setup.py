@@ -49,7 +49,7 @@ classes = """
 """
 classifiers = [s.strip() for s in classes.split('\n') if s]
 
-description = ('Robust Aitchison RPCA toolbox')
+description = ('Robust Aitchison compositional biplots from sparse count data')
 
 with open('README.md') as f:
     long_description = f.read()
