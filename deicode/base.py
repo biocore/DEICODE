@@ -1,6 +1,5 @@
 from abc import abstractmethod
 
-
 class _BaseImpute(object):
 
     """Base class for imputation methods.
