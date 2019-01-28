@@ -1,10 +1,11 @@
-
 [![Build Status](https://travis-ci.org/cameronmartino/DEICODE.svg?branch=master)](https://travis-ci.org/cameronmartino/DEICODE)
 [![Coverage Status](https://coveralls.io/repos/github/cameronmartino/DEICODE/badge.svg)](https://coveralls.io/github/cameronmartino/DEICODE)
 
 deicode is a tool box for running Robust Aitchison RPCA on sparse omics datasets, linking specific features to beta-diversity ordination.
 
 Note that deicode is not compatible with python 2, and is compatible with Python 3.4 or later. deicode is currently in alpha. We are actively developing it, and backward-incompatible interface changes may arise.
+
+Benchmarking results can be found in [deicode-benchmarking](https://github.com/cameronmartino/deicode-benchmarking).
 
 ## Installation
 
