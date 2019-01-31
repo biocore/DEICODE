@@ -34,10 +34,9 @@ In this example we will Robust Aitchison PCA via q2-deicode on a study of sleep 
 
 Before beginning the tutorial let’s make a directory to store the data
 
-
-```python
-> mkdir qiime2-sleep-apnea-tutorial
-> cd qiime2-sleep-apnea-tutorial
+```shell
+mkdir qiime2-sleep-apnea-tutorial
+cd qiime2-sleep-apnea-tutorial
 ```
 
 
@@ -63,32 +62,24 @@ The other two parameters are --p-rank and --p-iterations. These parameters shoul
 
 Now that we understand the acceptable parameters, we are ready to run deicode.  
 
-
-
-```python
-> qiime dev refresh-cache
+```shell
+qiime dev refresh-cache
 ```
-
-    [33mQIIME is caching your current deployment for improved performance. This may take a few moments and should only happen once per deployment.[0m
-
-
-
-```python
-> qiime deicode rpca-biplot \
+```shell
+qiime deicode rpca-biplot \
     --i-table qiita_10422_table.biom.qza \
     --p-min-feature-count 10 \
     --p-min-sample-count 500 \
     --o-biplot ordination.qza
 ```
 
-    [32mSaved PCoAResults % Properties(['biplot']) to: ordination.qza[0m
-
+    **Output:** PCoAResults % Properties(['biplot']) to: ordination.qza
 
 Now that we have our ordination file, with type (PCoAResults % Properties(['biplot'])), we are ready to visualize the results. This can be done using emperor as a biplot. In this case we will include metadata for our features (optional) and our samples (required). 
 
 
-```python
-> qiime emperor biplot \
+```shell
+qiime emperor biplot \
     --i-biplot ordination.qza \
     --m-sample-metadata-file qiita_10422_metadata.tsv \
     --m-feature-metadata-file taxonomy.qza \
@@ -96,8 +87,6 @@ Now that we have our ordination file, with type (PCoAResults % Properties(['bipl
     --p-number-of-features 8
 ```
 
-    [32mSaved Visualization to: biplot.qzv[0m
-
+    **Output:**: biplot.qzv
 
 The interpretation of the compositional biplot may differ from classical biplot interpretation (we can view the qzv file at [view.qiime2](https://view.qiime2.org). The important features with regard to sample clusters are not a single arrow but by the log ratio between features represented by arrows pointing in different directions. A visualization tool for these log ratios is coming soon to QIIME 2. 
-
