@@ -39,7 +39,6 @@ mkdir qiime2-sleep-apnea-tutorial
 cd qiime2-sleep-apnea-tutorial
 ```
 
-
 ###### Table
 **Download URL**:https://github.com/biocore/DEICODE/blob/master/ipynb/sleep_apnea/qiita_10422_table.biom.qza <br>
 **save as:** qiita_10422_table.biom.qza <br>
@@ -72,8 +71,7 @@ qiime deicode rpca-biplot \
     --p-min-sample-count 500 \
     --o-biplot ordination.qza
 ```
-
-    **Output:** PCoAResults % Properties(['biplot']) to: ordination.qza
+**Output:** PCoAResults % Properties(['biplot']) to: ordination.qza
 
 Now that we have our ordination file, with type (PCoAResults % Properties(['biplot'])), we are ready to visualize the results. This can be done using emperor as a biplot. In this case we will include metadata for our features (optional) and our samples (required). 
 
@@ -86,7 +84,6 @@ qiime emperor biplot \
     --o-visualization biplot.qzv \
     --p-number-of-features 8
 ```
-
-    **Output:**: biplot.qzv
+**Output:**: biplot.qzv
 
 The interpretation of the compositional biplot may differ from classical biplot interpretation (we can view the qzv file at [view.qiime2](https://view.qiime2.org). The important features with regard to sample clusters are not a single arrow but by the log ratio between features represented by arrows pointing in different directions. A visualization tool for these log ratios is coming soon to QIIME 2. 
