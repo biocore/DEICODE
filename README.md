@@ -25,14 +25,11 @@ To install the most up to date version of deicode, run the following command
 
 * [What is Robust Aitchison RPCA](https://github.com/biocore/DEICODE/blob/master/ipynb/introduction.ipynb)
 
-The code for OptSpace was translated to python from a [MATLAB package](http://swoh.web.engr.illinois.edu/software/optspace/code.html) maintained by Sewoong Oh (UIUC).
-
-[Simulation and Case Study Benchmarking](https://github.com/cameronmartino/deicode-benchmarking)
-
+- The code for OptSpace was translated to python from a [MATLAB package](http://swoh.web.engr.illinois.edu/software/optspace/code.html) maintained by Sewoong Oh (UIUC).
 - Transforms and PCoA : [Scikit-bio](https://github.com/biocore/scikit-bio)
 - Data For Examples : [Qiita](https://qiita.ucsd.edu/)
 
-#### Simulation Benchmarking
+#### Simulation and Benchmarking
 
 * [simulations](https://github.com/biocore/DEICODE/tree/master/benchmarking/simulations)
 * [case studies](https://github.com/biocore/DEICODE/tree/master/benchmarking/case_studies)
