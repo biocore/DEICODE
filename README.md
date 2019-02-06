@@ -17,9 +17,9 @@ To install the most up to date version of deicode, run the following command
 
 ## Qiime2 tutorial
 
-**Note**: the plugin tutorial can be found [here](https://library.qiime2.org/plugins/q2-deicode).
+**Note**: the official plugin docs and tutorial can be found [here](https://library.qiime2.org/plugins/q2-deicode).
 
-* [Sleep Apnea Biplots](https://github.com/biocore/DEICODE/blob/master/ipynb/sleep_apnea/SleepApnea-qiime2-tutorial.ipynb)
+* [Sleep Apnea Biplots](https://github.com/biocore/DEICODE/blob/master/ipynb/sleep_apnea/SleepApnea-qiime2-tutorial.md)
 
 ## Other Resources
 
