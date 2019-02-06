@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from skbio import  OrdinationResults, stats
 import os
+import skbio
 from deicode.optspace import OptSpace
 from deicode.preprocessing import rclr
 from scipy.spatial.distance import euclidean
@@ -19,7 +20,7 @@ import click
     help='Minimum Sample Sequencing Depth Cut Off default=500')
 
 
-def RPCA(in_biom: str, output_dir: str,
+def rpca(in_biom: str, output_dir: str,
          min_sample_depth: int, rank: int) -> None:
     """ Runs RPCA with an rclr preprocessing step"""
 
@@ -56,8 +57,10 @@ def RPCA(in_biom: str, output_dir: str,
             proportion_explained=proportion_explained.copy())
     # write files to output folder
     ord_res.write(os.path.join(output_dir, 'RPCA_Ordination.txt'))
-
+    # save distance matrix
+    dist_res = skbio.stats.distance.DistanceMatrix(opt.distance, ids=sample_loading.index)
+    ord_res.write(os.path.join(output_dir, 'RPCA_distance.txt'))
     return
 
 if __name__ == '__main__':
-    RPCA()
+    rpca()

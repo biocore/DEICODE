@@ -6,10 +6,10 @@ import pandas as pd
 from deicode.optspace import OptSpace
 from deicode.preprocessing import rclr
 
-def rpca_biplot(table: biom.Table, rank: int=3, 
+def rpca(table: biom.Table, rank: int=3, 
                 min_sample_count: int=500, 
                 min_feature_count: int=10,
-                iterations: int=5) -> skbio.OrdinationResults:
+                iterations: int=5) -> tuple([skbio.OrdinationResults, skbio.DistanceMatrix]):
 
     """ Runs RPCA with an rclr preprocessing step"""
 
@@ -53,5 +53,7 @@ def rpca_biplot(table: biom.Table, rank: int=3,
                                       eigvals.copy(),samples=sample_loading.copy(),
                                       features=feature_loading.copy(),
                                       proportion_explained=proportion_explained.copy())
+    # save distance matrix
+    dist_res = skbio.stats.distance.DistanceMatrix(opt.distance, ids=sample_loading.index)
 
-    return ord_res
+    return ord_res, dist_res

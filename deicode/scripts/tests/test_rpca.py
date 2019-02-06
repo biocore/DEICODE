@@ -1,4 +1,4 @@
-from deicode.scripts._rpca import RPCA
+from deicode.scripts._rpca import rpca
 import unittest
 import pandas as pd
 from click.testing import CliRunner
@@ -14,7 +14,7 @@ class Test_rpca(unittest.TestCase):
         in_ = get_data_path('test.biom')
         out_ = '/'.join(in_.split('/')[:-1])
         runner = CliRunner()
-        result = runner.invoke(RPCA, ['--in_biom', in_,
+        result = runner.invoke(rpca, ['--in_biom', in_,
                                       '--output_dir', out_])
         dist_res = pd.read_table(get_data_path('distance.txt'), index_col=0)
         fea_res = pd.read_table(get_data_path('feature.txt'), index_col=0)
