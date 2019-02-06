@@ -10,7 +10,7 @@ class Test_rpca(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_RPCA(self):
+    def test_rpca(self):
         in_ = get_data_path('test.biom')
         out_ = '/'.join(in_.split('/')[:-1])
         runner = CliRunner()
