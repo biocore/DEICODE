@@ -168,10 +168,7 @@ class OptSpace(_BaseImpute):
         U, s_, V, _ = optspace(X_sparse, r=self.rank,
                                niter=self.iteration, tol=self.tol)
         solution = U.dot(s_).dot(V.T)
-
-        explained_variance_ = (np.diag(s_) ** 2) / (X_sparse.shape[0] - 1)
-        ratio = explained_variance_.sum()
-        explained_variance_ratio_ = explained_variance_ / ratio
+        explained_variance_ratio_ = np.diag(s_) / np.diag(s_).sum()
         self.eigenvalues = np.diag(s_)
         self.explained_variance_ratio = list(explained_variance_ratio_)[::-1]
         self.distance = distance.cdist(U, U)

@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 
-def log_ratios(table_tmp, feature_load, sample_load, 
+def log_ratios(table_tmp, feature_load, sample_load,
                taxa_tmp=None, axis_sort=0, N_show=3, level='lowest'):
     """"
 
@@ -98,10 +98,10 @@ def log_ratios(table_tmp, feature_load, sample_load,
                                 columns=cols_)
         taxa_tmp_ = True
     else:
-        taxa_tmp=taxa_tmp.astype(str)
-        taxa_tmp[taxa_tmp=='nan']=np.nan
-        taxa_tmp[taxa_tmp=='None']=np.nan
-        taxa_tmp[taxa_tmp=='Unassigned']='__Unclassified'
+        taxa_tmp = taxa_tmp.astype(str)
+        taxa_tmp[taxa_tmp == 'nan'] = np.nan
+        taxa_tmp[taxa_tmp == 'None'] = np.nan
+        taxa_tmp[taxa_tmp == 'Unassigned'] = '__Unclassified'
         taxa_tmp_ = False
 
     if table_tmp.shape[0] > table_tmp.shape[1]:
@@ -114,7 +114,7 @@ def log_ratios(table_tmp, feature_load, sample_load,
     taxa_tmp = clean_taxa_table(taxa_tmp, taxa_tmp_)
     # concat features
     feature_taxa = pd.concat([feature_load, taxa_tmp], axis=1).dropna(
-        subset=[axis_sort]).sort_values(axis_sort,ascending=False)
+        subset=[axis_sort]).sort_values(axis_sort, ascending=False)
     # level groupby
     level_grouping = {level_: feature_taxa.groupby(level_).sum(
     ).sort_values(axis_sort) for level_ in taxa_tmp.columns}
@@ -165,8 +165,8 @@ def bin_level_markers(level_gp, taxmatch, level, N_show):
         top_ = level_gp[level].iloc[[i]].index[0]
         bottom_ = level_gp[level].iloc[[-(i + 1)]].index[0]
         top_l = list(taxmatch[taxmatch[level].isin([top_])].index)
-        bottom_l = list(taxmatch[taxmatch[level].isin([bottom_])].index)       
-        ratios[(top_,bottom_)]= (top_l,bottom_l)
+        bottom_l = list(taxmatch[taxmatch[level].isin([bottom_])].index)
+        ratios[(top_, bottom_)] = (top_l, bottom_l)
 
     return ratios
 
@@ -174,12 +174,12 @@ def bin_level_markers(level_gp, taxmatch, level, N_show):
 def get_log_ratios(tabledf, topd):
     """ get log ratios for observed taxa given by bin_level_markers"""
     log_ratios = []
-    for (x_i,y_j),(x_i_features,y_j_features) in topd.items():
+    for (x_i, y_j), (x_i_features, y_j_features) in topd.items():
         if not isinstance(x_i_features, (list,)):
-            x_i_features=[x_i_features]
+            x_i_features = [x_i_features]
         if not isinstance(y_j_features, (list,)):
-            y_j_features=[y_j_features]
-        p_x_i_y_j = tabledf.loc[:, list(x_i_features)+list(y_j_features)]
+            y_j_features = [y_j_features]
+        p_x_i_y_j = tabledf.loc[:, list(x_i_features) + list(y_j_features)]
         x_i_vector = tabledf.loc[:, list(x_i_features)][p_x_i_y_j.T.min() > 0]
         y_j_vector = tabledf.loc[:, list(y_j_features)][p_x_i_y_j.T.min() > 0]
         tmp_ratio = (np.log(x_i_vector).mean(axis=1) -

@@ -9,9 +9,10 @@
 import qiime2.plugin
 import qiime2.sdk
 from deicode import __version__
-from ._method import rpca_biplot
-from qiime2.plugin import (Str, Properties, Int, Float,  Metadata)
-from q2_types.feature_table import FeatureTable, Composition, Frequency
+from ._method import rpca
+from qiime2.plugin import (Properties, Int)
+from q2_types.feature_table import FeatureTable, Frequency
+from q2_types.distance_matrix import DistanceMatrix
 from q2_types.ordination import PCoAResults
 
 # citations = qiime2.plugin.Citations.load(
@@ -22,14 +23,14 @@ plugin = qiime2.plugin.Plugin(
     version=__version__,
     website="https://github.com/cameronmartino/DEICODE",
     # citations=[citations['martino-unpublished']],
-    short_description=('Plugin for Robust Aitchison compositional'
-                       ' biplots from sparse count data.'),
+    short_description=('Plugin for Robust Aitchison PCA:'
+                       'compositional biplots from sparse count data.'),
     description=('This is a QIIME 2 plugin supporting Robust Aitchison on '
                  'feature tables'),
     package='deicode')
 
 plugin.methods.register_function(
-    function=rpca_biplot,
+    function=rpca,
     inputs={'table': FeatureTable[Frequency]},
     parameters={
         'rank': Int,
@@ -38,20 +39,26 @@ plugin.methods.register_function(
         'iterations': Int,
     },
     outputs=[
-        ('biplot', PCoAResults % Properties("biplot"))
+        ('biplot', PCoAResults % Properties("biplot")),
+        ('distance_matrix', DistanceMatrix)
     ],
     input_descriptions={
         'table': 'Input table of counts.',
     },
     parameter_descriptions={
-        'rank': ('The underlying low-rank structure (suggested: 1 < rank < 10)'),
-        'min_sample_count': ('Minimum sum cutoff of sample across all features'),
-        'min_feature_count': ('Minimum sum cutoff of features across all samples'),
-        'iterations': ('The number of iterations to optomize the solution' 
+        'rank': ('The underlying low-rank',
+                 ' structure (suggested: 1 < rank < 10)'),
+        'min_sample_count': ('Minimum sum cutoff of',
+                             ' sample across all features'),
+        'min_feature_count': ('Minimum sum cutoff of',
+                              ' features across all samples'),
+        'iterations': ('The number of iterations to optomize the solution'
                        ' (suggested to below 100, beware of overfitting)'),
     },
     output_descriptions={
-        'biplot': ('A biplot of the (Robust Aitchison) RPCA feature loadings')
+        'biplot': ('A biplot of the (Robust Aitchison) RPCA feature loadings'),
+        'distance_matrix': ('The Aitchison distance of',
+                            'the sample loadings from RPCA.')
     },
     name='(Robust Aitchison) RPCA Biplot',
     description=("Performs robust center log-ratio transform "
