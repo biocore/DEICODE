@@ -8,6 +8,9 @@
 # The full license is in the file COPYING.txt, distributed with this software.
 # ----------------------------------------------------------------------------
 
+from setuptools.command.egg_info import egg_info
+from setuptools.command.develop import develop
+from setuptools.command.install import install
 import re
 import ast
 import os
@@ -18,32 +21,34 @@ USE_CYTHON = os.environ.get('USE_CYTHON', False)
 ext = '.pyx' if USE_CYTHON else '.c'
 
 # bootstrap numpy intall
-#https://stackoverflow.com/questions/51546255/
+# https://stackoverflow.com/questions/51546255/
 # python-package-setup-setup-py-with-customisation
 # -to-handle-wrapped-fortran
-from setuptools.command.install import install
-from setuptools.command.develop import develop
-from setuptools.command.egg_info import egg_info
+
 
 def custom_command():
     import sys
     if sys.platform in ['darwin', 'linux']:
         os.system('pip install numpy')
 
+
 class CustomInstallCommand(install):
     def run(self):
         install.run(self)
         custom_command()
+
 
 class CustomDevelopCommand(develop):
     def run(self):
         develop.run(self)
         custom_command()
 
+
 class CustomEggInfoCommand(egg_info):
     def run(self):
         egg_info.run(self)
         custom_command()
+
 
 extensions = [
 ]
@@ -99,7 +104,7 @@ setup(name='deicode',
           'scikit-learn >= 0.18.1',
           'scikit-bio > 0.5.3',
           'biom-format',
-          'h5py',],
+          'h5py', ],
       classifiers=classifiers,
       entry_points={
           'qiime2.plugins': ['q2-deicode=deicode.q2.plugin_setup:plugin'],
@@ -108,5 +113,5 @@ setup(name='deicode',
       package_data={},
       cmdclass={'install': CustomInstallCommand,
                 'develop': CustomDevelopCommand,
-                'egg_info': CustomEggInfoCommand,},
+                'egg_info': CustomEggInfoCommand, },
       zip_safe=False)

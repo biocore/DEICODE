@@ -57,8 +57,8 @@ cd qiime2-sleep-apnea-tutorial
 
 Using qiita_10422_table.biom.qza, of the type raw count table (FeatureTable[Frequency]), we will generate our beta diversity ordination file. There are a few parameters to deicode that we may want to consider. The first is filtering cutoffs, these are p-min-feature-count and p-min-sample-count. Both of these parameters accept integer values and remove feature or samples, respectively, with sums below this cutoff. The feature cut-off is useful in the case that features with very low total counts among all samples represent contamination or chimeric sequences. The sample cut off is useful for the case that some sample received very few reads relative to other samples.
 
-**Note:** it _not_ recommended to bin your features by taxonomic assignment (i.e. by genus level). 
-**Note:** it _not_ recommended to rarefy your data before using deicode. 
+**Note:** it is _not_ recommended to bin your features by taxonomic assignment (i.e. by genus level). 
+**Note:** it is _not_ recommended to rarefy your data before using deicode. 
 
 The other two parameters are --p-rank and --p-iterations. These parameters should rarely have to change from the default. However, the minimum value of --p-rank can be 1 and the maximum recommended value is 10. Similarly, the minimum value of --p-iterations is 1 and is recommended to be below 500.  
 

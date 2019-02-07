@@ -22,8 +22,11 @@ install:
   - source activate test_env
   - pip install -r ci/pip_requirements.txt
   - pip install -e .
+  - sudo pip install flake8
   - sudo pip install nose
   - sudo pip install coveralls
+before_script:
+  - flake8 . 
 script:
   - source activate test_env
   - nosetests -v deicode --with-coverage --cover-package=deicode

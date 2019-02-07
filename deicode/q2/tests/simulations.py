@@ -2,18 +2,13 @@ from __future__ import division
 # utils
 import pandas as pd
 import numpy as np
-from collections import Counter
 # blocks
 from scipy.stats import norm
 from numpy.random import poisson, lognormal
 from skbio.stats.composition import closure
-from scipy.special import kl_div
-from scipy.stats import entropy
-# minimize model perams
-from sklearn.metrics import mean_squared_error
-from scipy.optimize import minimize
 # Set random state
 rand = np.random.RandomState(42)
+
 
 def Homoscedastic(X_noise, intensity):
     """ uniform normally dist. noise """
@@ -104,7 +99,8 @@ def block_diagonal_gaus(
     block_rows = nrows // nblocks
     for b in range(nblocks - 1):
 
-        gradient = np.linspace(5, 5, block_rows)  # samples (bock_rows)
+        gradient = np.linspace(
+            5, 5, block_rows)  # samples (bock_rows)
         # features (block_cols+overlap)
         mu = np.linspace(0, 10, block_cols + overlap)
         sigma = 2.0
@@ -118,21 +114,25 @@ def block_diagonal_gaus(
         upper_col = min(block_cols * (b + 1), ncols)
 
         if b == 0:
-            mat[lower_row:upper_row, lower_col:int(upper_col + overlap)] = B
+            mat[lower_row:upper_row,
+                lower_col:int(upper_col + overlap)] = B
         else:
             ov_tmp = int(overlap / 2)
             if (B.shape) == (mat[lower_row:upper_row,
-                             int(lower_col-ov_tmp):int(upper_col+ov_tmp+1)].shape):
+                             int(lower_col - ov_tmp):
+                             int(upper_col + ov_tmp + 1)].shape):
                 mat[lower_row:upper_row, int(
                     lower_col - ov_tmp):int(upper_col + ov_tmp + 1)] = B
             elif (B.shape) == (mat[lower_row:upper_row,
-                               int(lower_col - ov_tmp):int(upper_col + ov_tmp)].shape):
+                               int(lower_col - ov_tmp):
+                               int(upper_col + ov_tmp)].shape):
                 mat[lower_row:upper_row, int(
                     lower_col - ov_tmp):int(upper_col + ov_tmp)] = B
-            elif (B.shape) == (mat[lower_row:upper_row, 
-                               int(lower_col - ov_tmp):int(upper_col + ov_tmp - 1)].shape):
+            elif (B.shape) == (mat[lower_row:upper_row,
+                               int(lower_col - ov_tmp):
+                               int(upper_col + ov_tmp - 1)].shape):
                 mat[lower_row:upper_row, int(
-                    lower_col - ov_tmp):int(upper_col +ov_tmp - 1)] = B
+                    lower_col - ov_tmp):int(upper_col + ov_tmp - 1)] = B
 
     upper_col = int(upper_col - overlap)
     # Make last block fill in the remainder
@@ -159,7 +159,8 @@ def build_block_model(
         overlap=0,
         mapping_on=True):
     """
-    Generates hetero and homo scedastic noise on base truth block diagonal with Gaussian distributed values within blocks.
+    Generates hetero and homo scedastic noise on base truth block
+    diagonal with Gaussian distributed values within blocks.
 
     Parameters
     ----------
@@ -219,13 +220,12 @@ def build_block_model(
         maxval=C_)
     if mapping_on:
         # make a mock mapping data
-        mappning_ = pd.DataFrame(np.array([['Cluster %s' %
-                                            str(x)] *
-                                           int(num_samples /
-                                               rank) for x in range(1, rank +
-                                                                    1)]).flatten(), columns=['example'], index=['sample_' +
-                                                                                                                str(x) for x in range(0, num_samples -
-                                                                                                                                      2)])
+        mappning_ = pd.DataFrame(np.array([['Cluster %s' % str(x)] *
+                                 int(num_samples / rank)
+                                 for x in range(1, rank + 1)]).flatten(),
+                                 columns=['example'],
+                                 index=['sample_' + str(x)
+                                 for x in range(0, num_samples - 2)])
 
     X_noise = X_true.copy()
     X_noise = np.array(X_noise)
