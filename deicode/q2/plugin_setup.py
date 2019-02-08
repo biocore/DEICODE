@@ -21,7 +21,7 @@ from q2_types.ordination import PCoAResults
 plugin = qiime2.plugin.Plugin(
     name='deicode',
     version=__version__,
-    website="https://github.com/cameronmartino/DEICODE",
+    website="https://github.com/biocore/DEICODE",
     # citations=[citations['martino-unpublished']],
     short_description=('Plugin for Robust Aitchison PCA:'
                        'compositional biplots from sparse count data.'),
