@@ -1,6 +1,7 @@
 import biom
 import skbio
 import pandas as pd
+from typing import List, Tuple, Union
 from deicode.optspace import OptSpace
 from deicode.preprocessing import rclr
 
@@ -9,8 +10,9 @@ def rpca(table: biom.Table,
          rank: int=3,
          min_sample_count: int=500,
          min_feature_count: int=10,
-         iterations: int=5) -> tuple([skbio.OrdinationResults,
-                                      skbio.DistanceMatrix]):
+         iterations: int=5) -> 
+         (skbio.OrdinationResults,
+          skbio.DistanceMatrix):
     """ Runs RPCA with an rclr preprocessing step"""
 
     # filter sample to min depth
