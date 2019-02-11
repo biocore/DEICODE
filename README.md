@@ -17,13 +17,13 @@ To install the most up to date version of deicode, run the following command
 
 ## Qiime2 tutorial
 
-**Note**: the official plugin docs and tutorial can be found [here](https://library.qiime2.org/plugins/q2-deicode).
+**Note**: the official plugin docs and tutorial can be found [here](https://library.qiime2.org/plugins/deicode).
 
-* [Sleep Apnea Biplots](https://github.com/biocore/DEICODE/blob/master/ipynb/sleep_apnea/SleepApnea-qiime2-tutorial.md)
+* [Tutorial](https://github.com/biocore/DEICODE/blob/master/ipynb/tutorials/moving-pictures.md)
 
 ## Other Resources
 
-* [What is Robust Aitchison RPCA](https://github.com/biocore/DEICODE/blob/master/ipynb/introduction.ipynb)
+* [Aitchison Distance Introduction](https://github.com/biocore/DEICODE/blob/master/ipynb/introduction.ipynb)
 
 - The code for OptSpace was translated to python from a [MATLAB package](http://swoh.web.engr.illinois.edu/software/optspace/code.html) maintained by Sewoong Oh (UIUC).
 - Transforms and PCoA : [Scikit-bio](http://scikit-bio.org)
