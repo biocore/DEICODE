@@ -34,42 +34,44 @@ To demonstrate this in action we will run an example dataset below, where the ou
 
 ## Example 
 
-In this example we will Robust Aitchison PCA via deicode on a study of sleep apnea published in [Tripathi et al. (2018)](https://msystems.asm.org/content/3/3/e00020-18). The study consists of mouse fecal samples and focuses on comparing the gut microbiome of animals exposed to intermittent hypoxia and hypercapnia (IHH; as a model of obstructive sleep apnea) to controls exposed to room air (air). 
-
-Before beginning the tutorial let’s make a directory to store the data
+In this example we will use Robust Aitchison PCA via DEICODE on the “Moving Pictures” tutorial, if you have not yet completed the tutorial it can be found [here](https://docs.qiime2.org/2019.1/tutorials/moving-pictures/). The dataset consists of human microbiome samples from two individuals at four body sites at five timepoints, the first of which immediately followed antibiotic usage ([Caporaso et al. 2011](https://www.ncbi.nlm.nih.gov/pubmed/21624126)). If you have completed this tutorial run the following command and skip the download section.
 
 ```shell
-mkdir qiime2-sleep-apnea-tutorial
-cd qiime2-sleep-apnea-tutorial
+cd qiime2-moving-pictures-tutorial
 ```
 
-#### Table
-[**Download URL**](https://github.com/biocore/DEICODE/blob/master/ipynb/sleep_apnea/qiime2-sleep-apnea-tutorial/qiita_10422_table.biom.qza)
-**save as:** qiita_10422_table.biom.qza 
+If you have skipped the tutorial but would like to get started quickly, the data files needed for the DEICODE tutorial must be downloaded below.  
 
-#### Sample Metadata
-[**Download URL**]( https://github.com/biocore/DEICODE/blob/master/ipynb/sleep_apnea/qiime2-sleep-apnea-tutorial/qiita_10422_metadata.tsv)
-**save as:** qiita_10422_metadata.tsv
+```shell
+mkdir qiime2-moving-pictures-tutorial
+cd qiime2-moving-pictures-tutorial
+```
 
-#### Feature Metadata
-[**Download URL**]( https://github.com/biocore/DEICODE/blob/master/ipynb/sleep_apnea/qiime2-sleep-apnea-tutorial/taxonomy.qza)
+##### Table [view](https://view.qiime2.org/?src=https%3A%2F%2Fdocs.qiime2.org%2F2019.1%2Fdata%2Ftutorials%2Fmoving-pictures%2Ftable.qza) | [download](https://docs.qiime2.org/2019.1/data/tutorials/moving-pictures/table.qza)
+**save as:** table.qza 
+
+##### Sample Metadata [download](https://data.qiime2.org/2019.1/tutorials/moving-pictures/sample_metadata.tsv)
+**save as:** sample-metadata.tsv
+
+##### Feature Metadata  [view](https://view.qiime2.org/?src=https%3A%2F%2Fdocs.qiime2.org%2F2019.1%2Fdata%2Ftutorials%2Fmoving-pictures%2Ftaxonomy.qza) | [download](https://docs.qiime2.org/2019.1/data/tutorials/moving-pictures/taxonomy.qza)
 **save as:** taxonomy.qza
 
-Using qiita_10422_table.biom.qza, of the type raw count table (FeatureTable[Frequency]), we will generate our beta diversity ordination file. There are a few parameters to deicode that we may want to consider. The first is filtering cutoffs, these are p-min-feature-count and p-min-sample-count. Both of these parameters accept integer values and remove feature or samples, respectively, with sums below this cutoff. The feature cut-off is useful in the case that features with very low total counts among all samples represent contamination or chimeric sequences. The sample cut off is useful for the case that some sample received very few reads relative to other samples.
+Using table.qza, of the type raw count table (FeatureTable[Frequency]), we will generate our beta diversity ordination file. There are a few parameters to DEICODE that we may want to consider. The first is filtering cutoffs, these are p-min-feature-count and p-min-sample-count. Both of these parameters accept integer values and remove feature or samples, respectively, with sums below this cutoff. The feature cut-off is useful in the case that features with very low total counts among all samples represent contamination or chimeric sequences. The sample cut off is useful for the case that some sample received very few reads relative to other samples.
 
 **Note:** it is _not_ recommended to bin your features by taxonomic assignment (i.e. by genus level). 
-**Note:** it is _not_ recommended to rarefy your data before using deicode. 
+**Note:** it is _not_ recommended to rarefy your data before using DEICODE. 
 
 The other two parameters are --p-rank and --p-iterations. These parameters should rarely have to change from the default. However, the minimum value of --p-rank can be 1 and the maximum recommended value is 10. Similarly, the minimum value of --p-iterations is 1 and is recommended to be below 500.  
 
-Now that we understand the acceptable parameters, we are ready to run deicode.  
+Now that we understand the acceptable parameters, we are ready to run DEICODE.  
 
 ```shell
  qiime dev refresh-cache
 ```
+
 ```shell
  qiime deicode rpca \
-    --i-table qiita_10422_table.biom.qza \
+    --i-table table.qza \
     --p-min-feature-count 10 \
     --p-min-sample-count 500 \
     --o-biplot ordination.qza \
@@ -77,33 +79,33 @@ Now that we understand the acceptable parameters, we are ready to run deicode.
 ```
 **Output:** PCoAResults % Properties(['biplor]) to: ordination.qza, DistanceMatrix to: distance.qza
 
-Now that we have our ordination file, with type (PCoAResults % Properties(['biplot'])), we are ready to visualize the results. This can be done using the [emperor](https://docs.qiime2.org/2019.1/plugins/available/emperor/) biplot functionality. In this case we will include metadata for our features (optional) and our samples (required). 
+Now that we have our ordination file, with type (PCoAResults % Properties(['biplot'])), we are ready to visualize the results. This can be done using the [Emperor](https://docs.qiime2.org/2019.1/plugins/available/emperor/) biplot functionality. In this case we will include metadata for our features (optional) and our samples (required). 
 
 ```shell
 qiime emperor biplot \
     --i-biplot ordination.qza \
-    --m-sample-metadata-file qiita_10422_metadata.tsv \
+    --m-sample-metadata-file sample-metadata.tsv \
     --m-feature-metadata-file taxonomy.qza \
     --o-visualization biplot.qzv \
     --p-number-of-features 8
 ```
 **Output:** biplot.qzv
 
-The interpretation of the compositional biplot may differ from classical biplot interpretation (we can view the qzv file at [view.qiime2](https://view.qiime2.org). The important features with regard to sample clusters are not a single arrow but by the log ratio between features represented by arrows pointing in different directions. A visualization tool for these log ratios is coming soon to QIIME 2. 
+Biplots are exploratory visualization tools that allow us to represent the features (i.e. taxonomy or OTUs)  that strongly influence the principal component axis as arrows. The interpretation of the compositional biplot differs slightly from classical biplot interpretation (we can view the qzv file at [view.qiime2](https://view.qiime2.org). The important features with regard to sample clusters are not a single arrow but by the log ratio between features represented by arrows pointing in different directions. A visualization tool for these log ratios is coming soon to QIIME. 
 
-![](https://cdn1.imggmi.com/uploads/2019/2/6/eaf9c58ee3b00949fcd4947333376a03-full.png)
+![](http://i66.tinypic.com/28rm5pj.png)
 
-From this visualization we noticed that exposure_type seems explain the clusters well. We can run [PERMANOVA](https://docs.qiime2.org/2019.1/plugins/available/diversity/beta-group-significance/) on the distances to get a statistical significance for this. 
+From this visualization we noticed that BodySite seems to explain the clusters well. We can run [PERMANOVA](https://docs.qiime2.org/2019.1/plugins/available/diversity/beta-group-significance/) on the distances to get a statistical significance for this. 
 
 ```shell
  qiime diversity beta-group-significance \
     --i-distance-matrix distance.qza \
-    --m-metadata-file qiita_10422_metadata.tsv \
-    --m-metadata-column exposure_type \
+    --m-metadata-file sample-metadata.tsv \
+    --m-metadata-column BodySite \
     --p-method permanova \
-    --o-visualization exposure_group_significance.qzv
+    --o-visualization BodySite_significance.qzv
 ```
 
-Indeed we can now see that the clusters we saw in the biplot were significant by viewing the exposure_group_significance.qzv at [view.qiime2](https://view.qiime2.org).
+Indeed we can now see that the clusters we saw in the biplot were significant by viewing the BodySite_significance.qzv at [view.qiime2](https://view.qiime2.org).
 
-![](https://cdn1.imggmi.com/uploads/2019/2/6/f38d41bce26d8d7930db270680921130-full.png)
+![](http://i66.tinypic.com/vy6y6c.jpg)
