@@ -34,7 +34,7 @@ To demonstrate this in action we will run an example dataset below, where the ou
 
 ## Example 
 
-In this example we will Robust Aitchison PCA via DEICODE on the “Moving Pictures” tutorial, if you have not yet completed the tutorial it can be found [here](https://docs.qiime2.org/2019.1/tutorials/moving-pictures/). The dataset consists of human microbiome samples from two individuals at four body sites at five timepoints, the first of which immediately followed antibiotic usage ([Caporaso et al. 2011](https://www.ncbi.nlm.nih.gov/pubmed/21624126)). If you have completed this tutorial run the following command and skip the download section.
+In this example we will use Robust Aitchison PCA via DEICODE on the “Moving Pictures” tutorial, if you have not yet completed the tutorial it can be found [here](https://docs.qiime2.org/2019.1/tutorials/moving-pictures/). The dataset consists of human microbiome samples from two individuals at four body sites at five timepoints, the first of which immediately followed antibiotic usage ([Caporaso et al. 2011](https://www.ncbi.nlm.nih.gov/pubmed/21624126)). If you have completed this tutorial run the following command and skip the download section.
 
 ```shell
 cd qiime2-moving-pictures-tutorial
@@ -95,7 +95,7 @@ Biplots are exploratory visualization tools that allow us to represent the featu
 
 ![](http://i66.tinypic.com/28rm5pj.png)
 
-From this visualization we noticed that BodySite seems explain the clusters well. We can run [PERMANOVA](https://docs.qiime2.org/2019.1/plugins/available/diversity/beta-group-significance/) on the distances to get a statistical significance for this. 
+From this visualization we noticed that BodySite seems to explain the clusters well. We can run [PERMANOVA](https://docs.qiime2.org/2019.1/plugins/available/diversity/beta-group-significance/) on the distances to get a statistical significance for this. 
 
 ```shell
  qiime diversity beta-group-significance \
