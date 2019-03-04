@@ -45,13 +45,13 @@ Robust Aitchison PCA solves this problem in two steps:
 
 **1.** Compostional preprocessing using the centered log ratio transform on only the non-zero values of the data (no pseudo count)
 
-![](etc/img3.png)
+![](etc/img3.gif)
 
-![](etc/img4.png)
+![](etc/img4.gif)
 
 **2.** Dimensionality reduction through Robust PCA on only the non-zero values of the data ( [matrix completion]( https://arxiv.org/pdf/0906.2027.pdf)). 
 
-![](etc/img5.png)
+![](etc/img5.gif)
 
 To demonstrate this in action we will run an example dataset below, where the output can be viewed as a compositional biplot through Emperor. 
 
