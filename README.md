@@ -7,17 +7,17 @@ DEICODE is a tool box for running Robust Aitchison PCA on sparse compositional o
 
 To install the most up to date version of deicode, run the following command
 
-    # pip (only supported for Qiime >= 2018.8)
+    # pip (only supported for QIIME2 >= 2018.8)
     pip install deicode
 
-    # conda (only supported for Qiime >= 2019.1)
+    # conda (only supported for QIIME2 >= 2019.1)
     conda install -c conda-forge deicode 
 
 **Note**: that deicode is not compatible with python 2, and is compatible with Python 3.4 or later. deicode is currently in alpha. We are actively developing it, and backward-incompatible interface changes may arise.
 
-## Qiime2 tutorial
+## QIIME2 tutorial
 
-* The Qiime forum tutorial can be found [here](https://forum.qiime2.org/t/robust-aitchison-pca-beta-diversity-with-deicode/8333).
+* The QIIME2 forum tutorial can be found [here](https://forum.qiime2.org/t/robust-aitchison-pca-beta-diversity-with-deicode/8333).
 * The official plugin docs and tutorial can be found [here](https://library.qiime2.org/plugins/deicode).
 * The in-repo tutorial can be found [here](https://github.com/biocore/DEICODE/blob/master/ipynb/tutorials/moving-pictures.md).
 
