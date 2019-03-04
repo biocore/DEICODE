@@ -17,7 +17,7 @@ To install the most up to date version of deicode, run the following command
 
 ## Qiime2 tutorial
 
-* The Qiime forum tutorial can be found[here](https://forum.qiime2.org/t/robust-aitchison-pca-beta-diversity-with-deicode/8333).
+* The Qiime forum tutorial can be found [here](https://forum.qiime2.org/t/robust-aitchison-pca-beta-diversity-with-deicode/8333).
 * The official plugin docs and tutorial can be found [here](https://library.qiime2.org/plugins/deicode).
 * The in-repo tutorial can be found [here](https://github.com/biocore/DEICODE/blob/master/ipynb/tutorials/moving-pictures.md).
 
