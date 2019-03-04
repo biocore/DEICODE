@@ -32,12 +32,12 @@ In this tutorial you will learn how to interpret and perform Robust Aitchison PC
 
 As a toy example let’s build three taxa. These three taxa represent common distributions we see in microbiome datasets. Where the first taxon is increasing exponentially across samples, this is a trend that we would be interested in. However, taxon 2 and 3 have much higher counts and taxon 3 is randomly fluctuating across samples.  
 
-![](https://forum.qiime2.org.s3.dualstack.us-west-2.amazonaws.com/original/2X/7/72ebdf6a3303ce0a5850ce52a46befac564cc26d.png)
+![](etc/img1.png)
 
 In our distances below we have Euclidean, Bray-Curtis, Jaccard, and Aitchison distances (from left to right). We can see that the abundance based metrics Euclidean and Bray-Curtis are heavily influenced by the abundance of taxon 3 and seem to randomly fluctuate. In the presence/absence metric, Jaccard, we see that the distance saturates to one very quickly. However, in the Aitchison distance we see a linear curve representing taxon 1. The reason the distance is linear is because Aitchison distance relies on log transforms (the log of the exponential trend of taxon 1 is linear). 
 
 
-![](https://forum.qiime2.org.s3.dualstack.us-west-2.amazonaws.com/original/2X/b/bc002a51edcd3e34cba1874a6aa97d7d08b6c0b5.png)
+![](etc/img2.png)
 
 From this toy example, it is clear that Aitchison distance better accounts for the proportions. However, we made the unrealistic assumption in our toy example that there were no zero counts. In real microbiome datasets there are a large number of zeros (i.e. sparsity). Sparsity complicates log ratio transformations because the log-ratio of zero is undefined. To solve this, pseudo counts are often used but that can often skew results (see [Naught all zeros in sequence count data are the same](https://www.biorxiv.org/content/10.1101/477794v1)). 
 
@@ -45,13 +45,13 @@ Robust Aitchison PCA solves this problem in two steps:
 
 **1.** Compostional preprocessing using the centered log ratio transform on only the non-zero values of the data (no pseudo count)
 
-![](https://forum.qiime2.org.s3.dualstack.us-west-2.amazonaws.com/original/2X/4/43fe1323791b5cea419e0973b8983621dbf31a20.gif)
+![](etc/img3.png)
 
-![](https://forum.qiime2.org.s3.dualstack.us-west-2.amazonaws.com/original/2X/1/13b8c6f415d6ab10c81dec1a27f1f24079be398f.gif)
+![](etc/img4.png)
 
 **2.** Dimensionality reduction through Robust PCA on only the non-zero values of the data ( [matrix completion]( https://arxiv.org/pdf/0906.2027.pdf)). 
 
-![](https://forum.qiime2.org.s3.dualstack.us-west-2.amazonaws.com/original/2X/a/a327d5600f68b96457c227c660f533e94ee68341.gif)
+![](etc/img5.png)
 
 To demonstrate this in action we will run an example dataset below, where the output can be viewed as a compositional biplot through Emperor. 
 
@@ -116,7 +116,7 @@ qiime emperor biplot \
 
 Biplots are exploratory visualization tools that allow us to represent the features (i.e. taxonomy or OTUs)  that strongly influence the principal component axis as arrows. The interpretation of the compositional biplot differs slightly from classical biplot interpretation (we can view the qzv file at [view.qiime2](https://view.qiime2.org). The important features with regard to sample clusters are not a single arrow but by the log ratio between features represented by arrows pointing in different directions. A visualization tool for these log ratios is coming soon to QIIME. 
 
-![](https://forum.qiime2.org.s3.dualstack.us-west-2.amazonaws.com/original/2X/7/756fbaa9c0776c236dd7f68787cc2a5ba09e5a2e.png)
+![](etc/img6.png)
 
 From this visualization we noticed that BodySite seems to explain the clusters well. We can run [PERMANOVA](https://docs.qiime2.org/2019.1/plugins/available/diversity/beta-group-significance/) on the distances to get a statistical significance for this. 
 
@@ -131,7 +131,7 @@ From this visualization we noticed that BodySite seems to explain the clusters w
 
 Indeed we can now see that the clusters we saw in the biplot were significant by viewing the BodySite_significance.qzv at [view.qiime2](https://view.qiime2.org).
 
-![](https://forum.qiime2.org.s3.dualstack.us-west-2.amazonaws.com/original/2X/a/a98a93b7b8629b172c8eb2ad3c49da3e75e1b1f6.png)
+![](etc/img7.png)
 
 ## Citation 
 
