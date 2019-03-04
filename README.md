@@ -31,5 +31,4 @@ To install the most up to date version of deicode, run the following command
 
 #### Simulation and Benchmarking
 
-* [simulations](https://github.com/biocore/DEICODE/tree/master/benchmarking/simulations)
-* [case studies](https://github.com/biocore/DEICODE/tree/master/benchmarking/case_studies)
+* [simulations and case studies](https://github.com/cameronmartino/deicode-benchmarking)

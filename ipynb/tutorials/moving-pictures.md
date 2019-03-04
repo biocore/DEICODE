@@ -1,20 +1,43 @@
-# Tutorial
+# DEICODE
+(pronounced like decode /de.ko.de/) 
+[Documentation available in the pugin library.](https://library.qiime2.org/plugins/deicode/19/)
+
+DEICODE is a form of [Aitchison Distance](https://en.wikipedia.org/wiki/Aitchison_geometry) that is robust to high levels of sparsity. DEICODE utilizes a natural solution to the zero problem formulated in recommendation systems  called [matrix completion]( https://arxiv.org/pdf/0906.2027.pdf). A simple way to interpret the method is, as a robust compositional [PCA (via SVD)]( https://en.wikipedia.org/wiki/Principal_component_analysis) where zero values do not influence the resulting ordination. One of the benefits of using DEICODE is the ability to reveal salient inter-community niche feature importance in compositional biplots. These biplot can be easily visualized in the existing QIIME architecture through [Emperor](https://docs.qiime2.org/2018.11/plugins/available/emperor/).
+
+# Installation within a QIIME Environment
+
+If you have not already done so, activate your QIIME environment.
+```
+source activate qiime2-20xx.x
+```
+
+DEICODE is available for installation through pip _or_ conda:
+
+```
+pip install deicode
+```
  
-**Note**: This guide assumes you have installed QIIME 2 using one of the procedures in the [install documents](https://docs.qiime2.org/2019.1/install/) and have installed [q2-deicode](https://library.qiime2.org/plugins/q2-deicode).
+**Note**:  the conda install is only supported for Qiime>=2019.1
+```
+conda install -c conda-forge deicode
+```
+
+# Tutorial 
+**Note**: This guide assumes you have installed QIIME using one of the procedures in the [install documents](https://docs.qiime2.org/2019.1/install/) and have installed [DEICODE](https://library.qiime2.org/plugins/q2-deicode).
 
 ## Introduction 
 
-In this tutorial you will learn how to interpret and perform Robust Aitchison PCA through QIIME 2. The focus of this tutorial is compositional beta diversity. There are many beta diversity metrics that have been proposed, all with varying benefits on varying data structures. However, presence/absence metric often prove to give better results than those that rely on abundances (i.e. unweighted vs. weighted UniFrac). One component of this phenomenon is that the interpretation of relative abundances can provide spurious results (see [the differential abundance analysis introduction](https://docs.qiime2.org/2019.1/tutorials/gneiss/)). One solution to this problem is to use a compositional distance metric such as [Aitchison distance](https://en.wikipedia.org/wiki/Aitchison_geometry). 
+In this tutorial you will learn how to interpret and perform Robust Aitchison PCA through QIIME. The focus of this tutorial is compositional beta diversity. There are many beta diversity metrics that have been proposed, all with varying benefits on varying data structures. However, presence/absence metric often prove to give better results than those that rely on abundances (i.e. unweighted vs. weighted UniFrac). One component of this phenomenon is that the interpretation of relative abundances can provide spurious results (see [the differential abundance analysis introduction](https://docs.qiime2.org/2019.1/tutorials/gneiss/)). One solution to this problem is to use a compositional distance metric such as [Aitchison distance](https://en.wikipedia.org/wiki/Aitchison_geometry). 
 
 
 As a toy example let’s build three taxa. These three taxa represent common distributions we see in microbiome datasets. Where the first taxon is increasing exponentially across samples, this is a trend that we would be interested in. However, taxon 2 and 3 have much higher counts and taxon 3 is randomly fluctuating across samples.  
 
-![](https://cdn1.imggmi.com/uploads/2019/2/5/ed98350fbb7df22df074c3751268ad09-full.png)
+![](//forum-qiime2-org.s3.dualstack.us-west-2.amazonaws.com/original/2X/7/72ebdf6a3303ce0a5850ce52a46befac564cc26d.png)
 
 In our distances below we have Euclidean, Bray-Curtis, Jaccard, and Aitchison distances (from left to right). We can see that the abundance based metrics Euclidean and Bray-Curtis are heavily influenced by the abundance of taxon 3 and seem to randomly fluctuate. In the presence/absence metric, Jaccard, we see that the distance saturates to one very quickly. However, in the Aitchison distance we see a linear curve representing taxon 1. The reason the distance is linear is because Aitchison distance relies on log transforms (the log of the exponential trend of taxon 1 is linear). 
 
 
-![](https://cdn1.imggmi.com/uploads/2019/2/5/ccf5feb1e1cfeda1329689abe949a3c7-full.png)
+![](//forum-qiime2-org.s3.dualstack.us-west-2.amazonaws.com/original/2X/b/bc002a51edcd3e34cba1874a6aa97d7d08b6c0b5.png)
 
 From this toy example, it is clear that Aitchison distance better accounts for the proportions. However, we made the unrealistic assumption in our toy example that there were no zero counts. In real microbiome datasets there are a large number of zeros (i.e. sparsity). Sparsity complicates log ratio transformations because the log-ratio of zero is undefined. To solve this, pseudo counts are often used but that can often skew results (see [Naught all zeros in sequence count data are the same](https://www.biorxiv.org/content/10.1101/477794v1)). 
 
@@ -22,15 +45,15 @@ Robust Aitchison PCA solves this problem in two steps:
 
 **1.** Compostional preprocessing using the centered log ratio transform on only the non-zero values of the data (no pseudo count)
 
-![](https://latex.codecogs.com/gif.latex?rclr%28x%29%20%3D%20%5B%5Clog%5Cfrac%7Bx_%7B1%7D%7D%7Bg_%7Br%7D%28x%29%7D%20%2C%20...%20%2C%20%5Clog%5Cfrac%7Bx_%7BD%7D%7D%7Bg_%7Br%7D%28x%29%7D%5D)
+![](//forum-qiime2-org.s3.dualstack.us-west-2.amazonaws.com/original/2X/4/43fe1323791b5cea419e0973b8983621dbf31a20.gif)
 
-![](https://latex.codecogs.com/gif.latex?g_%7Br%7D%28x%29%20%3D%20%28%5Cprod_%7Bi%20%5Cin%20%5COmega%20_%7Bx%7D%7D%5E%7B%20%7D%20x_%7Bi%7D%29%5E%7B1/%5Cleft%20%7C%20%5COmega%20_%7Bx%7D%20%5Cright%20%7C%7D)
+![](//forum-qiime2-org.s3.dualstack.us-west-2.amazonaws.com/original/2X/1/13b8c6f415d6ab10c81dec1a27f1f24079be398f.gif)
 
 **2.** Dimensionality reduction through Robust PCA on only the non-zero values of the data ( [matrix completion]( https://arxiv.org/pdf/0906.2027.pdf)). 
 
-![](https://latex.codecogs.com/gif.latex?%5Cmin_%7B%5Cboldsymbol%7BU%7D%2C%20%5Cboldsymbol%7BV%7D%7D%20%5C%3B%20%5Cbigg%5Cvert%20%5CLambda%20%5Cleft%28%20%5Cboldsymbol%7BY%7D%20-%20%5Cboldsymbol%7BU%7D%20%5Cboldsymbol%7BS%7D%20%5Cboldsymbol%7BV%7D%5E%7BT%7D%20%5Cright%29%20%5Cbigg%5Cvert%20_%7B2%7D%5E%7B2%7D)
+![](//forum-qiime2-org.s3.dualstack.us-west-2.amazonaws.com/original/2X/a/a327d5600f68b96457c227c660f533e94ee68341.gif)
 
-To demonstrate this in action we will run an example dataset below, where the output can be viewed as a compositional biplot through emperor. 
+To demonstrate this in action we will run an example dataset below, where the output can be viewed as a compositional biplot through Emperor. 
 
 ## Example 
 
@@ -77,7 +100,7 @@ Now that we understand the acceptable parameters, we are ready to run DEICODE.
     --o-biplot ordination.qza \
     --o-distance-matrix distance.qza
 ```
-**Output:** PCoAResults % Properties(['biplor]) to: ordination.qza, DistanceMatrix to: distance.qza
+**Output:** PCoAResults % Properties(['biplot']) to: ordination.qza, DistanceMatrix to: distance.qza
 
 Now that we have our ordination file, with type (PCoAResults % Properties(['biplot'])), we are ready to visualize the results. This can be done using the [Emperor](https://docs.qiime2.org/2019.1/plugins/available/emperor/) biplot functionality. In this case we will include metadata for our features (optional) and our samples (required). 
 
@@ -93,7 +116,7 @@ qiime emperor biplot \
 
 Biplots are exploratory visualization tools that allow us to represent the features (i.e. taxonomy or OTUs)  that strongly influence the principal component axis as arrows. The interpretation of the compositional biplot differs slightly from classical biplot interpretation (we can view the qzv file at [view.qiime2](https://view.qiime2.org). The important features with regard to sample clusters are not a single arrow but by the log ratio between features represented by arrows pointing in different directions. A visualization tool for these log ratios is coming soon to QIIME. 
 
-![](http://i66.tinypic.com/28rm5pj.png)
+![](//forum-qiime2-org.s3.dualstack.us-west-2.amazonaws.com/original/2X/7/756fbaa9c0776c236dd7f68787cc2a5ba09e5a2e.png)
 
 From this visualization we noticed that BodySite seems to explain the clusters well. We can run [PERMANOVA](https://docs.qiime2.org/2019.1/plugins/available/diversity/beta-group-significance/) on the distances to get a statistical significance for this. 
 
@@ -108,4 +131,14 @@ From this visualization we noticed that BodySite seems to explain the clusters w
 
 Indeed we can now see that the clusters we saw in the biplot were significant by viewing the BodySite_significance.qzv at [view.qiime2](https://view.qiime2.org).
 
-![](http://i66.tinypic.com/vy6y6c.jpg)
+![](//forum-qiime2-org.s3.dualstack.us-west-2.amazonaws.com/original/2X/a/a98a93b7b8629b172c8eb2ad3c49da3e75e1b1f6.png)
+
+## Citation 
+
+C. Martino et al., A Novel Sparse Compositional Technique Reveals Microbial Perturbations. mSystems. 4 (2019), [doi:10.1128/mSystems.00016-19](doi:10.1128/mSystems.00016-19).
+
+
+## Other Resources
+
+[Documentation on GitHub](https://github.com/biocore/DEICODE)
+The code for OptSpace was translated to python from a [MATLAB package](http://swoh.web.engr.illinois.edu/software/optspace/code.html) maintained by Sewoong Oh (UIUC).
