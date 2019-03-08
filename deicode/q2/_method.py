@@ -32,10 +32,12 @@ def rpca(table: biom.Table,
     feature_loading = pd.DataFrame(opt.feature_weights, index=table.columns)
     feature_loading = feature_loading.rename(columns=rename_cols)
     feature_loading.sort_values('PC1', inplace=True, ascending=True)
+    feature_loading -= feature_loading.mean(axis=0)
 
     # Sample Loadings
     sample_loading = pd.DataFrame(opt.sample_weights, index=table.index)
     sample_loading = sample_loading.rename(columns=rename_cols)
+    sample_loading -= sample_loading.mean(axis=0)
 
     # % var explained
     proportion_explained = pd.Series(opt.explained_variance_ratio,
