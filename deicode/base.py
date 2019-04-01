@@ -10,7 +10,7 @@ class _BaseImpute(object):
     @abstractmethod
     def fit(self):
         """ Placeholder for fit this
-        should be implemetned by sub-method"""
+        should be implemented by sub-method"""
 
     def transform(self):
         """ Apply imputation to X_sparse
@@ -27,7 +27,7 @@ class _BaseTransform(object):
     @abstractmethod
     def fit(self):
         """ Placeholder for fit this
-        should be implemetned by sub-method"""
+        should be implemented by sub-method"""
 
     def transform(self):
         """ Apply imputation to X_sparse
