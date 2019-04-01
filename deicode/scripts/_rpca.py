@@ -57,7 +57,20 @@ def rpca(in_biom: str, output_dir: str,
         sample_loading.copy(),
         features=feature_loading.copy(),
         proportion_explained=proportion_explained.copy())
-    # write files to output folder
+
+    # If it doesn't already exist, create the output directory.
+    # Note that there is technically a race condition here: it's ostensibly
+    # possible that some process could delete the output directory after we
+    # check that it exists here but before we write the output files to it.
+    # However, in this case, we'd just get an error from skbio.io.util.open()
+    # (which is called by skbio.OrdinationResults.write()), which makes sense.
+    os.makedirs(output_dir, exist_ok=True)
+
+    # write files to output directory
+    # Note that this will overwrite files in the output directory that share
+    # these filenames (analogous to QIIME 2's behavior if you specify the
+    # --o-biplot and --o-distance-matrix options, but differing from QIIME 2's
+    # behavior if you specify --output-dir).
     ord_res.write(os.path.join(output_dir, 'RPCA_Ordination.txt'))
     # save distance matrix
     dist_res = skbio.stats.distance.DistanceMatrix(
