@@ -9,19 +9,19 @@ from deicode.preprocessing import rclr
 
 
 @click.command()
-@click.option('--in_biom', help='Input table in biom format.')
-@click.option('--output_dir', help='Location of output files.')
+@click.option('--in_biom', help='Input table in biom format.', required=True)
+@click.option('--output_dir', help='Location of output files.', required=True)
 @click.option(
     '--rank',
     default=3,
-    help='Rank with witch to run OptSpace. default=3')
+    help='Rank with which to run OptSpace [default = 3]')
 @click.option(
     '--min_sample_depth',
     default=500,
-    help='Minimum Sample Sequencing Depth Cut Off default=500')
+    help='Minimum sample sequencing depth cutoff [default = 500]')
 def rpca(in_biom: str, output_dir: str,
          min_sample_depth: int, rank: int) -> None:
-    """ Runs RPCA with an rclr preprocessing step"""
+    """Runs RPCA with an rclr preprocessing step."""
 
     # import table
     table = load_table(in_biom)
