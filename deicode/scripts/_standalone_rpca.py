@@ -3,7 +3,8 @@ import click
 from biom import load_table
 from deicode.rpca import rpca
 from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
-                                    DEFAULT_ITERATIONS)
+                                    DEFAULT_ITERATIONS, DESC_RANK, DESC_MSC,
+                                    DESC_MFC, DESC_ITERATIONS)
 
 
 @click.command()
@@ -12,21 +13,23 @@ from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
 @click.option(
     '--rank',
     default=DEFAULT_RANK,
-    help='Rank with which to run OptSpace [default: 3]')
+    show_default=True,
+    help=DESC_RANK)
 @click.option(
     '--min-sample-count',
     default=DEFAULT_MSC,
-    help='Minimum sum cutoff of sample across all features [default: 500]')
+    show_default=True,
+    help=DESC_MSC)
 @click.option(
     '--min-feature-count',
     default=DEFAULT_MFC,
-    help='Minimum sum cutoff of features across all samples [default: 10]')
+    show_default=True,
+    help=DESC_MFC)
 @click.option(
     '--iterations',
     default=DEFAULT_ITERATIONS,
-    help='The number of iterations to optimize the solution'
-         ' (suggested to be below 100; beware of overfitting)'
-         ' [default: 5]')
+    show_default=True,
+    help=DESC_ITERATIONS)
 def standalone_rpca(in_biom: str, output_dir: str, rank: int,
                     min_sample_count: int, min_feature_count: int,
                     iterations: int) -> None:
