@@ -29,7 +29,7 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
 * The following option names have changed when running DEICODE outside of QIIME
   2:
   | Original Name        | New Name             |
-  |----------------------|----------------------|
+  | -------------------- | -------------------- |
   | `--in_biom`          | `--in-biom`          |
   | `--output_dir`       | `--output-dir`       |
   | `--min_sample_depth` | `--min-sample-count` |
@@ -71,7 +71,7 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
   produced by the non-QIIME 2 code have changed as follows, in order to be
   consistent with the ordinations produced by the QIIME 2 code:
   | Original Name                   | New Name                         |
-  |---------------------------------|----------------------------------|
+  | ------------------------------- | -------------------------------- |
   | `PCoA`                          | `rpca_biplot`                    |
   | `Principal Coordinate Analysis` | `(Robust Aitchison) RPCA Biplot` |
   * These changes shouldn't actually impact anything within the
