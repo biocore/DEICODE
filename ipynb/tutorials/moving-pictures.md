@@ -1,6 +1,6 @@
 # DEICODE
 (pronounced like decode /de.ko.de/) 
-[Documentation available in the pugin library.](https://library.qiime2.org/plugins/deicode/19/)
+[Documentation available in the plugin library.](https://library.qiime2.org/plugins/deicode/19/)
 
 DEICODE is a form of [Aitchison Distance](https://en.wikipedia.org/wiki/Aitchison_geometry) that is robust to high levels of sparsity. DEICODE utilizes a natural solution to the zero problem formulated in recommendation systems  called [matrix completion]( https://arxiv.org/pdf/0906.2027.pdf). A simple way to interpret the method is, as a robust compositional [PCA (via SVD)]( https://en.wikipedia.org/wiki/Principal_component_analysis) where zero values do not influence the resulting ordination. One of the benefits of using DEICODE is the ability to reveal salient inter-community niche feature importance in compositional biplots. These biplot can be easily visualized in the existing QIIME architecture through [Emperor](https://docs.qiime2.org/2018.11/plugins/available/emperor/).
 
