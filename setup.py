@@ -108,7 +108,8 @@ setup(name='deicode',
       classifiers=classifiers,
       entry_points={
           'qiime2.plugins': ['q2-deicode=deicode.q2.plugin_setup:plugin'],
-          'console_scripts': ['deicode=deicode.scripts._rpca:rpca']
+          'console_scripts':
+              ['deicode=deicode.scripts._standalone_rpca:standalone_rpca']
       },
       package_data={},
       cmdclass={'install': CustomInstallCommand,
