@@ -68,6 +68,14 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
   This further cuts down on redundancy: developers now only have to update the
   description or default value of an option in this one place.
 
+* The files produced by the non-QIIME 2 code have been renamed as follows to be
+  consistent with the data inside the artifacts produced by the QIIME 2 code:
+
+| Original Name         | New Name              |
+| --------------------- | --------------------- |
+| `RPCA_Ordination.txt` | `ordination.txt`      |
+| `RPCA_distance.txt`   | `distance-matrix.tsv` |
+
 * The `skbio.OrdinationResults` short and long method names for ordinations
   produced by the non-QIIME 2 code have changed as follows, in order to be
   consistent with the ordinations produced by the QIIME 2 code:

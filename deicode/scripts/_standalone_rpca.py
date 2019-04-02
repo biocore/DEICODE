@@ -54,8 +54,8 @@ def standalone_rpca(in_biom: str, output_dir: str, rank: int,
     # these filenames (analogous to QIIME 2's behavior if you specify the
     # --o-biplot and --o-distance-matrix options, but differing from QIIME 2's
     # behavior if you specify --output-dir instead).
-    ord_res.write(os.path.join(output_dir, 'RPCA_Ordination.txt'))
-    dist_res.write(os.path.join(output_dir, 'RPCA_distance.txt'))
+    ord_res.write(os.path.join(output_dir, 'ordination.txt'))
+    dist_res.write(os.path.join(output_dir, 'distance-matrix.tsv'))
 
 
 if __name__ == '__main__':
