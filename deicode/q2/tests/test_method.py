@@ -3,7 +3,7 @@ import numpy as np
 from biom import Table
 from skbio import OrdinationResults
 from skbio.stats.distance import DistanceMatrix
-from deicode.q2._method import rpca
+from deicode.rpca import rpca
 from simulations import build_block_model
 
 

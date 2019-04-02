@@ -14,8 +14,8 @@ class Test_rpca(unittest.TestCase):
         in_ = get_data_path('test.biom')
         out_ = '/'.join(in_.split('/')[:-1])
         runner = CliRunner()
-        result = runner.invoke(rpca, ['--in_biom', in_,
-                                      '--output_dir', out_])
+        result = runner.invoke(rpca, ['--in-biom', in_,
+                                      '--output-dir', out_])
         dist_res = pd.read_table(get_data_path('distance.txt'), index_col=0)
         fea_res = pd.read_table(get_data_path('feature.txt'), index_col=0)
         samp_res = pd.read_table(get_data_path('sample.txt'), index_col=0)
