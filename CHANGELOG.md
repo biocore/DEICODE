@@ -28,11 +28,12 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
 
 * The following option names have changed when running DEICODE outside of QIIME
   2:
-  | Original Name        | New Name             |
-  | -------------------- | -------------------- |
-  | `--in_biom`          | `--in-biom`          |
-  | `--output_dir`       | `--output-dir`       |
-  | `--min_sample_depth` | `--min-sample-count` |
+
+| Original Name        | New Name             |
+| -------------------- | -------------------- |
+| `--in_biom`          | `--in-biom`          |
+| `--output_dir`       | `--output-dir`       |
+| `--min_sample_depth` | `--min-sample-count` |
 
 * `deicode.scripts._rpca` has been replaced by `deicode.scripts._standalone_rpca`.
   * Similarly, the `rpca()` function within `deicode.scripts._rpca` has been
@@ -70,10 +71,12 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
 * The `skbio.OrdinationResults` short and long method names for ordinations
   produced by the non-QIIME 2 code have changed as follows, in order to be
   consistent with the ordinations produced by the QIIME 2 code:
-  | Original Name                   | New Name                         |
-  | ------------------------------- | -------------------------------- |
-  | `PCoA`                          | `rpca_biplot`                    |
-  | `Principal Coordinate Analysis` | `(Robust Aitchison) RPCA Biplot` |
+
+| Original Name                   | New Name                         |
+| ------------------------------- | -------------------------------- |
+| `PCoA`                          | `rpca_biplot`                    |
+| `Principal Coordinate Analysis` | `(Robust Aitchison) RPCA Biplot` |
+
   * These changes shouldn't actually impact anything within the
     `RPCA_Ordination.txt` files, since as of writing the [scikit-bio ordination format](http://scikit-bio.org/docs/latest/generated/skbio.io.format.ordination.html) doesn't include either of the method names. Just listing this here to be safe.
 
