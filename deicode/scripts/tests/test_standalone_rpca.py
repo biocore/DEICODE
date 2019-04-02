@@ -1,4 +1,4 @@
-from deicode.scripts._rpca import rpca
+from deicode.scripts._standalone_rpca import standalone_rpca
 import unittest
 import pandas as pd
 from click.testing import CliRunner
@@ -6,16 +6,16 @@ from skbio.util import get_data_path
 from sklearn.utils.testing import assert_array_almost_equal
 
 
-class Test_rpca(unittest.TestCase):
+class Test_standalone_rpca(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_rpca(self):
+    def test_standalone_rpca(self):
         in_ = get_data_path('test.biom')
         out_ = '/'.join(in_.split('/')[:-1])
         runner = CliRunner()
-        result = runner.invoke(rpca, ['--in_biom', in_,
-                                      '--output_dir', out_])
+        result = runner.invoke(standalone_rpca, ['--in-biom', in_,
+                                                 '--output-dir', out_])
         dist_res = pd.read_table(get_data_path('distance.txt'), index_col=0)
         fea_res = pd.read_table(get_data_path('feature.txt'), index_col=0)
         samp_res = pd.read_table(get_data_path('sample.txt'), index_col=0)

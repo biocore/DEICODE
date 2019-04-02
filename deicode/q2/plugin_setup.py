@@ -9,7 +9,9 @@
 import qiime2.plugin
 import qiime2.sdk
 from deicode import __version__
-from ._method import rpca
+from deicode.rpca import rpca
+from deicode._rpca_defaults import (DESC_RANK, DESC_MSC, DESC_MFC,
+                                    DESC_ITERATIONS)
 from qiime2.plugin import (Properties, Int)
 from q2_types.feature_table import FeatureTable, Frequency
 from q2_types.distance_matrix import DistanceMatrix
@@ -46,14 +48,10 @@ plugin.methods.register_function(
         'table': 'Input table of counts.',
     },
     parameter_descriptions={
-        'rank': ('The underlying low-rank'
-                 ' structure (suggested: 1 < rank < 10)'),
-        'min_sample_count': ('Minimum sum cutoff of'
-                             ' sample across all features'),
-        'min_feature_count': ('Minimum sum cutoff of'
-                              ' features across all samples'),
-        'iterations': ('The number of iterations to optomize the solution'
-                       ' (suggested to below 100, beware of overfitting)'),
+        'rank': DESC_RANK,
+        'min_sample_count': DESC_MSC,
+        'min_feature_count': DESC_MFC,
+        'iterations': DESC_ITERATIONS,
     },
     output_descriptions={
         'biplot': ('A biplot of the (Robust Aitchison) RPCA feature loadings'),

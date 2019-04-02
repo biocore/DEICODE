@@ -3,16 +3,22 @@ import skbio
 import pandas as pd
 from deicode.optspace import OptSpace
 from deicode.preprocessing import rclr
+from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
+                                    DEFAULT_ITERATIONS)
 
 
 def rpca(table: biom.Table,
-         rank: int=3,
-         min_sample_count: int=500,
-         min_feature_count: int=10,
-         iterations: int=5) -> (
+         rank: int=DEFAULT_RANK,
+         min_sample_count: int=DEFAULT_MSC,
+         min_feature_count: int=DEFAULT_MFC,
+         iterations: int=DEFAULT_ITERATIONS) -> (
          skbio.OrdinationResults,
          skbio.DistanceMatrix):
-    """ Runs RPCA with an rclr preprocessing step"""
+    """Runs RPCA with an rclr preprocessing step.
+
+       This code will be run by both the standalone and QIIME 2 versions of
+       DEICODE.
+    """
 
     # filter sample to min depth
     def sample_filter(val, id_, md): return sum(val) > min_sample_count
@@ -42,7 +48,7 @@ def rpca(table: biom.Table,
     # % var explained
     proportion_explained = pd.Series(opt.explained_variance_ratio,
                                      index=list(rename_cols.values()))
-    # eigan-vals
+    # get eigenvalues
     eigvals = pd.Series(opt.eigenvalues,
                         index=list(rename_cols.values()))
 
