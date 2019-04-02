@@ -1,12 +1,9 @@
 import os
-import skbio
 import click
-import pandas as pd
 from biom import load_table
-from skbio import OrdinationResults
 from deicode.rpca import rpca
-from deicode.optspace import OptSpace
-from deicode.preprocessing import rclr
+from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
+                                    DEFAULT_ITERATIONS)
 
 
 @click.command()
@@ -14,19 +11,19 @@ from deicode.preprocessing import rclr
 @click.option('--output-dir', help='Location of output files.', required=True)
 @click.option(
     '--rank',
-    default=3,
+    default=DEFAULT_RANK,
     help='Rank with which to run OptSpace [default: 3]')
 @click.option(
     '--min-sample-count',
-    default=500,
+    default=DEFAULT_MSC,
     help='Minimum sum cutoff of sample across all features [default: 500]')
 @click.option(
     '--min-feature-count',
-    default=10,
+    default=DEFAULT_MFC,
     help='Minimum sum cutoff of features across all samples [default: 10]')
 @click.option(
     '--iterations',
-    default=5,
+    default=DEFAULT_ITERATIONS,
     help='The number of iterations to optimize the solution'
          ' (suggested to be below 100; beware of overfitting)'
          ' [default: 5]')
