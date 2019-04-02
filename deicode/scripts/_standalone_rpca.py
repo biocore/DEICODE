@@ -30,8 +30,9 @@ from deicode.preprocessing import rclr
     help='The number of iterations to optimize the solution'
          ' (suggested to be below 100; beware of overfitting)'
          ' [default: 5]')
-def rpca(in_biom: str, output_dir: str, min_sample_count: int,
-         min_feature_count: int, rank: int, iterations: int) -> None:
+def standalone_rpca(in_biom: str, output_dir: str, rank: int,
+                    min_sample_count: int, min_feature_count: int,
+                    iterations: int) -> None:
     """Runs RPCA with an rclr preprocessing step."""
 
     # import table
@@ -58,4 +59,4 @@ def rpca(in_biom: str, output_dir: str, min_sample_count: int,
 
 
 if __name__ == '__main__':
-    rpca()
+    standalone_rpca()
