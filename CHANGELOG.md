@@ -49,11 +49,10 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
 ### Bug fixes
 
 * Some of the QIIME 2 RPCA behavior was not mirrored perfectly in the non-QIIME
-  2 RPCA code. So there are a few "new" things done by the non-Q2 RPCA code that
-  it didn't do before:
+  2 RPCA code. Here is a list of the "new" things done by the non-Q2 RPCA code
+  that it didn't do before:
   * Uses `--min-feature-count` with a default value of `10`. Previously, the
     non-Q2 RPCA code didn't do this filtering step at all.
-  * Adds a PC3 containing zeros if the `rank` is set to `2`.
 
 ### Deprecated functionality [stable]
 

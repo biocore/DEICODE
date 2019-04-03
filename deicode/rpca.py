@@ -52,13 +52,6 @@ def rpca(table: biom.Table,
     eigvals = pd.Series(opt.eigenvalues,
                         index=list(rename_cols.values()))
 
-    # if the rank is two add PC3 of zeros
-    if rank == 2:
-        feature_loading['PC3'] = [0] * len(feature_loading.index)
-        sample_loading['PC3'] = [0] * len(sample_loading.index)
-        eigvals.loc['PC3'] = 0
-        proportion_explained.loc['PC3'] = 0
-
     # save ordination results
     short_method_name = 'rpca_biplot'
     long_method_name = '(Robust Aitchison) RPCA Biplot'
