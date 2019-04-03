@@ -17,14 +17,14 @@ from q2_types.feature_table import FeatureTable, Frequency
 from q2_types.distance_matrix import DistanceMatrix
 from q2_types.ordination import PCoAResults
 
-# citations = qiime2.plugin.Citations.load(
-#             'citations.bib', package='deicode')
+citations = qiime2.plugin.Citations.load(
+            'citations.bib', package='deicode')
 
 plugin = qiime2.plugin.Plugin(
     name='deicode',
     version=__version__,
     website="https://github.com/biocore/DEICODE",
-    # citations=[citations['martino-unpublished']],
+    citations=[citations['Martino2019']],
     short_description=('Plugin for Robust Aitchison PCA:'
                        'compositional biplots from sparse count data.'),
     description=('This is a QIIME 2 plugin supporting Robust Aitchison on '

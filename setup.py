@@ -110,7 +110,9 @@ setup(name='deicode',
           'console_scripts':
               ['deicode=deicode.scripts._standalone_rpca:standalone_rpca']
       },
-      package_data={},
+      # Inclusion of citations.bib in package_data based on how this is done in
+      # q2-emperor's setup.py file
+      package_data={'deicode': ['citations.bib']},
       cmdclass={'install': CustomInstallCommand,
                 'develop': CustomDevelopCommand,
                 'egg_info': CustomEggInfoCommand, },
