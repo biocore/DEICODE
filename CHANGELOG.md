@@ -88,7 +88,7 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
 | `Principal Coordinate Analysis` | `(Robust Aitchison) RPCA Biplot` |
 
   * These changes shouldn't actually impact anything within the
-    `RPCA_Ordination.txt` files, since as of writing the [scikit-bio ordination format](http://scikit-bio.org/docs/latest/generated/skbio.io.format.ordination.html) doesn't include either of the method names. Just listing this here to be safe.
+    ordination files, since as of writing the [scikit-bio ordination format](http://scikit-bio.org/docs/latest/generated/skbio.io.format.ordination.html) doesn't include either of the method names. Just listing this here to be safe.
 
 * Various typo fixes
 
