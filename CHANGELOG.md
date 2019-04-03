@@ -60,6 +60,10 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
 
 ### Miscellaneous
 
+* Previously, the QIIME 2 RPCA code would add a PC3 containing zeroes to the
+  output biplot if `rank` was equal to `2`. This is no longer done. (Emperor
+  will default to a 2-D display in these cases.)
+
 * Since `deicode.rpca` is now used by both the QIIME 2 and non-QIIME 2 code,
   the amount of redundant code has decreased. The primary benefit of this is
   that it should maintaining both ways of running DEICODE easier.
