@@ -4,7 +4,7 @@ import pandas as pd
 from click.testing import CliRunner
 from skbio import OrdinationResults
 from skbio.util import get_data_path
-from sklearn.utils.testing import assert_array_almost_equal
+from numpy.testing import assert_array_almost_equal
 
 
 class Test_standalone_rpca(unittest.TestCase):

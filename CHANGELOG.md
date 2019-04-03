@@ -44,6 +44,8 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
 
 ### Performance enhancements
 
+* Removed scikit-learn dependency.
+
 ### Bug fixes
 
 * Some of the QIIME 2 RPCA behavior was not mirrored perfectly in the non-QIIME
