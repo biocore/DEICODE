@@ -65,8 +65,8 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
   will default to a 2-D display in these cases.)
 
 * Since `deicode.rpca` is now used by both the QIIME 2 and non-QIIME 2 code,
-  the amount of redundant code has decreased. The primary benefit of this is
-  that it should maintaining both ways of running DEICODE easier.
+  the amount of redundant code has decreased. This should simplify DEICODE's
+  codebase.
 
 * Shared RPCA parameter settings between the QIIME 2 and non-QIIME 2 code
   (descriptions and default values) are now stored in `deicode._rpca_defaults`.
