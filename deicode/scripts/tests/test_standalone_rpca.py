@@ -27,8 +27,8 @@ class Test_standalone_rpca(unittest.TestCase):
                                index_col=0)
         fea_exp = pd.read_csv(get_data_path('truth_feature.txt'), sep='\t',
                               index_col=0)
-        samp_exp = pd.read_csv(get_data_path('truth_sample_trimmed.txt'), sep='\t',
-                               index_col=0)
+        samp_exp = pd.read_csv(get_data_path('truth_sample_trimmed.txt'),
+                               sep='\t', index_col=0)
 
         # Check that the distance matrix matches our expectations
         assert_array_almost_equal(dist_res.values, dist_exp.values)
@@ -36,24 +36,44 @@ class Test_standalone_rpca(unittest.TestCase):
         # Check that the ordination results match our expectations -- checking
         # each value for both features and samples
 
-        # Row order doesn't matter, but the row names should match
-        assert set(ord_res.features.index) == set(fea_exp.index)
-        assert set(ord_res.samples.index) == set(samp_exp.index)
-        # Column names don't matter, but order does. To enable comparison using
-        # pd.testing.assert_frame_equal(), just set the column names to match
-        # (once we've verified that there's the same number of columns)
-        assert len(ord_res.features.columns) == len(fea_exp.columns)
-        assert len(ord_res.samples.columns) == len(samp_exp.columns)
-        ord_features_copy = ord_res.features.copy()
-        ord_features_copy.columns = fea_exp.columns
-        ord_samples_copy = ord_res.samples.copy()
-        ord_samples_copy.columns = samp_exp.columns
+        # This is just a tuple where the DataFrames within each 2-tuple within
+        # it will be compared
+        res_exp = ((ord_res.features, fea_exp, "feature"),
+                   (ord_res.samples, samp_exp, "sample"))
 
-        # Now, actually check that ordination stuff matches
-        pd.testing.assert_frame_equal(ord_features_copy, fea_exp,
-                                      check_like=True)
-        pd.testing.assert_frame_equal(ord_samples_copy, samp_exp,
-                                      check_like=True)
+        for (res, exp, _) in res_exp:
+            # Row order doesn't matter, but the row names should match
+            assert set(res.index) == set(exp.index)
+            # Column names don't matter, but order does
+            assert len(res.columns) == len(exp.columns)
+            # Now, we can actually check that the ordination values match.
+            # (First, we sort so that the rows in both the result and expected
+            # DFs are in the same order, to enable us to use check_names=False
+            # when calling pd.testing.assert_series_equal().)
+            res_sorted = res.sort_index()
+            exp_sorted = exp.sort_index()
+            for col_index in range(len(res_sorted.columns)):
+                # Extract the n-th column (a pandas Series) from both the
+                # result and expected DataFrame, then compare their values.
+                res_series = res_sorted.iloc[:, col_index]
+                exp_series = exp_sorted.iloc[:, col_index]
+                try:
+                    # First, just try comparing the two PCs and seeing if their
+                    # values are approximately equal.
+                    pd.testing.assert_series_equal(res_series, exp_series,
+                                                   check_names=False,
+                                                   check_less_precise=2)
+                except AssertionError:
+                    # It's fine for any of the "PC"s (i.e. columns in the
+                    # OrdinationResults) to be off by a factor of -1, since
+                    # that doesn't really change the interpretation of anything
+                    # (c/o @cameronmartino's comment in #29).
+                    # To allow for this case to pass the tests, we just try
+                    # negating one of the series, and seeing if
+                    # that makes them approximately equal.
+                    pd.testing.assert_series_equal(-res_series, exp_series,
+                                                   check_names=False,
+                                                   check_less_precise=2)
 
         # Lastly, check that DEICODE's exit code was 0 (indicating success)
         self.assertEqual(result.exit_code, 0)
