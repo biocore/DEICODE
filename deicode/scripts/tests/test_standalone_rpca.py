@@ -79,8 +79,8 @@ class Test_standalone_rpca(unittest.TestCase):
                     pd.testing.assert_series_equal(-res_series, exp_series,
                                                    check_names=False,
                                                    check_less_precise=5)
-                #print("PC {} for {} ordination matches.".format(col_index,
-                #                                                aspect))
+                # print("PC {} for {} ordination matches.".format(col_index,
+                #                                                 aspect))
 
         # Lastly, check that DEICODE's exit code was 0 (indicating success)
         self.assertEqual(result.exit_code, 0)
