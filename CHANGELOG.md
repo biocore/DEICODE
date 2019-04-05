@@ -54,6 +54,10 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
   * Uses `--min-feature-count` with a default value of `10`. Previously, the
     non-Q2 RPCA code didn't do this filtering step at all.
 
+* Fixed the test in `deicode/scripts/tests/` to check the correct output
+  files produced by DEICODE (previously, this test was looking at the incorrect
+  files).
+
 ### Deprecated functionality [stable]
 
 ### Deprecated functionality [experimental]

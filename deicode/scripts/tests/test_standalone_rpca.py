@@ -12,6 +12,12 @@ class Test_standalone_rpca(unittest.TestCase):
         pass
 
     def test_standalone_rpca(self):
+        """Checks the distance matrix and biplot produced by DEICODE's script.
+
+           This is more of an "integration test" than a unit test -- the
+           details of the algorithm used by the standalone RPCA script are
+           checked in more detail in deicode/tests/test_optspace.py, etc.
+        """
         in_ = get_data_path('test.biom')
         out_ = '/'.join(in_.split('/')[:-1])
         runner = CliRunner()
@@ -23,12 +29,10 @@ class Test_standalone_rpca(unittest.TestCase):
         ord_res = OrdinationResults.read(get_data_path('ordination.txt'))
 
         # Read the expected results
-        dist_exp = pd.read_csv(get_data_path('truth_distance.txt'), sep='\t',
-                               index_col=0)
-        fea_exp = pd.read_csv(get_data_path('truth_feature.txt'), sep='\t',
-                              index_col=0)
-        samp_exp = pd.read_csv(get_data_path('truth_sample_trimmed.txt'),
+        dist_exp = pd.read_csv(get_data_path('expected-distance-matrix.tsv'),
                                sep='\t', index_col=0)
+        ord_exp = OrdinationResults.read(get_data_path(
+                                         'expected-ordination.txt'))
 
         # Check that the distance matrix matches our expectations
         assert_array_almost_equal(dist_res.values, dist_exp.values)
@@ -38,10 +42,10 @@ class Test_standalone_rpca(unittest.TestCase):
 
         # This is just a tuple where the DataFrames within each 2-tuple within
         # it will be compared
-        res_exp = ((ord_res.features, fea_exp, "feature"),
-                   (ord_res.samples, samp_exp, "sample"))
+        res_exp = ((ord_res.features, ord_exp.features, "feature"),
+                   (ord_res.samples, ord_exp.samples, "sample"))
 
-        for (res, exp, _) in res_exp:
+        for (res, exp, aspect) in res_exp:
             # Row order doesn't matter, but the row names should match
             assert set(res.index) == set(exp.index)
             # Column names don't matter, but order does
@@ -62,7 +66,7 @@ class Test_standalone_rpca(unittest.TestCase):
                     # values are approximately equal.
                     pd.testing.assert_series_equal(res_series, exp_series,
                                                    check_names=False,
-                                                   check_less_precise=2)
+                                                   check_less_precise=5)
                 except AssertionError:
                     # It's fine for any of the "PC"s (i.e. columns in the
                     # OrdinationResults) to be off by a factor of -1, since
@@ -71,9 +75,12 @@ class Test_standalone_rpca(unittest.TestCase):
                     # To allow for this case to pass the tests, we just try
                     # negating one of the series, and seeing if
                     # that makes them approximately equal.
+                    # (If they're *still* not equal, this test will fail.)
                     pd.testing.assert_series_equal(-res_series, exp_series,
                                                    check_names=False,
-                                                   check_less_precise=2)
+                                                   check_less_precise=5)
+                #print("PC {} for {} ordination matches.".format(col_index,
+                #                                                aspect))
 
         # Lastly, check that DEICODE's exit code was 0 (indicating success)
         self.assertEqual(result.exit_code, 0)
