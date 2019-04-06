@@ -13,8 +13,10 @@ from deicode.scripts._standalone_rpca import standalone_rpca
 from deicode.testing import assert_deicode_ordinationresults_equal
 from simulations import build_block_model
 from click.testing import CliRunner
+from nose.tools import nottest
 
 
+@nottest
 def create_test_table():
     _, test_table = build_block_model(rank=2,
                                       hoced=20,
