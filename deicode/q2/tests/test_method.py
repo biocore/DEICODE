@@ -1,35 +1,116 @@
 import unittest
+from os.path import sep as os_path_sep
 import numpy as np
+from pandas import read_csv
 from biom import Table
 from skbio import OrdinationResults
 from skbio.stats.distance import DistanceMatrix
+from skbio.util import get_data_path
+from qiime2 import Artifact
+from qiime2.plugins import deicode as q2deicode
 from deicode.rpca import rpca
+from deicode.scripts._standalone_rpca import standalone_rpca
+from deicode.testing import assert_deicode_ordinationresults_equal
 from simulations import build_block_model
+from click.testing import CliRunner
+
+
+def create_test_table():
+    _, test_table = build_block_model(rank=2,
+                                      hoced=20,
+                                      hsced=20,
+                                      spar=2e3,
+                                      C_=2e3,
+                                      num_samples=50,
+                                      num_features=500,
+                                      mapping_on=False)
+
+    feat_ids = ['F%d' % i for i in range(test_table.shape[0])]
+    samp_ids = ['L%d' % i for i in range(test_table.shape[1])]
+
+    return Table(test_table, feat_ids, samp_ids)
 
 
 class Testrpca(unittest.TestCase):
 
     def setUp(self):
-        _, test_table = build_block_model(rank=2,
-                                          hoced=20,
-                                          hsced=20,
-                                          spar=2e3,
-                                          C_=2e3,
-                                          num_samples=50,
-                                          num_features=500,
-                                          mapping_on=False)
-
-        feat_ids = ['F%d' % i for i in range(test_table.shape[0])]
-        samp_ids = ['L%d' % i for i in range(test_table.shape[1])]
-
-        self.test_table = Table(test_table, feat_ids, samp_ids)
+        self.test_table = create_test_table()
 
     def test_rpca(self):
+        """Tests the basic validity of the actual rpca() method's outputs."""
         ord_test, dist_test = rpca(table=self.test_table)
         self.assertIsInstance(ord_test, OrdinationResults)
         self.assertIsInstance(dist_test, DistanceMatrix)
         self.assertTrue(any(np.isnan(ord_test.features)))
         self.assertTrue(any(np.isnan(ord_test.samples)))
+
+
+class Test_qiime2_rpca(unittest.TestCase):
+
+    def setUp(self):
+        self.q2table = Artifact.import_data("FeatureTable[Frequency]",
+                                            create_test_table())
+
+    def test_qiime2_rpca(self):
+        """Tests that the Q2 and standalone RPCA results match.
+
+           Also validates against ground truth "expected" results.
+        """
+
+        tstdir = "test_output"
+        # Run DEICODE through QIIME 2 (specifically, the Artifact API)
+        ordination_qza, distmatrix_qza = q2deicode.actions.rpca(self.q2table)
+        # Get the underlying data from these artifacts
+        q2ordination = ordination_qza.view(OrdinationResults)
+        q2distmatrix = distmatrix_qza.view(DistanceMatrix)
+
+        # Next, run DEICODE outside of QIIME 2. We're gonna check that
+        # everything matches up.
+        # ...First, though, we need to write the contents of self.q2table to a
+        # BIOM file, so DEICODE can understand it.
+        self.q2table.export_data(get_data_path("", tstdir))
+        q2table_loc = get_data_path('feature-table.biom', tstdir)
+        # Derived from a line in test_standalone_rpca()
+        tstdir_absolute = os_path_sep.join(q2table_loc.split(os_path_sep)[:-1])
+
+        # Run DEICODE outside of QIIME 2...
+        CliRunner().invoke(standalone_rpca, ['--in-biom', q2table_loc,
+                                             '--output-dir', tstdir_absolute])
+        # ...and read in the resulting output files. This code was derived from
+        # test_standalone_rpca() elsewhere in DEICODE's codebase.
+        stordination = OrdinationResults.read(get_data_path('ordination.txt',
+                                                            tstdir))
+        stdistmatrix_values = read_csv(get_data_path('distance-matrix.tsv',
+                                       tstdir), sep='\t', index_col=0).values
+
+        # Convert the DistanceMatrix object a numpy array (which we can compare
+        # with the other _values numpy arrays we've created from the other
+        # distance matrices)
+        q2distmatrix_values = q2distmatrix.to_data_frame().values
+
+        # Finaly: actually check the consistency of Q2 and standalone results!
+        assert_deicode_ordinationresults_equal(q2ordination, stordination)
+        np.testing.assert_array_almost_equal(q2distmatrix_values,
+                                             stdistmatrix_values)
+
+        # NOTE: This functionality is currently not used due to the inherent
+        # randomness in how the test table data is generated (and also because
+        # we're already checking the correctness of the standalone DEICODE
+        # RPCA script), but if desired you can add ground truth data to a data/
+        # folder in this directory (i.e. a distance-matrix.tsv and
+        # ordination.txt file), and the code below will compare the Q2 results
+        # to those files.
+        #
+        # Read in expected output from data/, similarly to above
+        # exordination = OrdinationResults.read(get_data_path(
+        #                                       'ordination.txt'))
+        # exdistmatrix_values = read_csv(get_data_path('distance-matrix.tsv'),
+        #                                sep='\t', index_col=0).values
+        #
+        # ... And check consistency of Q2 results with the expected results
+        # assert_deicode_ordinationresults_equal(q2ordination, exordination)
+        # np.testing.assert_array_almost_equal(q2distmatrix_values,
+        #                                      exdistmatrix_values)
 
 
 if __name__ == "__main__":
