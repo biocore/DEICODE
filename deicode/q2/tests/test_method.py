@@ -41,10 +41,14 @@ class Testrpca(unittest.TestCase):
     def test_rpca(self):
         """Tests the basic validity of the actual rpca() method's outputs."""
         ord_test, dist_test = rpca(table=self.test_table)
+        # Validate types of the RPCA outputs
         self.assertIsInstance(ord_test, OrdinationResults)
         self.assertIsInstance(dist_test, DistanceMatrix)
-        self.assertTrue(any(np.isnan(ord_test.features)))
-        self.assertTrue(any(np.isnan(ord_test.samples)))
+        # Ensure that no NaNs are in the OrdinationResults
+        # NOTE that we have to use the DataFrame .any() functions instead of
+        # python's built-in any() functions -- see #29 for details on this
+        self.assertFalse(np.isnan(ord_test.features).any(axis=None))
+        self.assertFalse(np.isnan(ord_test.samples).any(axis=None))
 
 
 class Test_qiime2_rpca(unittest.TestCase):
