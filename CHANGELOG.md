@@ -1,6 +1,6 @@
 # DEICODE changelog
 
-## Version 0.1.7 (2019-4-2)
+## Version 0.1.7 (2019-4-8)
 
 Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
 
@@ -57,6 +57,11 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
 * Fixed the test in `deicode/scripts/tests/` to check the correct output
   files produced by DEICODE (previously, this test was looking at the incorrect
   files).
+
+* Fixed a test in `deicode/q2/tests/` to correctly check for NaNs in the
+  ordination produced by DEICODE (previously, this test was using python's
+  built-in `any()` function instead of pandas' `.any()` function, which
+  resulted in the test being incorrect).
 
 ### Deprecated functionality [stable]
 
