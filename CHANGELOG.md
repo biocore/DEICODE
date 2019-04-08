@@ -99,6 +99,8 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
 
 * Various typo fixes
 
+* Various RPCA test code enhancements
+
 * A citation of DEICODE's
   [published paper](https://msystems.asm.org/content/4/1/e00016-19) is now
   included in the citations of QIIME 2 artifacts generated with DEICODE.
