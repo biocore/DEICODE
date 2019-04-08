@@ -1,6 +1,6 @@
 # DEICODE changelog
 
-## Version 0.1.7 (2019-4-8)
+## Version 0.2.0 (2019-4-8)
 
 Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
 
