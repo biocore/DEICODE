@@ -64,6 +64,8 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
   that it didn't do before:
   * Uses `--min-feature-count` with a default value of `10`. Previously, the
     non-Q2 RPCA code didn't do this filtering step at all.
+  * Adds a PC3 containing zeros if the `rank` is set to `2` (to support
+    visualizing these biplots in Emperor).
 
 * A minimum value of `2` is now enforced for the `--rank` option.
 
@@ -83,10 +85,6 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
 ### Deprecated functionality [experimental]
 
 ### Miscellaneous
-
-* Previously, the QIIME 2 RPCA code would add a PC3 containing zeroes to the
-  output biplot if `rank` was equal to `2`. This is no longer done. (Emperor
-  will default to a 2-D display in these cases.)
 
 * Since `deicode.rpca` is now used by both the QIIME 2 and non-QIIME 2 code,
   the amount of redundant code has decreased. This should simplify DEICODE's
