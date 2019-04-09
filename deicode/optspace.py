@@ -64,6 +64,12 @@ class OptSpace(_BaseImpute):
         ------
         ValueError
 
+        Raises an error if given rank is less than 2
+            `ValueError: rank must be at least 2`.
+
+        Raises an error iterations is less than one
+            `ValueError: iterations must be at least 1`.
+
         Raises an error if input is not either dataframe or np.ndarray
             `ValueError: Input data is should be type numpy.ndarray`.
 
@@ -127,6 +133,11 @@ class OptSpace(_BaseImpute):
         self.rank = rank
         self.iteration = iteration
         self.tol = tol
+        
+        if self.rank < 2:
+            raise ValueError("rank must be at least 2")
+        if self.iteration < 1:
+            raise ValueError("iterations must be at least 1")
 
         return
 
