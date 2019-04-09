@@ -27,14 +27,14 @@ Options:
   --in-biom TEXT               Input table in biom format.  [required]
   --output-dir TEXT            Location of output files.  [required]
   --rank INTEGER               The underlying low-rank structure (suggested: 1
-                               < rank < 10)  [default: 3]
+                               < rank < 10) [minimum 2]  [default: 3]
   --min-sample-count INTEGER   Minimum sum cutoff of sample across all
                                features  [default: 500]
   --min-feature-count INTEGER  Minimum sum cutoff of features across all
                                samples  [default: 10]
   --iterations INTEGER         The number of iterations to optimize the
                                solution (suggested to be below 100; beware of
-                               overfitting)  [default: 5]
+                               overfitting) [minimum 1]  [default: 5]
   --help                       Show this message and exit.
 ```
 
