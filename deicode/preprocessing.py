@@ -68,13 +68,6 @@ class rclr(_BaseTransform):
         """
         return
 
-    def fit(self, X):
-        """  fits and calc. the rclr """
-        X_ = np.array(X.copy()).astype(np.float64)
-        self.X_ = X_
-        self._fit()
-        return self
-
     def _fit(self):
         """ fits and calc. the rclr  """
 
@@ -106,31 +99,6 @@ class rclr(_BaseTransform):
 
     def fit_transform(self, X):
         """ directly returns the rclr transform  """
-        X_ = np.array(X.copy()).astype(np.float64)
-        self.X_ = X_
-        self._fit()
-        return self.X_sp
-
-
-class inverse_rclr(_BaseTransform):
-
-    def __init__(self):
-        return
-
-    def fit(self, X):
-        """ TODO """
-        X_ = np.array(X.copy()).astype(np.float64)
-        self.X_ = X_
-        self._fit()
-        return self
-
-    def _fit(self):
-        """ TODO """
-        X_sp = np.exp(np.array(self.X_.copy()))
-        self.X_sp = closure(X_sp).astype(np.float64)
-
-    def fit_transform(self, X):
-        """ TODO """
         X_ = np.array(X.copy()).astype(np.float64)
         self.X_ = X_
         self._fit()

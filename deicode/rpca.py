@@ -53,10 +53,10 @@ def rpca(table: biom.Table,
                         index=list(rename_cols.values()))
 
     # if the rank is two add PC3 of zeros
-    # this is referenced as in issue in 
+    # this is referenced as in issue in
     # <https://github.com/biocore/emperor/commit
     # /a93f029548c421cb0ba365b4294f7a5a6b0209ce>
-    # discussed in DEICODE -- PR#29 
+    # discussed in DEICODE -- PR#29
     if rank == 2:
         feature_loading['PC3'] = [0] * len(feature_loading.index)
         sample_loading['PC3'] = [0] * len(sample_loading.index)

@@ -133,7 +133,7 @@ class OptSpace(_BaseImpute):
         self.rank = rank
         self.iteration = iteration
         self.tol = tol
-        
+
         if self.rank < 2:
             raise ValueError("rank must be at least 2")
         if self.iteration < 1:
