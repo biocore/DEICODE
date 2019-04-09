@@ -22,9 +22,14 @@ def rpca(table: biom.Table,
 
     # filter sample to min depth
     def sample_filter(val, id_, md): return sum(val) > min_sample_count
+    def observation_filter(val, id_, md): return sum(val) > min_feature_count
+    table = table.filter(observation_filter, axis='observation')
     table = table.filter(sample_filter, axis='sample')
-    table = table.to_dataframe().T.drop_duplicates()
-    table = table.T[table.sum() > min_feature_count].T
+    table = table.to_dataframe().T
+    if len(table.index) != len(set(table.index)):
+        raise ValueError('Data-table contains duplicate indices')
+    if len(table.columns) != len(set(table.columns)):
+        raise ValueError('Data-table contains duplicate columns')
 
     # rclr preprocessing and OptSpace (RPCA)
     opt = OptSpace(
