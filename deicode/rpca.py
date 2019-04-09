@@ -20,11 +20,6 @@ def rpca(table: biom.Table,
        DEICODE.
     """
 
-    if rank < 2:
-        raise ValueError("rank must be at least 2")
-    if iterations < 1:
-        raise ValueError("iterations must be at least 1")
-
     # filter sample to min depth
     def sample_filter(val, id_, md): return sum(val) > min_sample_count
     table = table.filter(sample_filter, axis='sample')
@@ -56,6 +51,17 @@ def rpca(table: biom.Table,
     # get eigenvalues
     eigvals = pd.Series(opt.eigenvalues,
                         index=list(rename_cols.values()))
+
+    # if the rank is two add PC3 of zeros
+    # this is referenced as in issue in 
+    # <https://github.com/biocore/emperor/commit
+    # /a93f029548c421cb0ba365b4294f7a5a6b0209ce>
+    # discussed in DEICODE -- PR#29 
+    if rank == 2:
+        feature_loading['PC3'] = [0] * len(feature_loading.index)
+        sample_loading['PC3'] = [0] * len(sample_loading.index)
+        eigvals.loc['PC3'] = 0
+        proportion_explained.loc['PC3'] = 0
 
     # save ordination results
     short_method_name = 'rpca_biplot'
