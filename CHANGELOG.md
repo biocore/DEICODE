@@ -39,9 +39,9 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
   * Similarly, the `rpca()` function within `deicode.scripts._rpca` has been
     replaced by the `standalone_rpca()` function in
     `deicode.scripts._standalone_rpca`.
-  * `deicode.preprocessing.inverse_rclr` was removed along with it's
-     tests. This code was redundant with skbio.stats.composition.clr_inv
-     which can be performed on clr transformed data. Furthermore,
+  * `deicode.preprocessing.inverse_rclr` was removed along with its
+     tests. This code was redundant with `skbio.stats.composition.clr_inv`,
+     which can be performed on clr-transformed data. Furthermore,
      this inverse is a holdover from old versions of DEICODE
      where we directly interpreted the imputation and is no
      longer useful for the output. 
