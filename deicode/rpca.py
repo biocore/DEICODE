@@ -20,6 +20,11 @@ def rpca(table: biom.Table,
        DEICODE.
     """
 
+    if rank < 2:
+        raise ValueError("rank must be at least 2")
+    if iterations < 1:
+        raise ValueError("iterations must be at least 1")
+
     # filter sample to min depth
     def sample_filter(val, id_, md): return sum(val) > min_sample_count
     table = table.filter(sample_filter, axis='sample')

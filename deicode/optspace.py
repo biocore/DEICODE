@@ -35,8 +35,8 @@ class OptSpace(_BaseImpute):
         The underlying rank of the default set
         to 2 as the default to prevent overfitting.
 
-        iteration: float, optional : Default is 5
-        The number of convex iterations to optomize the solution
+        iteration: int, optional : Default is 5
+        The number of convex iterations to optimize the solution
         If iteration is not specified, then the default iteration is 5.
         Which redcues to a satisfactory error threshold.
 
