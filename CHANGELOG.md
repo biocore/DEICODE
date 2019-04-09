@@ -24,6 +24,9 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
 * The RPCA functionality is now exposed via the `deicode.rpca` module,
   which contains an `rpca()` function.
 
+* Duplicate indices and columns will cause a ValueError. Previously
+  the script `deicode.scripts.rpca.py` would just drop any duplicates.
+
 ### Backward-incompatible changes [stable]
 
 * The following option names have changed when running DEICODE outside of QIIME
@@ -77,6 +80,10 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
   ordination produced by DEICODE (previously, this test was using python's
   built-in `any()` function instead of pandas' `.any()` function, which
   resulted in the test being incorrect).
+
+* Iteration in `deicode/_optspace.py` indexing was off see @fedarko's 
+  comment in PR #29. This causes the iteration to be one less than the
+  input, this should not have had an impact any results.
 
 ### Deprecated functionality [stable]
 
