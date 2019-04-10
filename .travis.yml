@@ -26,7 +26,7 @@ install:
   - sudo pip install coveralls
 script:
   - source activate test-env
-  - nosetests -v deicode --with-coverage --cover-package=deicode
+  - make test
 after_success:
   - coveralls
 notifications:

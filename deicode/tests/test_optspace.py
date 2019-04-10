@@ -5,7 +5,7 @@ import unittest
 import numpy.testing as npt
 from scipy.io import loadmat
 from skbio.util import get_data_path
-from sklearn.utils.testing import assert_array_almost_equal
+from numpy.testing import assert_array_almost_equal
 
 
 class TestOptspace(unittest.TestCase):

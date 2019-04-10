@@ -1,3 +1,3 @@
-from ._rpca import rpca
+from ._standalone_rpca import standalone_rpca
 
-__all__ = ["rpca"]
+__all__ = ["standalone_rpca"]

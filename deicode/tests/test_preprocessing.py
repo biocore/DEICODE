@@ -1,8 +1,8 @@
 import unittest
 import numpy as np
 import numpy.testing as npt
-from deicode.preprocessing import rclr, inverse_rclr
-from skbio.stats.composition import closure, clr
+from deicode.preprocessing import rclr
+from skbio.stats.composition import clr
 
 
 class Testpreprocessing(unittest.TestCase):
@@ -17,7 +17,6 @@ class Testpreprocessing(unittest.TestCase):
         self.bad1 = np.array([1, 2, -1])
         self.bad1
         self._rclr = rclr()
-        self._inv = inverse_rclr()
         pass
 
     def test_rclr(self):
@@ -32,14 +31,3 @@ class Testpreprocessing(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             self._rclr.fit_transform(self.bad1)
-
-    def test_inverse_rclr(self):
-
-        cmat = self._rclr.fit_transform(self.cdata1)
-        npt.assert_allclose(
-            closure(
-                self.cdata1), np.around(
-                self._inv.fit_transform(cmat), 1))
-        # inverse can not take zero, nan, or inf values (value error)
-
-        pass

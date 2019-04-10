@@ -55,5 +55,12 @@ doc/source/generated
 # OSX files
 .DS_Store
 
-# IPythnon checkpoints
+# IPython checkpoints
 .ipynb_checkpoints
+
+# Test output -- let's avoid committing this so that we know that tests passing
+# on Travis, etc. are due to these files being created (and not just old files
+# being used)
+deicode/scripts/tests/data/distance-matrix.tsv
+deicode/scripts/tests/data/ordination.txt
+deicode/q2/tests/test_output/*

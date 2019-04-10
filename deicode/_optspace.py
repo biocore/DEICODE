@@ -4,7 +4,7 @@ from numpy.linalg import norm
 from scipy.sparse.linalg import svds
 
 
-def optspace(M_E, r, niter, tol):\
+def optspace(M_E, r, niter, tol):
 
     """
     Parameters
@@ -16,6 +16,7 @@ def optspace(M_E, r, niter, tol):\
     X, S, Y
     """
 
+    niter += 1
     M_E = M_E.copy()
     M_E[np.isnan(M_E)] = 0
     E = (np.abs(M_E) > 0).astype(np.int)

@@ -101,16 +101,18 @@ setup(name='deicode',
           'pandas >= 0.10.0',
           'scipy >= 0.19.1',
           'nose >= 1.3.7',
-          'scikit-learn >= 0.18.1',
           'scikit-bio > 0.5.3',
           'biom-format',
           'h5py', ],
       classifiers=classifiers,
       entry_points={
           'qiime2.plugins': ['q2-deicode=deicode.q2.plugin_setup:plugin'],
-          'console_scripts': ['deicode=deicode.scripts._rpca:rpca']
+          'console_scripts':
+              ['deicode=deicode.scripts._standalone_rpca:standalone_rpca']
       },
-      package_data={},
+      # Inclusion of citations.bib in package_data based on how this is done in
+      # q2-emperor's setup.py file
+      package_data={'deicode': ['citations.bib']},
       cmdclass={'install': CustomInstallCommand,
                 'develop': CustomDevelopCommand,
                 'egg_info': CustomEggInfoCommand, },

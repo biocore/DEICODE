@@ -35,8 +35,8 @@ class OptSpace(_BaseImpute):
         The underlying rank of the default set
         to 2 as the default to prevent overfitting.
 
-        iteration: float, optional : Default is 5
-        The number of convex iterations to optomize the solution
+        iteration: int, optional : Default is 5
+        The number of convex iterations to optimize the solution
         If iteration is not specified, then the default iteration is 5.
         Which redcues to a satisfactory error threshold.
 
@@ -63,6 +63,12 @@ class OptSpace(_BaseImpute):
         Raises
         ------
         ValueError
+
+        Raises an error if given rank is less than 2
+            `ValueError: rank must be at least 2`.
+
+        Raises an error iterations is less than one
+            `ValueError: iterations must be at least 1`.
 
         Raises an error if input is not either dataframe or np.ndarray
             `ValueError: Input data is should be type numpy.ndarray`.
@@ -127,6 +133,11 @@ class OptSpace(_BaseImpute):
         self.rank = rank
         self.iteration = iteration
         self.tol = tol
+
+        if self.rank < 2:
+            raise ValueError("rank must be at least 2")
+        if self.iteration < 1:
+            raise ValueError("iterations must be at least 1")
 
         return
 
