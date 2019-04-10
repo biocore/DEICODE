@@ -9,7 +9,7 @@ Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).
 * The `--min-feature-count` and `--iterations` options are now usable when
   running DEICODE outside of QIIME 2.
 
-* When running DEICODE outside of QIIME 2, it will no longer raise an error if
+* When running DEICODE outside of QIIME 2, it will no longer just raise an error if
   the specified output directory doesn't exist (it'll automatically try to
   create the output directory, even creating multiple levels of directories if
   needed).
