@@ -1,5 +1,13 @@
 # DEICODE changelog
 
+## Version 0.2.1 (2019-4-15)
+
+Implemented in [PR#33](https://github.com/biocore/DEICODE/pull/33).
+
+### Bug fixes
+
+* Eigenvalues were out of order, single line problem in optspace.py
+
 ## Version 0.2.0 (2019-4-8)
 
 Implemented in [PR#29](https://github.com/biocore/DEICODE/pull/29).

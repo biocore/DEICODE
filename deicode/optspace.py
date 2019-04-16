@@ -180,7 +180,7 @@ class OptSpace(_BaseImpute):
                                niter=self.iteration, tol=self.tol)
         solution = U.dot(s_).dot(V.T)
         explained_variance_ratio_ = np.diag(s_) / np.diag(s_).sum()
-        self.eigenvalues = np.diag(s_)
+        self.eigenvalues = np.diag(s_)[::-1]
         self.explained_variance_ratio = list(explained_variance_ratio_)[::-1]
         self.distance = distance.cdist(U, U)
         self.solution = solution
