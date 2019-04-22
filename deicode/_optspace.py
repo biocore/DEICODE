@@ -73,6 +73,24 @@ def _optspace(M_E, E, r, niter, tol, sign=1):
 
 
 def svd_sort(X, S, Y):
+    """
+    Sorting via the s matrix from SVD. In addition to
+    sign correction from the U matrix to ensure a
+    deterministic output.
+
+    Parameters
+    ----------
+    X: array-like
+        U matrix from SVD
+    Y: array-like
+        V matrix from SVD
+    S: array-like
+        S matrix from SVD
+
+    Notes
+    -----
+    S matrix can be off diagonal elements.
+    """
     # See https://github.com/scikit-learn/scikit-learn/
     # blob/7b136e92acf49d46251479b75c88cba632de1937/sklearn/
     # decomposition/pca.py#L510-#L518 for context.

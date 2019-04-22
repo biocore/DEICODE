@@ -5,8 +5,11 @@
 ### Features
 
 * Ensure sorting that the eigenvalues is being
-  is from largest to smallest. Additionally, a
-  new function was added to ensure that the sorted
+  is from largest to smallest. This is done for
+  the singular value matrix, given as the variable
+  s. This involves the sorting s by the diagonal
+  while also ordering off diagonal elements. Additionally,
+  a new function was added to ensure that the sorted
   eigenvalues are also ordered in the U and V
   loading values in the SVD. This function also
   ensures that after sorting, the values of the SVD
