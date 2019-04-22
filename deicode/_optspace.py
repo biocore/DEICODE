@@ -3,7 +3,6 @@ from numpy.matlib import repmat
 from numpy.linalg import norm
 from scipy.sparse.linalg import svds
 
-
 def optspace(M_E, r, niter, tol):
 
     """
@@ -69,7 +68,31 @@ def _optspace(M_E, E, r, niter, tol, sign=1):
         if(dist[i + 1] < tol):
             break
     S = S / rescal_param
+    X, S, Y = svd_sort(X, S, Y)
     return X, S, Y, dist
+
+
+def svd_sort(X, S, Y):
+    # See https://github.com/scikit-learn/scikit-learn/
+    # blob/7b136e92acf49d46251479b75c88cba632de1937/sklearn/
+    # decomposition/pca.py#L510-#L518 for context.
+    # Because svds do not abide by the normal
+    # conventions in scipy.linalg.svd/randomized_svd
+    # the output has to be reversed
+    idx = np.argsort(np.diag(S))[::-1]
+    # sorting following the solution
+    # provided by https://stackoverflow.com/
+    # questions/36381356/sort-matrix-based
+    # -on-its-diagonal-entries
+    S = S[idx,:][:,idx]
+    X, Y = X[:, idx], Y[:, idx]
+    # here we ensure a deterministic
+    # solution after changing order.
+    max_abs_cols = np.argmax(np.abs(X), axis=0)
+    signs = np.sign(X[max_abs_cols, range(X.shape[1])])
+    X *= signs
+    Y *= signs[:, np.newaxis].T
+    return X, S, Y
 
 
 def F_t(X, Y, S, M_E, E, m0, rho):
