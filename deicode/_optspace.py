@@ -3,8 +3,8 @@ from numpy.matlib import repmat
 from numpy.linalg import norm
 from scipy.sparse.linalg import svds
 
-def optspace(M_E, r, niter, tol):
 
+def optspace(M_E, r, niter, tol):
     """
     Parameters
     ----------
@@ -84,7 +84,7 @@ def svd_sort(X, S, Y):
     # provided by https://stackoverflow.com/
     # questions/36381356/sort-matrix-based
     # -on-its-diagonal-entries
-    S = S[idx,:][:,idx]
+    S = S[idx, :][:, idx]
     X, Y = X[:, idx], Y[:, idx]
     # here we ensure a deterministic
     # solution after changing order.

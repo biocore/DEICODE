@@ -4,6 +4,7 @@ from .base import _BaseImpute
 from scipy.spatial import distance
 import warnings
 
+
 class OptSpace(_BaseImpute):
 
     def __init__(self, rank=2, iteration=5, tol=1e-5):
@@ -181,7 +182,8 @@ class OptSpace(_BaseImpute):
         # save the solution (of the imputation)
         self.solution = self.U.dot(self.s).dot(self.V.T)
         self.eigenvalues = np.diag(self.s)
-        self.explained_variance_ratio = list(self.eigenvalues / self.eigenvalues.sum())
+        self.explained_variance_ratio = list(
+            self.eigenvalues / self.eigenvalues.sum())
         self.distance = distance.cdist(self.U, self.U)
         self.feature_weights = self.V
         self.sample_weights = self.U

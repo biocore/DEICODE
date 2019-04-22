@@ -8,12 +8,12 @@ from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
 
 
 def rpca(table: biom.Table,
-         rank: int=DEFAULT_RANK,
-         min_sample_count: int=DEFAULT_MSC,
-         min_feature_count: int=DEFAULT_MFC,
-         iterations: int=DEFAULT_ITERATIONS) -> (
-         skbio.OrdinationResults,
-         skbio.DistanceMatrix):
+         rank: int = DEFAULT_RANK,
+         min_sample_count: int = DEFAULT_MSC,
+         min_feature_count: int = DEFAULT_MFC,
+         iterations: int = DEFAULT_ITERATIONS) -> (
+        skbio.OrdinationResults,
+        skbio.DistanceMatrix):
     """Runs RPCA with an rclr preprocessing step.
 
        This code will be run by both the standalone and QIIME 2 versions of
@@ -22,7 +22,9 @@ def rpca(table: biom.Table,
 
     # filter sample to min depth
     def sample_filter(val, id_, md): return sum(val) > min_sample_count
+
     def observation_filter(val, id_, md): return sum(val) > min_feature_count
+
     table = table.filter(observation_filter, axis='observation')
     table = table.filter(sample_filter, axis='sample')
     table = table.to_dataframe().T

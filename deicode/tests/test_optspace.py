@@ -1,4 +1,12 @@
-from deicode._optspace import (G, F_t, gradF_t, Gp, getoptT, getoptS, optspace, svd_sort)
+from deicode._optspace import (
+    G,
+    F_t,
+    gradF_t,
+    Gp,
+    getoptT,
+    getoptS,
+    optspace,
+    svd_sort)
 import numpy as np
 from numpy.linalg import norm
 import unittest
@@ -71,15 +79,15 @@ class TestOptspace(unittest.TestCase):
         rho = 0.5
         res = gradF_t(X, Y, S, M_E, E, m0, rho)
         exp = np.array([[[1., 1., 1., 1., 1.],
-                        [1., 1., 1., 1., 1.],
-                        [2., 2., 2., 2., 2.],
-                        [2., 2., 2., 2., 2.],
-                        [2., 2., 2., 2., 2.]],
+                         [1., 1., 1., 1., 1.],
+                         [2., 2., 2., 2., 2.],
+                         [2., 2., 2., 2., 2.],
+                         [2., 2., 2., 2., 2.]],
                         [[2., 2., 2., 2., 2.],
-                        [0., 0., 0., 0., 0.],
-                        [2., 2., 2., 2., 2.],
-                        [2., 2., 2., 2., 2.],
-                        [2., 2., 2., 2., 2.]]])
+                         [0., 0., 0., 0., 0.],
+                         [2., 2., 2., 2., 2.],
+                         [2., 2., 2., 2., 2.],
+                         [2., 2., 2., 2., 2.]]])
         npt.assert_allclose(exp, res)
 
     def test_Gp(self):
@@ -144,34 +152,35 @@ class TestOptspace(unittest.TestCase):
         assert_array_almost_equal(res, exp, decimal=3)
 
     def test_optspace_ordering(self):
-        # the expected sorting 
+        # the expected sorting
         # for U, S, V.
         s_exp = np.array([[5, 4, 1],
-                        [8, 3, 0],
-                        [7, 9, 2]])
-        U_exp = np.array([[0,3,6],
-                        [1,4,7],
-                        [2,5,8]])
-        V_exp = np.array([[0,3,6],
-                        [1,4,7],
-                        [2,5,8]])
+                          [8, 3, 0],
+                          [7, 9, 2]])
+        U_exp = np.array([[0, 3, 6],
+                          [1, 4, 7],
+                          [2, 5, 8]])
+        V_exp = np.array([[0, 3, 6],
+                          [1, 4, 7],
+                          [2, 5, 8]])
         # un-sorted U,s,v from SVD.
-        s_test = np.array([[5,1,4],
-                        [7,2,9],
-                        [8,0,3]])
-        U_test = np.array([[0,6,3],
-                        [1,7,4],
-                        [2,8,5]])
-        V_test = np.array([[0,6,3],
-                        [1,7,4],
-                        [2,8,5]])
+        s_test = np.array([[5, 1, 4],
+                           [7, 2, 9],
+                           [8, 0, 3]])
+        U_test = np.array([[0, 6, 3],
+                           [1, 7, 4],
+                           [2, 8, 5]])
+        V_test = np.array([[0, 6, 3],
+                           [1, 7, 4],
+                           [2, 8, 5]])
         # run the sorting in optspace
         U_res, s_res, V_res = svd_sort(U_test,
-                                    s_test,
-                                    V_test)
+                                       s_test,
+                                       V_test)
         assert_array_almost_equal(U_res, U_exp, decimal=3)
         assert_array_almost_equal(s_res, s_exp, decimal=3)
         assert_array_almost_equal(V_res, V_exp, decimal=3)
+
 
 if __name__ == "__main__":
     unittest.main()
