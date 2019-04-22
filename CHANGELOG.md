@@ -1,5 +1,30 @@
 # DEICODE changelog
 
+## Version 0.2.2 (2019-4-22)
+
+### Features
+
+* Ensure sorting that the eigenvalues is being
+  is from largest to smallest. This is done for
+  the singular value matrix, given as the variable
+  s. This involves the sorting s by the diagonal
+  while also ordering off diagonal elements. Additionally,
+  a new function was added to ensure that the sorted
+  eigenvalues are also ordered in the U and V
+  loading values in the SVD. This function also
+  ensures that after sorting, the values of the SVD
+  are deterministic. This is all implemented in the
+  function located in _optspace.py called svd_sort.
+  This methodology is also performed in the code
+  for PCA in scikit learn. To do this I pulled
+  from this code and noted this in the code
+  comments with direct line links in scikit-learn. 
+
+* Tests for the function svd_sort described above
+  were added. The test was added under the location
+  tests/test_optspace.py in the function given by
+  the function test_optspace_ordering.
+
 ## Version 0.2.1 (2019-4-15)
 
 Implemented in [PR#33](https://github.com/biocore/DEICODE/pull/33).

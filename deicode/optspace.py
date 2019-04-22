@@ -176,17 +176,17 @@ class OptSpace(_BaseImpute):
                 'Insufficient samples, must have rank*10 samples in the table')
 
         # return solved matrix
-        U, s_, V, _ = optspace(X_sparse, r=self.rank,
-                               niter=self.iteration, tol=self.tol)
-        solution = U.dot(s_).dot(V.T)
-        explained_variance_ratio_ = np.diag(s_) / np.diag(s_).sum()
-        self.eigenvalues = np.diag(s_)[::-1]
-        self.explained_variance_ratio = list(explained_variance_ratio_)[::-1]
-        self.distance = distance.cdist(U, U)
-        self.solution = solution
-        self.feature_weights = V
-        self.sample_weights = U
-        self.s = s_
+        self.U, self.s, self.V, _ = optspace(X_sparse, r=self.rank,
+                                             niter=self.iteration,
+                                             tol=self.tol)
+        # save the solution (of the imputation)
+        self.solution = self.U.dot(self.s).dot(self.V.T)
+        self.eigenvalues = np.diag(self.s)
+        self.explained_variance_ratio = list(
+            self.eigenvalues / self.eigenvalues.sum())
+        self.distance = distance.cdist(self.U, self.U)
+        self.feature_weights = self.V
+        self.sample_weights = self.U
 
     def fit_transform(self, X):
         """
