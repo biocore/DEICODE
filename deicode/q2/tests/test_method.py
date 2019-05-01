@@ -58,10 +58,7 @@ class Test_qiime2_rpca(unittest.TestCase):
                                             create_test_table())
 
     def test_qiime2_rpca(self):
-        """Tests that the Q2 and standalone RPCA results match.
-
-           Also validates against ground truth "expected" results.
-        """
+        """Tests that the Q2 and standalone RPCA results match."""
 
         tstdir = "test_output"
         # Run DEICODE through QIIME 2 (specifically, the Artifact API)
