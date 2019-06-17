@@ -103,13 +103,8 @@ def svd_sort(X, S, Y):
     # questions/36381356/sort-matrix-based
     # -on-its-diagonal-entries
     S = S[idx, :][:, idx]
-    X, Y = X[:, idx], Y[:, idx]
-    # here we ensure a deterministic
-    # solution after changing order.
-    max_abs_cols = np.argmax(np.abs(X), axis=0)
-    signs = np.sign(X[max_abs_cols, range(X.shape[1])])
-    X *= signs
-    Y *= signs[:, np.newaxis].T
+    X = X[:, idx[::-1]], 
+    Y = Y[:, idx[::-1]]
     return X, S, Y
 
 
