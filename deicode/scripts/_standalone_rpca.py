@@ -11,7 +11,7 @@ from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
 @click.option('--in-biom', help='Input table in biom format.', required=True)
 @click.option('--output-dir', help='Location of output files.', required=True)
 @click.option(
-    '--rank',
+    '--n_components',
     default=DEFAULT_RANK,
     show_default=True,
     help=DESC_RANK)
@@ -26,20 +26,23 @@ from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
     show_default=True,
     help=DESC_MFC)
 @click.option(
-    '--iterations',
+    '--max_iterations',
     default=DEFAULT_ITERATIONS,
     show_default=True,
     help=DESC_ITERATIONS)
-def standalone_rpca(in_biom: str, output_dir: str, rank: int,
+def standalone_rpca(in_biom: str, output_dir: str, n_components: int,
                     min_sample_count: int, min_feature_count: int,
-                    iterations: int) -> None:
+                    max_iterations: int) -> None:
     """Runs RPCA with an rclr preprocessing step."""
 
     # import table
     table = load_table(in_biom)
 
-    ord_res, dist_res = rpca(table, rank, min_sample_count, min_feature_count,
-                             iterations)
+    ord_res, dist_res = rpca(table,
+                             n_components,
+                             min_sample_count,
+                             min_feature_count,
+                             max_iterations)
 
     # If it doesn't already exist, create the output directory.
     # Note that there is technically a race condition here: it's ostensibly

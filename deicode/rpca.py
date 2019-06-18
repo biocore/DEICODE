@@ -1,17 +1,17 @@
 import biom
 import skbio
 import pandas as pd
-from deicode.optspace import OptSpace
+from deicode.matrix_completion import MatrixCompletion
 from deicode.preprocessing import rclr
 from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
                                     DEFAULT_ITERATIONS)
 
 
 def rpca(table: biom.Table,
-         rank: int = DEFAULT_RANK,
+         n_components: int = DEFAULT_RANK,
          min_sample_count: int = DEFAULT_MSC,
          min_feature_count: int = DEFAULT_MFC,
-         iterations: int = DEFAULT_ITERATIONS) -> (
+         max_iterations: int = DEFAULT_ITERATIONS) -> (
         skbio.OrdinationResults,
         skbio.DistanceMatrix):
     """Runs RPCA with an rclr preprocessing step.
@@ -22,9 +22,8 @@ def rpca(table: biom.Table,
 
     # filter sample to min depth
     def sample_filter(val, id_, md): return sum(val) > min_sample_count
-
     def observation_filter(val, id_, md): return sum(val) > min_feature_count
-
+    # filter and import table
     table = table.filter(observation_filter, axis='observation')
     table = table.filter(sample_filter, axis='sample')
     table = table.to_dataframe().T
@@ -34,15 +33,14 @@ def rpca(table: biom.Table,
         raise ValueError('Data-table contains duplicate columns')
 
     # rclr preprocessing and OptSpace (RPCA)
-    opt = OptSpace(
-        rank=rank,
-        iteration=iterations).fit(
-        rclr().fit_transform(
-            table.copy()))
-    rename_cols = {i - 1: 'PC' + str(i) for i in range(1, rank + 1)}
+    opt = MatrixCompletion(n_components=n_components,
+                           max_iterations=max_iterations).fit(rclr(table))
+    rename_cols = {i - 1: 'PC' + str(i)
+                   for i in range(1, n_components + 1)}
 
     # Feature Loadings
-    feature_loading = pd.DataFrame(opt.feature_weights, index=table.columns)
+    feature_loading = pd.DataFrame(opt.feature_weights,
+                                   index=table.columns)
     feature_loading = feature_loading.rename(columns=rename_cols)
     feature_loading.sort_values('PC1', inplace=True, ascending=True)
     feature_loading -= feature_loading.mean(axis=0)
@@ -59,12 +57,12 @@ def rpca(table: biom.Table,
     eigvals = pd.Series(opt.eigenvalues,
                         index=list(rename_cols.values()))
 
-    # if the rank is two add PC3 of zeros
+    # if the n_components is two add PC3 of zeros
     # this is referenced as in issue in
     # <https://github.com/biocore/emperor/commit
     # /a93f029548c421cb0ba365b4294f7a5a6b0209ce>
     # discussed in DEICODE -- PR#29
-    if rank == 2:
+    if n_components == 2:
         feature_loading['PC3'] = [0] * len(feature_loading.index)
         sample_loading['PC3'] = [0] * len(sample_loading.index)
         eigvals.loc['PC3'] = 0

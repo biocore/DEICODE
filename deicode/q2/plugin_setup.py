@@ -35,10 +35,10 @@ plugin.methods.register_function(
     function=rpca,
     inputs={'table': FeatureTable[Frequency]},
     parameters={
-        'rank': Int,
+        'n_components': Int,
         'min_sample_count': Int,
         'min_feature_count': Int,
-        'iterations': Int,
+        'max_iterations': Int,
     },
     outputs=[
         ('biplot', PCoAResults % Properties("biplot")),
@@ -48,10 +48,10 @@ plugin.methods.register_function(
         'table': 'Input table of counts.',
     },
     parameter_descriptions={
-        'rank': DESC_RANK,
+        'n_components': DESC_RANK,
         'min_sample_count': DESC_MSC,
         'min_feature_count': DESC_MFC,
-        'iterations': DESC_ITERATIONS,
+        'max_iterations': DESC_ITERATIONS,
     },
     output_descriptions={
         'biplot': ('A biplot of the (Robust Aitchison) RPCA feature loadings'),

@@ -119,18 +119,18 @@ def block_diagonal_gaus(
         else:
             ov_tmp = int(overlap / 2)
             if (B.shape) == (mat[lower_row:upper_row,
-                             int(lower_col - ov_tmp):
-                             int(upper_col + ov_tmp + 1)].shape):
+                                 int(lower_col - ov_tmp):
+                                 int(upper_col + ov_tmp + 1)].shape):
                 mat[lower_row:upper_row, int(
                     lower_col - ov_tmp):int(upper_col + ov_tmp + 1)] = B
             elif (B.shape) == (mat[lower_row:upper_row,
-                               int(lower_col - ov_tmp):
-                               int(upper_col + ov_tmp)].shape):
+                                   int(lower_col - ov_tmp):
+                                   int(upper_col + ov_tmp)].shape):
                 mat[lower_row:upper_row, int(
                     lower_col - ov_tmp):int(upper_col + ov_tmp)] = B
             elif (B.shape) == (mat[lower_row:upper_row,
-                               int(lower_col - ov_tmp):
-                               int(upper_col + ov_tmp - 1)].shape):
+                                   int(lower_col - ov_tmp):
+                                   int(upper_col + ov_tmp - 1)].shape):
                 mat[lower_row:upper_row, int(
                     lower_col - ov_tmp):int(upper_col + ov_tmp - 1)] = B
 
@@ -221,11 +221,12 @@ def build_block_model(
     if mapping_on:
         # make a mock mapping data
         mappning_ = pd.DataFrame(np.array([['Cluster %s' % str(x)] *
-                                 int(num_samples / rank)
-                                 for x in range(1, rank + 1)]).flatten(),
+                                           int(num_samples / rank)
+                                           for x in range(1,
+                                           rank + 1)]).flatten(),
                                  columns=['example'],
                                  index=['sample_' + str(x)
-                                 for x in range(0, num_samples - 2)])
+                                        for x in range(0, num_samples - 2)])
 
     X_noise = X_true.copy()
     X_noise = np.array(X_noise)

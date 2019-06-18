@@ -86,8 +86,12 @@ class Test_qiime2_rpca(unittest.TestCase):
         # test_standalone_rpca() elsewhere in DEICODE's codebase.
         stordination = OrdinationResults.read(get_data_path('ordination.txt',
                                                             tstdir))
-        stdistmatrix_values = read_csv(get_data_path('distance-matrix.tsv',
-                                       tstdir), sep='\t', index_col=0).values
+        stdistmatrix_values = read_csv(
+            get_data_path(
+                'distance-matrix.tsv',
+                tstdir),
+            sep='\t',
+            index_col=0).values
 
         # Convert the DistanceMatrix object a numpy array (which we can compare
         # with the other _values numpy arrays we've created from the other
