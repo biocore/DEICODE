@@ -1,10 +1,12 @@
 import biom
 import skbio
+import numpy as np
 import pandas as pd
 from deicode.matrix_completion import MatrixCompletion
 from deicode.preprocessing import rclr
 from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
                                     DEFAULT_ITERATIONS)
+from scipy.sparse.linalg import svds
 
 
 def rpca(table: biom.Table,
@@ -35,27 +37,22 @@ def rpca(table: biom.Table,
     # rclr preprocessing and OptSpace (RPCA)
     opt = MatrixCompletion(n_components=n_components,
                            max_iterations=max_iterations).fit(rclr(table))
-    rename_cols = {i - 1: 'PC' + str(i)
-                   for i in range(1, n_components + 1)}
 
-    # Feature Loadings
-    feature_loading = pd.DataFrame(opt.feature_weights,
-                                   index=table.columns)
-    feature_loading = feature_loading.rename(columns=rename_cols)
-    feature_loading.sort_values('PC1', inplace=True, ascending=True)
-    feature_loading -= feature_loading.mean(axis=0)
-
-    # Sample Loadings
-    sample_loading = pd.DataFrame(opt.sample_weights, index=table.index)
-    sample_loading = sample_loading.rename(columns=rename_cols)
-    sample_loading -= sample_loading.mean(axis=0)
+    rename_cols = ['PC' + str(i+1) for i in range(n_components)]
+    X = opt.sample_weights @ opt.s @ opt.feature_weights.T
+    X = X - X.mean(axis=0)
+    X = X - X.mean(axis=1).reshape(-1, 1)
+    u, s, v = svds(X, k=n_components)
+    idx = np.argsort(s)
+    s = s[idx]
+    feature_loading = pd.DataFrame(v.T[:, idx], index=table.columns, columns=rename_cols)
+    sample_loading = pd.DataFrame(u[:, idx], index=table.index, columns=rename_cols)
 
     # % var explained
-    proportion_explained = pd.Series(opt.explained_variance_ratio,
-                                     index=list(rename_cols.values()))
+    proportion_explained = pd.Series(s**2 / np.sum(s**2),
+                                     index=rename_cols)
     # get eigenvalues
-    eigvals = pd.Series(opt.eigenvalues,
-                        index=list(rename_cols.values()))
+    eigvals = pd.Series(s, index=rename_cols)
 
     # if the n_components is two add PC3 of zeros
     # this is referenced as in issue in
