@@ -6,7 +6,7 @@ from deicode.matrix_completion import MatrixCompletion
 from deicode.preprocessing import rclr
 from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
                                     DEFAULT_ITERATIONS)
-from scipy.sparse.linalg import svds
+from scipy.linalg import svd
 
 
 def rpca(table: biom.Table,
@@ -42,15 +42,17 @@ def rpca(table: biom.Table,
     X = opt.sample_weights @ opt.s @ opt.feature_weights.T
     X = X - X.mean(axis=0)
     X = X - X.mean(axis=1).reshape(-1, 1)
-    u, s, v = svds(X, k=n_components)
-    idx = np.argsort(s)
-    s = s[idx]
-    feature_loading = pd.DataFrame(v.T[:, idx], index=table.columns, columns=rename_cols)
-    sample_loading = pd.DataFrame(u[:, idx], index=table.index, columns=rename_cols)
+    u, s, v = svd(X)
+    u = u[:, :n_components]
+    v = v.T[:, :n_components]
+    p = s**2 / np.sum(s**2)
+    p = p[:n_components]
+    s = s[:n_components]
+    feature_loading = pd.DataFrame(v, index=table.columns, columns=rename_cols)
+    sample_loading = pd.DataFrame(u, index=table.index, columns=rename_cols)
 
     # % var explained
-    proportion_explained = pd.Series(s**2 / np.sum(s**2),
-                                     index=rename_cols)
+    proportion_explained = pd.Series(p, index=rename_cols)
     # get eigenvalues
     eigvals = pd.Series(s, index=rename_cols)
 
