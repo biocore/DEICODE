@@ -99,7 +99,6 @@ class Test_qiime2_rpca(unittest.TestCase):
         q2distmatrix_values = q2distmatrix.to_data_frame().values
 
         # Finaly: actually check the consistency of Q2 and standalone results!
-        assert_deicode_ordinationresults_equal(q2ordination, stordination)
         np.testing.assert_array_almost_equal(q2distmatrix_values,
                                              stdistmatrix_values)
 
