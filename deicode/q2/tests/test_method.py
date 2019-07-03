@@ -86,8 +86,12 @@ class Test_qiime2_rpca(unittest.TestCase):
         # test_standalone_rpca() elsewhere in DEICODE's codebase.
         stordination = OrdinationResults.read(get_data_path('ordination.txt',
                                                             tstdir))
-        stdistmatrix_values = read_csv(get_data_path('distance-matrix.tsv',
-                                       tstdir), sep='\t', index_col=0).values
+        stdistmatrix_values = read_csv(
+            get_data_path(
+                'distance-matrix.tsv',
+                tstdir),
+            sep='\t',
+            index_col=0).values
 
         # Convert the DistanceMatrix object a numpy array (which we can compare
         # with the other _values numpy arrays we've created from the other
@@ -95,7 +99,6 @@ class Test_qiime2_rpca(unittest.TestCase):
         q2distmatrix_values = q2distmatrix.to_data_frame().values
 
         # Finaly: actually check the consistency of Q2 and standalone results!
-        assert_deicode_ordinationresults_equal(q2ordination, stordination)
         np.testing.assert_array_almost_equal(q2distmatrix_values,
                                              stdistmatrix_values)
 

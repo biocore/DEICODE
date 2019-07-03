@@ -46,6 +46,23 @@ class Test_standalone_rpca(unittest.TestCase):
         # Lastly, check that DEICODE's exit code was 0 (indicating success)
         self.assertEqual(result.exit_code, 0)
 
+    def test_standalone_rpca_n_components(self):
+        """Tests the standalone script when n_components is 2
+        """
+        in_ = get_data_path('test.biom')
+        out_ = os_path_sep.join(in_.split(os_path_sep)[:-1])
+        runner = CliRunner()
+        # run the same command but with rank==2
+        result = runner.invoke(standalone_rpca, ['--in-biom', in_,
+                                                 '--output-dir', out_,
+                                                 '--n_components', 2,
+                                                 '--max_iterations', 5])
+        self.assertEqual(result.exit_code, 0)
+        ord_res = OrdinationResults.read(get_data_path('ordination.txt'))
+        # check it contains three axis
+        if len(ord_res.proportion_explained) == 3:
+            pass
+
 
 if __name__ == "__main__":
     unittest.main()

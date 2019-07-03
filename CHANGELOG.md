@@ -1,5 +1,34 @@
 # DEICODE changelog
 
+## Version 0.2.3 (2019-6-18)
+
+### Backward-incompatible changes [stable]
+
+* The following option names have changed when running DEICODE:
+  (this is true for both QIIME2, python, and the standalone interfaces)
+
+| Original Name        | New Name             |
+| -------------------- | -------------------- |
+| `--rank`             | `--n_components`     |
+| `--iterations`       | `--max_iterations`   |
+
+* `deicode.optspace` has been replaced by `deicode.matrix_completion`.
+  * `deicode.optspace.OptSapce` has been replaced by `deicode.matrix_completion.MatrixCompletion`.
+* `deicode._optspace` has been replaced by `deicode.optspace`.
+  * `deicode._optspace.optspace` has been replaced by `deicode.optspace.OptSpace`.
+
+### Performance enhancements
+
+* Updated `deicode.optspace.OptSpace.svd_sort` to be readable and included
+  comments to make the code easier to follow
+* Added several tests that were missing for ValueError(s) to get better code coverage
+
+### Bug fixes
+
+* Arrow scaling issues [first raised here](https://forum.qiime2.org/t/deicode-rpca-biplot-are-the-vectors-distorting-the-plot/9497).
+  * this was caused by some bit of code that was borrowed from sklearn in
+    `deicode.optspace.OptSpace.svd_sort`. Just deleting a few lines fixed it.
+
 ## Version 0.2.2 (2019-4-22)
 
 ### Features
