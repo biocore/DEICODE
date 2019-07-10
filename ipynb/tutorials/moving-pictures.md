@@ -84,7 +84,7 @@ Using table.qza, of the type raw count table (FeatureTable[Frequency]), we will 
 **Note:** it is _not_ recommended to bin your features by taxonomic assignment (i.e. by genus level). 
 **Note:** it is _not_ recommended to rarefy your data before using DEICODE. 
 
-The other two parameters are --p-rank and --p-iterations. These parameters should rarely have to change from the default. However, the minimum value of --p-rank can be 1 and the maximum recommended value is 10. Similarly, the minimum value of --p-iterations is 1 and is recommended to be below 500.  
+The other two parameters are --p-rank and --p-iterations. These parameters should rarely have to change from the default. However, the minimum value of --p-rank can be 2 and the maximum recommended value is 10. Similarly, the minimum value of --p-iterations is 1 and is recommended to be below 100.
 
 Now that we understand the acceptable parameters, we are ready to run DEICODE.  
 
