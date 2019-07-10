@@ -116,7 +116,7 @@ qiime emperor biplot \
 
 Biplots are exploratory visualization tools that allow us to represent the features (i.e. taxonomy or OTUs)  that strongly influence the principal component axis as arrows. The interpretation of the compositional biplot differs slightly from classical biplot interpretation (we can view the qzv file at [view.qiime2](https://view.qiime2.org). The important features with regard to sample clusters are not a single arrow but by the log ratio between features represented by arrows pointing in different directions. A visualization tool for these log ratios is coming soon to QIIME. 
 
-![](etc/img8.png)
+![](etc/img10.png)
 
 From this visualization we noticed that BodySite seems to explain the clusters well. We can run [PERMANOVA](https://docs.qiime2.org/2019.1/plugins/available/diversity/beta-group-significance/) on the distances to get a statistical significance for this. 
 
@@ -131,7 +131,7 @@ From this visualization we noticed that BodySite seems to explain the clusters w
 
 Indeed we can now see that the clusters we saw in the biplot were significant by viewing the BodySite_significance.qzv at [view.qiime2](https://view.qiime2.org).
 
-![](etc/img9.png)
+![](etc/img11.png)
 
 ## Citation 
 

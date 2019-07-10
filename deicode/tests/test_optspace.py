@@ -1,11 +1,11 @@
-from deicode._optspace import (
-    G,
-    F_t,
-    gradF_t,
-    Gp,
-    getoptT,
-    getoptS,
-    optspace,
+from deicode.optspace import (
+    grassmann_manifold_one,
+    cost_function,
+    gradient_decent,
+    grassmann_manifold_two,
+    line_search,
+    singular_values,
+    OptSpace,
     svd_sort)
 import numpy as np
 from numpy.linalg import norm
@@ -21,22 +21,23 @@ class TestOptspace(unittest.TestCase):
         pass
 
     def test_G(self):
+        """Test first grassmann manifold runs."""
         X = np.ones((10, 10))
         m0 = 2
         r = 2
-        exp = G(X, m0, r)
+        exp = grassmann_manifold_one(X, m0, r)
         self.assertAlmostEqual(exp, 0.644944589179)
 
     def test_G_z_0(self):
-
+        """Test first grassmann manifold converges."""
         X = np.array([[1, 3], [4, 1], [2, 1]])
         m0 = 2
         r = 2
-        exp = G(X, m0, r)
+        exp = grassmann_manifold_one(X, m0, r)
         self.assertAlmostEqual(exp, 2.60980232)
 
     def test_F_t(self):
-
+        """Test cost function coverages."""
         X = np.ones((5, 5))
         Y = np.ones((5, 5))
         E = np.zeros((5, 5))
@@ -47,12 +48,12 @@ class TestOptspace(unittest.TestCase):
         M_E[0, 0] = 1
         m0 = 2
         rho = 0.5
-        res = F_t(X, Y, S, M_E, E, m0, rho)
+        res = cost_function(X, Y, S, M_E, E, m0, rho)
         exp = 1
         assert_array_almost_equal(res, exp, decimal=3)
 
     def test_F_t_random(self):
-
+        """Test cost function on random values."""
         # random ones and zeros
         np.random.seed(0)
         X = np.ones((5, 5))
@@ -63,10 +64,11 @@ class TestOptspace(unittest.TestCase):
         M_E[0, 0] = 1
         m0 = 2
         rho = 0.5
-        res = F_t(X, Y, S, M_E, E, m0, rho)
+        res = cost_function(X, Y, S, M_E, E, m0, rho)
         self.assertAlmostEqual(res, 6.5)
 
     def test_gradF_t(self):
+        """Test gradient decent converges."""
         X = np.ones((5, 5))
         Y = np.ones((5, 5))
         E = np.zeros((5, 5))
@@ -77,7 +79,7 @@ class TestOptspace(unittest.TestCase):
         M_E[0, 0] = 1
         m0 = 2
         rho = 0.5
-        res = gradF_t(X, Y, S, M_E, E, m0, rho)
+        res = gradient_decent(X, Y, S, M_E, E, m0, rho)
         exp = np.array([[[1., 1., 1., 1., 1.],
                          [1., 1., 1., 1., 1.],
                          [2., 2., 2., 2., 2.],
@@ -91,11 +93,12 @@ class TestOptspace(unittest.TestCase):
         npt.assert_allclose(exp, res)
 
     def test_Gp(self):
+        """Test second grassmann manifold converges."""
         X = np.ones((5, 5)) * 3
         X[0, 0] = 2
         m0 = 2
         r = 5
-        res = Gp(X, m0, r)
+        res = grassmann_manifold_two(X, m0, r)
         exp = np.array(
             [[1.08731273, 1.6309691, 1.6309691, 1.6309691, 1.6309691],
              [3.57804989, 3.57804989, 3.57804989, 3.57804989, 3.57804989],
@@ -107,6 +110,7 @@ class TestOptspace(unittest.TestCase):
         npt.assert_allclose(exp, res)
 
     def test_getoptT(self):
+        """Test gradient decent line search."""
         X = np.ones((5, 5))
         Y = np.ones((5, 5))
         E = np.zeros((5, 5))
@@ -117,13 +121,13 @@ class TestOptspace(unittest.TestCase):
         M_E[0, 0] = 1
         m0 = 2
         rho = 0.5
-        W, Z = gradF_t(X, Y, S, M_E, E, m0, rho)
-        res = getoptT(X, W, Y, Z, S, M_E, E, m0, rho)
+        W, Z = gradient_decent(X, Y, S, M_E, E, m0, rho)
+        res = line_search(X, W, Y, Z, S, M_E, E, m0, rho)
         exp = -9.5367431640625e-08
         npt.assert_allclose(exp, res)
 
     def test_getoptS_small(self):
-        # warning : this test must ALWAYS pass
+        """Test singular values from U and V."""
         data = loadmat(get_data_path('small_test.mat'))
 
         M_E = np.array(data['M_E'].todense())
@@ -131,20 +135,23 @@ class TestOptspace(unittest.TestCase):
 
         x = data['x']
         y = data['y']
-        res = getoptS(x, y, M_E, E)
+        res = singular_values(x, y, M_E, E)
         exp = np.array([[0.93639499, 0.07644197, -0.02828782],
                         [-0.03960841, 0.60787383, 0.00521257],
                         [0.00729038, 0.00785834, 0.67853083]])
         npt.assert_allclose(res, exp, atol=1e-5)
 
     def test_optspace_original(self):
+        """Test OptSpace converges on test dataset."""
         M0 = loadmat(get_data_path('large_test.mat'))['M0']
         M_E = loadmat(get_data_path('large_test.mat'))['M_E']
 
         M0 = M0.astype(np.float)
         M_E = np.array(M_E.todense()).astype(np.float)
-        X, S, Y, dist = optspace(M_E, r=3, niter=11, tol=1e-8)
-        err = X.dot(S).dot(Y.T) - M0
+        X, S, Y = OptSpace(n_components=3,
+                           max_iterations=11,
+                           tol=1e-8).solve(M_E)
+        err = X[:, ::-1].dot(S).dot(Y[:, ::-1].T) - M0
         n, m = M0.shape
 
         res = norm(err, 'fro') / np.sqrt(m * n)
@@ -152,17 +159,18 @@ class TestOptspace(unittest.TestCase):
         assert_array_almost_equal(res, exp, decimal=3)
 
     def test_optspace_ordering(self):
+        """Test OptSpace produces reproducible loadings."""
         # the expected sorting
         # for U, S, V.
         s_exp = np.array([[5, 4, 1],
                           [8, 3, 0],
                           [7, 9, 2]])
-        U_exp = np.array([[0, 3, 6],
-                          [1, 4, 7],
-                          [2, 5, 8]])
-        V_exp = np.array([[0, 3, 6],
-                          [1, 4, 7],
-                          [2, 5, 8]])
+        U_exp = np.array([[6, 3, 0],
+                          [7, 4, 1],
+                          [8, 5, 2]])
+        V_exp = np.array([[6, 3, 0],
+                          [7, 4, 1],
+                          [8, 5, 2]])
         # un-sorted U,s,v from SVD.
         s_test = np.array([[5, 1, 4],
                            [7, 2, 9],
