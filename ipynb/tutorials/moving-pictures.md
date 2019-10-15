@@ -74,7 +74,7 @@ cd qiime2-moving-pictures-tutorial
 **save as:** table.qza 
 
 ##### Sample Metadata [download](https://data.qiime2.org/2019.1/tutorials/moving-pictures/sample_metadata.tsv)
-**save as:** sample-metadata.tsv
+**save as:** sample_metadata.tsv
 
 ##### Feature Metadata  [view](https://view.qiime2.org/?src=https%3A%2F%2Fdocs.qiime2.org%2F2019.1%2Fdata%2Ftutorials%2Fmoving-pictures%2Ftaxonomy.qza) | [download](https://docs.qiime2.org/2019.1/data/tutorials/moving-pictures/taxonomy.qza)
 **save as:** taxonomy.qza
@@ -107,7 +107,7 @@ Now that we have our ordination file, with type (PCoAResults % Properties(['bipl
 ```shell
 qiime emperor biplot \
     --i-biplot ordination.qza \
-    --m-sample-metadata-file sample-metadata.tsv \
+    --m-sample-metadata-file sample_metadata.tsv \
     --m-feature-metadata-file taxonomy.qza \
     --o-visualization biplot.qzv \
     --p-number-of-features 8
