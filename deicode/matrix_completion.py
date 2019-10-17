@@ -20,14 +20,13 @@ class MatrixCompletion(_BaseImpute):
         N = Features (i.e. OTUs, metabolites)
         M = Samples
 
-        n_components: int, optional : Default is 2
-        The underlying rank of the default set
-        to 2 as the default to prevent overfitting.
+        n_components: int, optional : Default is 3
+        The underlying low-rank structure.
 
         max_iterations: int, optional : Default is 5
         The number of convex iterations to optimize the solution
         If iteration is not specified, then the default iteration is 5.
-        Which redcues to a satisfactory error threshold.
+        Which reduces to a satisfactory error threshold.
 
         tol: float, optional : Default is 1e-5
         Error reduction break, if the error reduced is

@@ -84,7 +84,7 @@ Using table.qza, of the type raw count table (FeatureTable[Frequency]), we will 
 **Note:** it is _not_ recommended to bin your features by taxonomic assignment (i.e. by genus level). 
 **Note:** it is _not_ recommended to rarefy your data before using DEICODE. 
 
-The other two parameters are --p-rank and --p-iterations. These parameters should rarely have to change from the default. However, the minimum value of --p-rank can be 1 and the maximum recommended value is 10. Similarly, the minimum value of --p-iterations is 1 and is recommended to be below 500.  
+The other two parameters are --p-rank and --p-iterations. These parameters should rarely have to change from the default. However, the minimum value of --p-rank can be 2 and the maximum recommended value is 10. Similarly, the minimum value of --p-iterations is 1 and is recommended to be below 100.
 
 Now that we understand the acceptable parameters, we are ready to run DEICODE.  
 
@@ -114,7 +114,7 @@ qiime emperor biplot \
 ```
 **Output:** biplot.qzv
 
-Biplots are exploratory visualization tools that allow us to represent the features (i.e. taxonomy or OTUs)  that strongly influence the principal component axis as arrows. The interpretation of the compositional biplot differs slightly from classical biplot interpretation (we can view the qzv file at [view.qiime2](https://view.qiime2.org). The important features with regard to sample clusters are not a single arrow but by the log ratio between features represented by arrows pointing in different directions. A visualization tool for these log ratios is coming soon to QIIME. 
+Biplots are exploratory visualization tools that allow us to represent the features (i.e. taxonomy or OTUs)  that strongly influence the principal component axis as arrows. The interpretation of the compositional biplot differs slightly from classical biplot interpretation (we can view the qzv file at [view.qiime2.org](https://view.qiime2.org)). The important features with regard to sample clusters are not a single arrow but by the log ratio between features represented by arrows pointing in different directions. You can visualize these log ratios in the context of DEICODE's biplot using [Qurro](https://github.com/biocore/qurro), another QIIME 2 plugin. (See [here](https://github.com/biocore/qurro/blob/master/docs/tutorials/moving-pictures/moving-pictures.md) for the Qurro moving pictures tutorial, which picks up where this tutorial leaves off.)
 
 ![](etc/img10.png)
 
