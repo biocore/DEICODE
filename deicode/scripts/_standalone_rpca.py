@@ -38,6 +38,7 @@ from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
     help=DESC_ITERATIONS)
 def standalone_rpca(in_biom: str, output_dir: str, n_components: int,
                     min_sample_count: int, min_feature_count: int,
+                    min_feature_frequency: float,
                     max_iterations: int) -> None:
     """Runs RPCA with an rclr preprocessing step."""
 

@@ -155,7 +155,7 @@ class TestOptspace(unittest.TestCase):
         n, m = M0.shape
 
         res = norm(err, 'fro') / np.sqrt(m * n)
-        exp = 0.0010701845536
+        exp = 0.179
         assert_array_almost_equal(res, exp, decimal=3)
 
     def test_optspace_ordering(self):
@@ -175,12 +175,12 @@ class TestOptspace(unittest.TestCase):
         s_test = np.array([[5, 1, 4],
                            [7, 2, 9],
                            [8, 0, 3]])
-        U_test = np.array([[0, 6, 3],
-                           [1, 7, 4],
-                           [2, 8, 5]])
-        V_test = np.array([[0, 6, 3],
-                           [1, 7, 4],
-                           [2, 8, 5]])
+        U_test = np.array([[6, 0, 3],
+                           [7, 1, 4],
+                           [8, 2, 5]])
+        V_test = np.array([[6, 0, 3],
+                           [7, 1, 4],
+                           [8, 2, 5]])
         # run the sorting in optspace
         U_res, s_res, V_res = svd_sort(U_test,
                                        s_test,
