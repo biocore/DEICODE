@@ -208,8 +208,8 @@ def svd_sort(U, S, V):
     # questions/36381356/sort-matrix-based
     # -on-its-diagonal-entries
     S = S[idx, :][:, idx]
-    U = U[:, idx[::-1]]
-    V = V[:, idx[::-1]]
+    U = U[:, idx]
+    V = V[:, idx]
     return U, S, V
 
 

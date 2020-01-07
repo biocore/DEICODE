@@ -37,20 +37,32 @@ def rpca(table: biom.Table,
     # rclr preprocessing and OptSpace (RPCA)
     opt = MatrixCompletion(n_components=n_components,
                            max_iterations=max_iterations).fit(rclr(table))
-
+    # get PC column labels for the skbio OrdinationResults
     rename_cols = ['PC' + str(i+1) for i in range(n_components)]
+    # get completed matrix for centering
     X = opt.sample_weights @ opt.s @ opt.feature_weights.T
+    # center again around zero after completion
     X = X - X.mean(axis=0)
     X = X - X.mean(axis=1).reshape(-1, 1)
+    # re-factor the data
     u, s, v = svd(X)
+    # only take n-components
     u = u[:, :n_components]
     v = v.T[:, :n_components]
-    p = s**2 / np.sum(s**2)
-    p = p[:n_components]
     s = s[:n_components]
-    feature_loading = pd.DataFrame(v, index=table.columns, columns=rename_cols)
-    sample_loading = pd.DataFrame(u, index=table.index, columns=rename_cols)
-
+    # calc. the new variance using projection
+    projection = u * s[:n_components]
+    projection_var = np.var(projection, axis=0)
+    # get the total approximated variance of the initial table
+    tot_var = np.nansum(np.nanvar(rclr(table), axis=1))
+    # calculate the fraction of total variance
+    p = projection_var / tot_var
+    p = p[:n_components]
+    # save the loadings
+    feature_loading = pd.DataFrame(v, index=table.columns,
+                                   columns=rename_cols)
+    sample_loading = pd.DataFrame(u, index=table.index,
+                                  columns=rename_cols)
     # % var explained
     proportion_explained = pd.Series(p, index=rename_cols)
     # get eigenvalues
