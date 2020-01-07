@@ -4,7 +4,8 @@ from biom import load_table
 from deicode.rpca import rpca
 from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
                                     DEFAULT_ITERATIONS, DESC_RANK, DESC_MSC,
-                                    DESC_MFC, DESC_ITERATIONS)
+                                    DESC_MFC, DESC_ITERATIONS, DEFAULT_MFF,
+                                    DESC_MFF)
 
 
 @click.command()
@@ -26,6 +27,11 @@ from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
     show_default=True,
     help=DESC_MFC)
 @click.option(
+    '--min-feature-frequency',
+    default=DEFAULT_MFF,
+    show_default=True,
+    help=DESC_MFF)
+@click.option(
     '--max_iterations',
     default=DEFAULT_ITERATIONS,
     show_default=True,
@@ -37,11 +43,12 @@ def standalone_rpca(in_biom: str, output_dir: str, n_components: int,
 
     # import table
     table = load_table(in_biom)
-
+    # run the RPCA wrapper
     ord_res, dist_res = rpca(table,
                              n_components,
                              min_sample_count,
                              min_feature_count,
+                             min_feature_frequency,
                              max_iterations)
 
     # If it doesn't already exist, create the output directory.

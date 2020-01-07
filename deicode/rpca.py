@@ -5,7 +5,7 @@ import pandas as pd
 from deicode.matrix_completion import MatrixCompletion
 from deicode.preprocessing import rclr
 from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
-                                    DEFAULT_ITERATIONS)
+                                    DEFAULT_ITERATIONS, DEFAULT_MFF)
 from scipy.linalg import svd
 
 
@@ -13,6 +13,7 @@ def rpca(table: biom.Table,
          n_components: int = DEFAULT_RANK,
          min_sample_count: int = DEFAULT_MSC,
          min_feature_count: int = DEFAULT_MFC,
+         min_feature_frequency: float = DEFAULT_MFF,
          max_iterations: int = DEFAULT_ITERATIONS) -> (
         skbio.OrdinationResults,
         skbio.DistanceMatrix):
@@ -21,20 +22,27 @@ def rpca(table: biom.Table,
        This code will be run by both the standalone and QIIME 2 versions of
        DEICODE.
     """
-
-    # filter sample to min depth
-    def sample_filter(val, id_, md): return sum(val) > min_sample_count
-    def observation_filter(val, id_, md): return sum(val) > min_feature_count
-    # filter and import table
+    # get shape of table
+    n_features, n_samples = table.shape
+    # filter sample to min seq. depth
+    def sample_filter(val, id_, md):
+        return sum(val) > min_sample_count
+    # filter features to min total counts
+    def observation_filter(val, id_, md):
+        return sum(val) > min_feature_count
+    # filter features by N samples presence
+    def frequency_filter(val, id_, md):
+        return (np.sum(val > 0) / n_samples) > (min_feature_frequency / 100)
+    # filter and import table for each filter above
     table = table.filter(observation_filter, axis='observation')
     table = table.filter(sample_filter, axis='sample')
     table = table.to_dataframe().T
+    # check the table after filtering
     if len(table.index) != len(set(table.index)):
         raise ValueError('Data-table contains duplicate indices')
     if len(table.columns) != len(set(table.columns)):
         raise ValueError('Data-table contains duplicate columns')
-
-    # rclr preprocessing and OptSpace (RPCA)
+    # Robust-clt (rclr) preprocessing and OptSpace (RPCA)
     opt = MatrixCompletion(n_components=n_components,
                            max_iterations=max_iterations).fit(rclr(table))
     # get PC column labels for the skbio OrdinationResults
