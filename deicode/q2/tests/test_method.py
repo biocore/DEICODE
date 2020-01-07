@@ -10,7 +10,6 @@ from qiime2 import Artifact
 from qiime2.plugins import deicode as q2deicode
 from deicode.rpca import rpca
 from deicode.scripts._standalone_rpca import standalone_rpca
-from deicode.testing import assert_deicode_ordinationresults_equal
 from simulations import build_block_model
 from click.testing import CliRunner
 from nose.tools import nottest
@@ -64,7 +63,7 @@ class Test_qiime2_rpca(unittest.TestCase):
         # Run DEICODE through QIIME 2 (specifically, the Artifact API)
         ordination_qza, distmatrix_qza = q2deicode.actions.rpca(self.q2table)
         # Get the underlying data from these artifacts
-        q2ordination = ordination_qza.view(OrdinationResults)
+        # q2ordination = ordination_qza.view(OrdinationResults)
         q2distmatrix = distmatrix_qza.view(DistanceMatrix)
 
         # Next, run DEICODE outside of QIIME 2. We're gonna check that
@@ -81,8 +80,8 @@ class Test_qiime2_rpca(unittest.TestCase):
                                              '--output-dir', tstdir_absolute])
         # ...and read in the resulting output files. This code was derived from
         # test_standalone_rpca() elsewhere in DEICODE's codebase.
-        stordination = OrdinationResults.read(get_data_path('ordination.txt',
-                                                            tstdir))
+        # stordination = OrdinationResults.read(get_data_path('ordination.txt',
+        #                                                    tstdir))
         stdistmatrix_values = read_csv(
             get_data_path(
                 'distance-matrix.tsv',

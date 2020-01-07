@@ -24,15 +24,19 @@ def rpca(table: biom.Table,
     """
     # get shape of table
     n_features, n_samples = table.shape
+
     # filter sample to min seq. depth
     def sample_filter(val, id_, md):
         return sum(val) > min_sample_count
+
     # filter features to min total counts
     def observation_filter(val, id_, md):
         return sum(val) > min_feature_count
+
     # filter features by N samples presence
     def frequency_filter(val, id_, md):
         return (np.sum(val > 0) / n_samples) > (min_feature_frequency / 100)
+
     # filter and import table for each filter above
     table = table.filter(observation_filter, axis='observation')
     table = table.filter(sample_filter, axis='sample')
