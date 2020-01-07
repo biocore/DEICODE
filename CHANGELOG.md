@@ -1,5 +1,29 @@
 # DEICODE changelog
 
+## Version 0.2.4 (2020-01-07)
+
+### Features
+
+* Feature presence frequency filter [raised in issue #45](https://github.com/biocore/DEICODE/issues/45)
+
+This new feature allows users to choose a number from 0-100, with decimals allowed. The filter
+will remove features that are present in less than that percentage of samples. In practice
+this filter is useful to filter out features that will be difficult to use for log-ratios
+downstream in [Qurro](https://github.com/biocore/qurro).
+
+### Bug fixes
+
+* Axis order [raised in issue #52](https://github.com/biocore/DEICODE/issues/52) and [issue #32](https://github.com/biocore/DEICODE/issues/32)
+
+This was partially fixed in PR #33 and PR #34 but there was a remaining bug
+in the optspace function [here](https://github.com/biocore/DEICODE/blob/b1f37059b79f6ca2e2db11ba2fb7500c1a92f87e/deicode/optspace.py#L211-L212).
+This bug was subtle and only caused the order to change periodically. Examples of this fix being tested on both
+real and simulated data can be found [here](https://nbviewer.jupyter.org/github/cameronmartino/hartig-net/blob/master/percent-explained/real-data-fraction-var.ipynb) and [here](https://nbviewer.jupyter.org/github/cameronmartino/hartig-net/blob/master/percent-explained/simulation-fraction-var.ipynb) respectively. 
+
+* Fraction total variance explained [raised in issue #53](https://github.com/biocore/DEICODE/issues/53)
+
+The fraction variance explained currently is calculated by the sum of squares based on the number of singular values. The number of singular values changes based on the rank input. This causes the resulting fraction variance explained to change dramatically as the rank is increased or decreased. This has been brought up multiple times on the QIIME2 forum. For example, see here. To solve this a solution used for partial SVDs was used where the fractional variance is calculated based on the variance of the project over the total variance of the input data. The total variance of the original data is calculated by taking the sum of the row-wise variance computation explicitly of the rclr data, ignoring missing values. The same is done for each axis of the projection given by $U \dot s$. The division of the projection over the total sum of the variance for the original rclr transformed data gives a more robust estimate of the percent explained. To test this in practice I compared the full-rank (i.e. rank = N-samples - 1) to increasing levels of partial-ranks fraction of total variance explained. This new calculation is much more robust to changing rank and much closer to the full-rank. Examples of this fix being tested on both real and simulated data can be found [here](https://nbviewer.jupyter.org/github/cameronmartino/hartig-net/blob/master/percent-explained/real-data-fraction-var.ipynb) and [here](https://nbviewer.jupyter.org/github/cameronmartino/hartig-net/blob/master/percent-explained/simulation-fraction-var.ipynb) respectively. 
+
 ## Version 0.2.3 (2019-6-18)
 
 ### Backward-incompatible changes [stable]
