@@ -40,6 +40,7 @@ def rpca(table: biom.Table,
 
     # filter and import table for each filter above
     table = table.filter(observation_filter, axis='observation')
+    table = table.filter(frequency_filter, axis='observation')
     table = table.filter(sample_filter, axis='sample')
     table = table.to_dataframe().T
     # check the table after filtering
