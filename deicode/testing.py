@@ -1,3 +1,7 @@
+import numpy as np
+from scipy.stats import norm
+from skbio.stats.composition import closure
+from numpy.random import poisson, lognormal, normal
 from pandas.testing import assert_series_equal
 
 
@@ -91,3 +95,38 @@ def assert_deicode_ordinationresults_equal(o1, o2, precision=5, verbose=False):
             if verbose:
                 print("PC {} for the {} ordination matches.".format(col_index,
                                                                     aspect))
+
+
+def chain_interactions(gradient, mu, sigma):
+    """
+    helper function for model_data
+    """
+    xs = [norm.pdf(gradient, loc=mu[i], scale=sigma[i])
+          for i in range(len(mu))]
+    return np.vstack(xs)
+
+
+def model_data(n_features=500, n_samples=50,
+               pi1=0.3, pi2=0.3, mu_neg=1,
+               mu_null=5, mu_pos=7,
+               sigma=0.1, depth=50000,
+               disp=2.0, kappa=.01):
+    """
+    generate a simple block dataset to test
+    rank estimation
+    """
+    g = np.linspace(2, 8, n_samples)
+    mu_pos_hat = normal(mu_pos, sigma,
+                        size=int(round(pi1 * n_features)))
+    mu_neg_hat = normal(mu_neg, sigma,
+                        size=int(round(pi2 * n_features)))
+    mu_null_hat = normal(mu_null, sigma,
+                         size=int(round((1 - pi1 - pi2) * n_features)))
+    mu = np.hstack((mu_pos_hat, mu_null_hat, mu_neg_hat))
+    sigma = [disp] * n_features
+    x = chain_interactions(g, mu=mu, sigma=sigma)
+    mu = depth * closure(x.T).T
+    y = np.vstack([poisson(lognormal(np.log(mu[:, i]), kappa))
+                   for i in range(n_samples)]).T
+    y += np.random.randint(0, 600, (n_features, n_samples))
+    return y.astype(float)

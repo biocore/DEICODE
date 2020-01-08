@@ -11,6 +11,8 @@ will remove features that are present in less than that percentage of samples. I
 this filter is useful to filter out features that will be difficult to use for log-ratios
 downstream in [Qurro](https://github.com/biocore/qurro).
 
+* 'optspace' option in n-components to make an estimation on the rank parameter. See below in bug-fixes for more info.
+
 ### Bug fixes
 
 * Axis order [raised in issue #52](https://github.com/biocore/DEICODE/issues/52) and [issue #32](https://github.com/biocore/DEICODE/issues/32)
@@ -22,7 +24,7 @@ real and simulated data can be found [here](https://nbviewer.jupyter.org/github/
 
 * Fraction total variance explained [raised in issue #53](https://github.com/biocore/DEICODE/issues/53)
 
-The fraction variance explained currently is calculated by the sum of squares based on the number of singular values. The number of singular values changes based on the rank input. This causes the resulting fraction variance explained to change dramatically as the rank is increased or decreased. This has been brought up multiple times on the QIIME2 forum. For example, see here. To solve this a solution used for partial SVDs was used where the fractional variance is calculated based on the variance of the project over the total variance of the input data. The total variance of the original data is calculated by taking the sum of the row-wise variance computation explicitly of the rclr data, ignoring missing values. The same is done for each axis of the projection given by $U \dot s$. The division of the projection over the total sum of the variance for the original rclr transformed data gives a more robust estimate of the percent explained. To test this in practice I compared the full-rank (i.e. rank = N-samples - 1) to increasing levels of partial-ranks fraction of total variance explained. This new calculation is much more robust to changing rank and much closer to the full-rank. Examples of this fix being tested on both real and simulated data can be found [here](https://nbviewer.jupyter.org/github/cameronmartino/hartig-net/blob/master/percent-explained/real-data-fraction-var.ipynb) and [here](https://nbviewer.jupyter.org/github/cameronmartino/hartig-net/blob/master/percent-explained/simulation-fraction-var.ipynb) respectively. 
+The fraction variance explained currently is calculated by the sum of squares based on the number of singular values. The number of singular values changes based on the rank input. This causes the resulting fraction variance explained to change dramatically as the rank is increased or decreased. This has been brought up multiple times on the QIIME2 forum. For example, see [here](). Additionally, the correct rank that actually explains the total variance is not clear (i.e. What rank should I choose?). To solve both of these problems a rank estimation is made based on part C of Keshavan, R. H., Montanari, A. & Oh, S. (Low-rank matrix completion with noisy observations: A quantitative comparison. in 2009 47th Annual Allerton Conference on Communication, Control, and Computing (Allerton) 1216–1222 (2009)) is used. This can can be enabled by setting n-components to 'optspace'. To prevent user confusion the default was not changed in this version. However, a future warning was added to warn users that in the next version 'optspace' based rank estimation will be the default.
 
 ## Version 0.2.3 (2019-6-18)
 

@@ -1,4 +1,5 @@
 import numpy as np
+import warnings
 from deicode.optspace import OptSpace
 from .base import _BaseImpute
 from scipy.spatial import distance
@@ -82,11 +83,6 @@ class MatrixCompletion(_BaseImpute):
         self.max_iterations = max_iterations
         self.tol = tol
 
-        if self.n_components < 2:
-            raise ValueError("n_components must be at least 2")
-        if self.max_iterations < 1:
-            raise ValueError("max_iterations must be at least 1")
-
         return
 
     def fit(self, X):
@@ -103,13 +99,38 @@ class MatrixCompletion(_BaseImpute):
 
         # make copy for imputation, check type
         X_sparse = self.X_sparse
+        n, m = X_sparse.shape
 
+        # make sure the data is sparse (otherwise why?)
         if np.count_nonzero(np.isinf(X_sparse)) != 0:
             raise ValueError('Contains either np.inf or -np.inf')
 
-        if self.n_components > np.min(X_sparse.shape):
-            raise ValueError(
-                'n_components must be less than the minimum shape')
+        # test n-iter
+        if self.max_iterations < 1:
+            raise ValueError("max_iterations must be at least 1")
+
+        # check the settings for n_components
+        if isinstance(self.n_components, str) and \
+           self.n_components.lower() == 'optspace':
+            # estimate the rank of the matrix
+            self.n_components = 'optspace'
+        # raise future warning if hard set
+        elif isinstance(self.n_components, int):
+            warnings.warn("Setting the rank explicitly will be removed as"
+                          " the default in v. 0.2.5. The default will then"
+                          " become the rank estimation via 'optspace'.",
+                          FutureWarning)
+            if self.n_components > (min(n, m) - 1):
+                raise ValueError("n-components must be at most"
+                                 " 1 minus the min. shape of the"
+                                 " input matrix.")
+            if self.n_components < 2:
+                raise ValueError("n-components must "
+                                 "be at least 2")
+        # otherwise rase an error.
+        else:
+            raise ValueError("n-components must be "
+                             "an interger or 'optspace'")
 
         # return solved matrix
         self.U, self.s, self.V = OptSpace(n_components=self.n_components,

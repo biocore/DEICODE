@@ -12,7 +12,7 @@ from deicode import __version__
 from deicode.rpca import rpca
 from deicode._rpca_defaults import (DESC_RANK, DESC_MSC, DESC_MFC,
                                     DESC_ITERATIONS, DESC_MFF)
-from qiime2.plugin import (Properties, Int, Float)
+from qiime2.plugin import (Properties, Int, Float, Choices, Str, TypeMap)
 from q2_types.feature_table import FeatureTable, Frequency
 from q2_types.distance_matrix import DistanceMatrix
 from q2_types.ordination import PCoAResults
@@ -31,11 +31,16 @@ plugin = qiime2.plugin.Plugin(
                  'feature tables'),
     package='deicode')
 
+P_n_components, _ = TypeMap({
+    (Int): Int,
+    (Str % Choices(['optspace'])): Int,
+})
+
 plugin.methods.register_function(
     function=rpca,
     inputs={'table': FeatureTable[Frequency]},
     parameters={
-        'n_components': Int,
+        'n_components': P_n_components,
         'min_sample_count': Int,
         'min_feature_count': Int,
         'min_feature_frequency': Float,

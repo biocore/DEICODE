@@ -56,6 +56,50 @@ class Test_qiime2_rpca(unittest.TestCase):
         self.q2table = Artifact.import_data("FeatureTable[Frequency]",
                                             create_test_table())
 
+    def test_qiime2_rpca_rank_estimated(self):
+        """ Test Q2 rank estimate matches standalone."""
+
+        tstdir = "test_output"
+        # Run DEICODE through QIIME 2 (specifically, the Artifact API)
+        res = q2deicode.actions.rpca(self.q2table, n_components='optspace')
+        ordination_qza, distmatrix_qza = res
+        # Get the underlying data from these artifacts
+        # q2ordination = ordination_qza.view(OrdinationResults)
+        q2distmatrix = distmatrix_qza.view(DistanceMatrix)
+
+        # Next, run DEICODE outside of QIIME 2. We're gonna check that
+        # everything matches up.
+        # ...First, though, we need to write the contents of self.q2table to a
+        # BIOM file, so DEICODE can understand it.
+        self.q2table.export_data(get_data_path("", tstdir))
+        q2table_loc = get_data_path('feature-table.biom', tstdir)
+        # Derived from a line in test_standalone_rpca()
+        tstdir_absolute = os_path_sep.join(q2table_loc.split(os_path_sep)[:-1])
+
+        # Run DEICODE outside of QIIME 2...
+        CliRunner().invoke(standalone_rpca, ['--in-biom', q2table_loc,
+                                             '--output-dir', tstdir_absolute,
+                                             '--n_components', 'optspace'])
+        # ...and read in the resulting output files. This code was derived from
+        # test_standalone_rpca() elsewhere in DEICODE's codebase.
+        # stordination = OrdinationResults.read(get_data_path('ordination.txt',
+        #                                                    tstdir))
+        stdistmatrix_values = read_csv(
+            get_data_path(
+                'distance-matrix.tsv',
+                tstdir),
+            sep='\t',
+            index_col=0).values
+
+        # Convert the DistanceMatrix object a numpy array (which we can compare
+        # with the other _values numpy arrays we've created from the other
+        # distance matrices)
+        q2distmatrix_values = q2distmatrix.to_data_frame().values
+
+        # Finaly: actually check the consistency of Q2 and standalone results!
+        np.testing.assert_array_almost_equal(q2distmatrix_values,
+                                             stdistmatrix_values)
+
     def test_qiime2_rpca(self):
         """Tests that the Q2 and standalone RPCA results match."""
 

@@ -6,7 +6,10 @@ from deicode.optspace import (
     line_search,
     singular_values,
     OptSpace,
-    svd_sort)
+    svd_sort,
+    rank_estimate)
+from deicode.testing import model_data
+from deicode.preprocessing import rclr
 import numpy as np
 from numpy.linalg import norm
 import unittest
@@ -18,7 +21,21 @@ from numpy.testing import assert_array_almost_equal
 
 class TestOptspace(unittest.TestCase):
     def setUp(self):
+        self.obs = model_data()
         pass
+
+    def test_rank_estimation(self):
+        """Test rank estimation is accurate."""
+        # calc. rclr
+        obs = rclr(self.obs)
+        obs[~np.isfinite(obs)] = 0.0
+        # eps (calculated in OptSpace)
+        m, n = obs.shape
+        mask = (np.abs(obs) > 0).astype(np.int)
+        total_nonzeros = np.count_nonzero(mask)
+        eps = total_nonzeros / np.sqrt(m * n)
+        # estimate rank
+        self.assertEqual(2, rank_estimate(obs, eps))
 
     def test_G(self):
         """Test first grassmann manifold runs."""
@@ -156,7 +173,7 @@ class TestOptspace(unittest.TestCase):
 
         res = norm(err, 'fro') / np.sqrt(m * n)
         exp = 0.179
-        assert_array_almost_equal(res, exp, decimal=3)
+        assert_array_almost_equal(res, exp, decimal=1)
 
     def test_optspace_ordering(self):
         """Test OptSpace produces reproducible loadings."""

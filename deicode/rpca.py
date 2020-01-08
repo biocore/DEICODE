@@ -2,6 +2,7 @@ import biom
 import skbio
 import numpy as np
 import pandas as pd
+from typing import Union
 from deicode.matrix_completion import MatrixCompletion
 from deicode.preprocessing import rclr
 from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
@@ -10,7 +11,7 @@ from scipy.linalg import svd
 
 
 def rpca(table: biom.Table,
-         n_components: int = DEFAULT_RANK,
+         n_components: Union[int, str] = DEFAULT_RANK,
          min_sample_count: int = DEFAULT_MSC,
          min_feature_count: int = DEFAULT_MFC,
          min_feature_frequency: float = DEFAULT_MFF,
@@ -49,6 +50,8 @@ def rpca(table: biom.Table,
     # Robust-clt (rclr) preprocessing and OptSpace (RPCA)
     opt = MatrixCompletion(n_components=n_components,
                            max_iterations=max_iterations).fit(rclr(table))
+    # get new n-comp when applicable
+    n_components = opt.s.shape[0]
     # get PC column labels for the skbio OrdinationResults
     rename_cols = ['PC' + str(i+1) for i in range(n_components)]
     # get completed matrix for centering
@@ -61,15 +64,10 @@ def rpca(table: biom.Table,
     # only take n-components
     u = u[:, :n_components]
     v = v.T[:, :n_components]
-    s = s[:n_components]
     # calc. the new variance using projection
-    projection = u * s[:n_components]
-    projection_var = np.var(projection, axis=0)
-    # get the total approximated variance of the initial table
-    tot_var = np.nansum(np.nanvar(rclr(table), axis=1))
-    # calculate the fraction of total variance
-    p = projection_var / tot_var
+    p = s**2 / np.sum(s**2)
     p = p[:n_components]
+    s = s[:n_components]
     # save the loadings
     feature_loading = pd.DataFrame(v, index=table.columns,
                                    columns=rename_cols)

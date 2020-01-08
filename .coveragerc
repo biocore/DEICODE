@@ -6,6 +6,7 @@ omit =
     */__init__.py
     */base.py 
     *deicode/q2/plugin_setup.py
+    *deicode/testing.py
 source = DEICODE
 branch = True
 include = */deicode/*

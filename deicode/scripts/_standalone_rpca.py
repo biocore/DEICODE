@@ -1,5 +1,6 @@
 import os
 import click
+from typing import Union
 from biom import load_table
 from deicode.rpca import rpca
 from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
@@ -8,12 +9,29 @@ from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
                                     DESC_MFF)
 
 
+class int_or_string(click.ParamType):
+
+    def __init__(self):
+        self.name = 'INTEGER | TEXT'
+
+    def convert(self, value, param, ctx):
+
+        if value is None:
+            return None
+
+        try:
+            return int(float(value))
+        except ValueError:
+            return str(value)
+
+
 @click.command()
 @click.option('--in-biom', help='Input table in biom format.', required=True)
 @click.option('--output-dir', help='Location of output files.', required=True)
 @click.option(
     '--n_components',
     default=DEFAULT_RANK,
+    type=int_or_string(),
     show_default=True,
     help=DESC_RANK)
 @click.option(
@@ -36,7 +54,8 @@ from deicode._rpca_defaults import (DEFAULT_RANK, DEFAULT_MSC, DEFAULT_MFC,
     default=DEFAULT_ITERATIONS,
     show_default=True,
     help=DESC_ITERATIONS)
-def standalone_rpca(in_biom: str, output_dir: str, n_components: int,
+def standalone_rpca(in_biom: str, output_dir: str,
+                    n_components: Union[int, str],
                     min_sample_count: int, min_feature_count: int,
                     min_feature_frequency: float,
                     max_iterations: int) -> None:
