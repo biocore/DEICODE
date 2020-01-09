@@ -1,4 +1,3 @@
-import warnings
 import numpy as np
 from numpy.matlib import repmat
 from numpy.linalg import norm
@@ -114,18 +113,14 @@ class OptSpace(object):
         total_nonzeros = np.count_nonzero(mask)
         eps = total_nonzeros / np.sqrt(m * n)
         if isinstance(self.n_components, str):
-            if self.n_components.lower() == 'optspace':
+            if self.n_components.lower() == 'auto':
                 # estimate the rank of the matrix
                 self.n_components = rank_estimate(obs, eps)
             else:
-                raise ValueError("n-components must be an"
-                                 "integer or 'optspace'.")
+                raise ValueError("n-components must be an "
+                                 "integer or 'auto'.")
         # raise future warning if hard set
         elif isinstance(self.n_components, int):
-            warnings.warn("Setting the rank explicitly will be removed as"
-                          " the default in v. 0.2.5. The default will then"
-                          " become the rank estimation via 'optspace'.",
-                          FutureWarning)
             if self.n_components > (min(n, m) - 1):
                 raise ValueError("n-components must be at most"
                                  " 1 minus the min. shape of the"
@@ -133,7 +128,7 @@ class OptSpace(object):
         # otherwise rase an error.
         else:
             raise ValueError("n-components must be "
-                             "an interger or 'optspace'")
+                             "an interger or 'auto'")
         # The rescaling factor compensates the smaller average size of
         # the of the missing entries (mask) with respect to obs
         rescal_param = np.count_nonzero(mask) * self.n_components

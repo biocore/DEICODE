@@ -105,3 +105,21 @@ def rpca(table: biom.Table,
         opt.distance, ids=sample_loading.index)
 
     return ord_res, dist_res
+
+def auto_rpca(table: biom.Table,
+              min_sample_count: int = DEFAULT_MSC,
+              min_feature_count: int = DEFAULT_MFC,
+              min_feature_frequency: float = DEFAULT_MFF,
+              max_iterations: int = DEFAULT_ITERATIONS) -> (
+              skbio.OrdinationResults,
+              skbio.DistanceMatrix):
+    """Runs RPCA but with auto estimation of the
+       rank peramater.
+    """
+    ord_res, dist_res = rpca(table,
+                             n_components = 'auto',
+                             min_sample_count = min_sample_count,
+                             min_feature_count = min_feature_count,
+                             min_feature_frequency = min_feature_frequency,
+                             max_iterations = max_iterations)
+    return ord_res, dist_res

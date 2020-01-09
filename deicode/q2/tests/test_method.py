@@ -8,8 +8,8 @@ from skbio.stats.distance import DistanceMatrix
 from skbio.util import get_data_path
 from qiime2 import Artifact
 from qiime2.plugins import deicode as q2deicode
-from deicode.rpca import rpca
-from deicode.scripts._standalone_rpca import standalone_rpca
+from deicode.rpca import rpca, auto_rpca
+from deicode.scripts._standalone_rpca import deicode as sdc
 from simulations import build_block_model
 from click.testing import CliRunner
 from nose.tools import nottest
@@ -56,12 +56,12 @@ class Test_qiime2_rpca(unittest.TestCase):
         self.q2table = Artifact.import_data("FeatureTable[Frequency]",
                                             create_test_table())
 
-    def test_qiime2_rpca_rank_estimated(self):
+    def test_qiime2_auto_rpca(self):
         """ Test Q2 rank estimate matches standalone."""
 
         tstdir = "test_output"
         # Run DEICODE through QIIME 2 (specifically, the Artifact API)
-        res = q2deicode.actions.rpca(self.q2table, n_components='optspace')
+        res = q2deicode.actions.auto_rpca(self.q2table)
         ordination_qza, distmatrix_qza = res
         # Get the underlying data from these artifacts
         # q2ordination = ordination_qza.view(OrdinationResults)
@@ -77,9 +77,9 @@ class Test_qiime2_rpca(unittest.TestCase):
         tstdir_absolute = os_path_sep.join(q2table_loc.split(os_path_sep)[:-1])
 
         # Run DEICODE outside of QIIME 2...
-        CliRunner().invoke(standalone_rpca, ['--in-biom', q2table_loc,
-                                             '--output-dir', tstdir_absolute,
-                                             '--n_components', 'optspace'])
+        CliRunner().invoke(sdc.commands['auto-rpca'],
+                           ['--in-biom', q2table_loc,
+                           '--output-dir', tstdir_absolute])
         # ...and read in the resulting output files. This code was derived from
         # test_standalone_rpca() elsewhere in DEICODE's codebase.
         # stordination = OrdinationResults.read(get_data_path('ordination.txt',
@@ -120,8 +120,9 @@ class Test_qiime2_rpca(unittest.TestCase):
         tstdir_absolute = os_path_sep.join(q2table_loc.split(os_path_sep)[:-1])
 
         # Run DEICODE outside of QIIME 2...
-        CliRunner().invoke(standalone_rpca, ['--in-biom', q2table_loc,
-                                             '--output-dir', tstdir_absolute])
+        CliRunner().invoke(sdc.commands['rpca'],
+                           ['--in-biom', q2table_loc,
+                            '--output-dir', tstdir_absolute])
         # ...and read in the resulting output files. This code was derived from
         # test_standalone_rpca() elsewhere in DEICODE's codebase.
         # stordination = OrdinationResults.read(get_data_path('ordination.txt',

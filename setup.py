@@ -108,7 +108,7 @@ setup(name='deicode',
       entry_points={
           'qiime2.plugins': ['q2-deicode=deicode.q2.plugin_setup:plugin'],
           'console_scripts':
-              ['deicode=deicode.scripts._standalone_rpca:standalone_rpca']
+              ['deicode=deicode.scripts._standalone_rpca:deicode']
       },
       # Inclusion of citations.bib in package_data based on how this is done in
       # q2-emperor's setup.py file

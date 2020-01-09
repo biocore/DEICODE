@@ -1,5 +1,4 @@
 import numpy as np
-import warnings
 from deicode.optspace import OptSpace
 from .base import _BaseImpute
 from scipy.spatial import distance
@@ -111,15 +110,11 @@ class MatrixCompletion(_BaseImpute):
 
         # check the settings for n_components
         if isinstance(self.n_components, str) and \
-           self.n_components.lower() == 'optspace':
+           self.n_components.lower() == 'auto':
             # estimate the rank of the matrix
-            self.n_components = 'optspace'
-        # raise future warning if hard set
+            self.n_components = 'auto'
+        # check hardset values
         elif isinstance(self.n_components, int):
-            warnings.warn("Setting the rank explicitly will be removed as"
-                          " the default in v. 0.2.5. The default will then"
-                          " become the rank estimation via 'optspace'.",
-                          FutureWarning)
             if self.n_components > (min(n, m) - 1):
                 raise ValueError("n-components must be at most"
                                  " 1 minus the min. shape of the"
@@ -130,7 +125,7 @@ class MatrixCompletion(_BaseImpute):
         # otherwise rase an error.
         else:
             raise ValueError("n-components must be "
-                             "an interger or 'optspace'")
+                             "an interger or 'auto'")
 
         # return solved matrix
         self.U, self.s, self.V = OptSpace(n_components=self.n_components,

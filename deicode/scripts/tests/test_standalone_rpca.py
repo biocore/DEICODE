@@ -1,4 +1,3 @@
-from deicode.scripts._standalone_rpca import standalone_rpca
 import unittest
 import pandas as pd
 from os.path import sep as os_path_sep
@@ -6,6 +5,7 @@ from click.testing import CliRunner
 from skbio import OrdinationResults
 from skbio.util import get_data_path
 from numpy.testing import assert_array_almost_equal
+from deicode.scripts._standalone_rpca import deicode as sdc
 from deicode.testing import assert_deicode_ordinationresults_equal
 
 
@@ -21,9 +21,9 @@ class Test_standalone_rpca(unittest.TestCase):
         in_ = get_data_path('test.biom')
         out_ = os_path_sep.join(in_.split(os_path_sep)[:-1])
         runner = CliRunner()
-        result = runner.invoke(standalone_rpca, ['--in-biom', in_,
-                                                 '--output-dir', out_,
-                                                 '--n_components', 'optspace'])
+        result = runner.invoke(sdc.commands['auto-rpca'],
+                                ['--in-biom', in_,
+                                 '--output-dir', out_])
         # Read the results
         dist_res = pd.read_csv(get_data_path('distance-matrix.tsv'), sep='\t',
                                index_col=0)
@@ -61,8 +61,9 @@ class Test_standalone_rpca(unittest.TestCase):
         in_ = get_data_path('test.biom')
         out_ = os_path_sep.join(in_.split(os_path_sep)[:-1])
         runner = CliRunner()
-        result = runner.invoke(standalone_rpca, ['--in-biom', in_,
-                                                 '--output-dir', out_])
+        result = runner.invoke(sdc.commands['rpca'],
+                               ['--in-biom', in_,
+                                '--output-dir', out_])
         # Read the results
         dist_res = pd.read_csv(get_data_path('distance-matrix.tsv'), sep='\t',
                                index_col=0)
@@ -91,10 +92,11 @@ class Test_standalone_rpca(unittest.TestCase):
         out_ = os_path_sep.join(in_.split(os_path_sep)[:-1])
         runner = CliRunner()
         # run the same command but with rank==2
-        result = runner.invoke(standalone_rpca, ['--in-biom', in_,
-                                                 '--output-dir', out_,
-                                                 '--n_components', 2,
-                                                 '--max_iterations', 5])
+        result = runner.invoke(sdc.commands['rpca'],
+                               ['--in-biom', in_,
+                                '--output-dir', out_,
+                                '--n_components', 2,
+                                '--max_iterations', 5])
         self.assertEqual(result.exit_code, 0)
         ord_res = OrdinationResults.read(get_data_path('ordination.txt'))
         # check it contains three axis
