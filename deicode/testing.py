@@ -1,7 +1,3 @@
-import numpy as np
-from scipy.stats import norm
-from skbio.stats.composition import closure
-from numpy.random import poisson, lognormal, normal
 from pandas.testing import assert_series_equal
 
 

@@ -54,7 +54,7 @@ def rpca(table: biom.Table,
     # get new n-comp when applicable
     n_components = opt.s.shape[0]
     # get PC column labels for the skbio OrdinationResults
-    rename_cols = ['PC' + str(i+1) for i in range(n_components)]
+    rename_cols = ['PC' + str(i + 1) for i in range(n_components)]
     # get completed matrix for centering
     X = opt.sample_weights @ opt.s @ opt.feature_weights.T
     # center again around zero after completion
@@ -106,20 +106,21 @@ def rpca(table: biom.Table,
 
     return ord_res, dist_res
 
+
 def auto_rpca(table: biom.Table,
               min_sample_count: int = DEFAULT_MSC,
               min_feature_count: int = DEFAULT_MFC,
               min_feature_frequency: float = DEFAULT_MFF,
               max_iterations: int = DEFAULT_ITERATIONS) -> (
-              skbio.OrdinationResults,
-              skbio.DistanceMatrix):
+        skbio.OrdinationResults,
+        skbio.DistanceMatrix):
     """Runs RPCA but with auto estimation of the
        rank peramater.
     """
     ord_res, dist_res = rpca(table,
-                             n_components = 'auto',
-                             min_sample_count = min_sample_count,
-                             min_feature_count = min_feature_count,
-                             min_feature_frequency = min_feature_frequency,
-                             max_iterations = max_iterations)
+                             n_components='auto',
+                             min_sample_count=min_sample_count,
+                             min_feature_count=min_feature_count,
+                             min_feature_frequency=min_feature_frequency,
+                             max_iterations=max_iterations)
     return ord_res, dist_res

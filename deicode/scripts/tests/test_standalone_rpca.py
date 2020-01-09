@@ -22,8 +22,8 @@ class Test_standalone_rpca(unittest.TestCase):
         out_ = os_path_sep.join(in_.split(os_path_sep)[:-1])
         runner = CliRunner()
         result = runner.invoke(sdc.commands['auto-rpca'],
-                                ['--in-biom', in_,
-                                 '--output-dir', out_])
+                               ['--in-biom', in_,
+                                '--output-dir', out_])
         # Read the results
         dist_res = pd.read_csv(get_data_path('distance-matrix.tsv'), sep='\t',
                                index_col=0)

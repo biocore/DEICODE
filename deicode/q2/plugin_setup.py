@@ -12,7 +12,7 @@ from deicode import __version__
 from deicode.rpca import rpca, auto_rpca
 from deicode._rpca_defaults import (DESC_RANK, DESC_MSC, DESC_MFC,
                                     DESC_ITERATIONS, DESC_MFF)
-from qiime2.plugin import (Properties, Int, Float, Choices, Str)
+from qiime2.plugin import (Properties, Int, Float)
 from q2_types.feature_table import FeatureTable, Frequency
 from q2_types.distance_matrix import DistanceMatrix
 from q2_types.ordination import PCoAResults

@@ -8,7 +8,6 @@ from deicode.optspace import (
     OptSpace,
     svd_sort,
     rank_estimate)
-from deicode.preprocessing import rclr
 import numpy as np
 from numpy.linalg import norm
 import unittest
