@@ -3,16 +3,14 @@
 # of DEICODE.
 DEFAULT_RANK = 3
 DEFAULT_MSC = 500
-DEFAULT_MFC = 0
-DEFAULT_MFF = 1
+DEFAULT_MFC = 10
+DEFAULT_MFF = 0
 DEFAULT_ITERATIONS = 5
 
 DESC_RANK = ("The underlying low-rank structure."
-             " The input can either be 'optspace' or"
-             " an integer (suggested: 1 < rank < 10) [minimum 2]."
-             " The 'optpace' option will estimate the rank of the"
-             " data and is likely more robust than hard setting"
-             " the rank. Note: as the rank increases the runtime"
+             " The input can be an integer "
+             "(suggested: 1 < rank < 10) [minimum 2]."
+             " Note: as the rank increases the runtime"
              " will increase dramatically.")
 DESC_MSC = ("Minimum sum cutoff of sample across all features"
             "The value can be at minimum zero and must be an whole"
