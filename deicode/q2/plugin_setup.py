@@ -58,7 +58,7 @@ plugin.methods.register_function(
     output_descriptions={
         'biplot': ('A biplot of the (Robust Aitchison) RPCA feature loadings'),
         'distance_matrix': ('The Aitchison distance of'
-                            'the sample loadings from RPCA.')
+                            ' the sample loadings from RPCA.')
     },
     name='(Robust Aitchison) RPCA Biplot',
     description=("Performs robust center log-ratio transform "
@@ -92,7 +92,7 @@ plugin.methods.register_function(
     output_descriptions={
         'biplot': ('A biplot of the (Robust Aitchison) RPCA feature loadings'),
         'distance_matrix': ('The Aitchison distance of'
-                            'the sample loadings from RPCA.')
+                            ' the sample loadings from RPCA.')
     },
     name='(Robust Aitchison) RPCA Biplot',
     description=("Performs robust center log-ratio transform "

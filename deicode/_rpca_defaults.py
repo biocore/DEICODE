@@ -12,11 +12,11 @@ DESC_RANK = ("The underlying low-rank structure."
              "(suggested: 1 < rank < 10) [minimum 2]."
              " Note: as the rank increases the runtime"
              " will increase dramatically.")
-DESC_MSC = ("Minimum sum cutoff of sample across all features"
+DESC_MSC = ("Minimum sum cutoff of sample across all features. "
             "The value can be at minimum zero and must be an whole"
             " integer. It is suggested to be greater than or equal"
             " to 500.")
-DESC_MFC = ("Minimum sum cutoff of features across all samples."
+DESC_MFC = ("Minimum sum cutoff of features across all samples. "
             "The value can be at minimum zero and must be an whole"
             " integer")
 DESC_MFF = ("Minimum percentage of samples a feature must appear"
