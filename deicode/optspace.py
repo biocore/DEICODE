@@ -40,10 +40,12 @@ class OptSpace(object):
             N = Features (i.e. OTUs, metabolites)
             M = Samples
 
-        n_components: int
+        n_components: int or {"optspace"}, optional
             The underlying rank of the dataset.
             This will also control the number of components
-            (axis) in the U and V loadings.
+            (axis) in the U and V loadings. The value can either
+            be hard set by the user or estimated through the
+            optspace algorithm.
 
         max_iterations: int
             The maximum number of convex iterations to optimize the solution
@@ -105,6 +107,28 @@ class OptSpace(object):
         # generate a mask that tracks where missing
         # values exist in the obs dataset
         mask = (np.abs(obs) > 0).astype(np.int)
+        # save the shape of the matrix
+        n, m = obs.shape
+        # get a measure of sparsity level
+        total_nonzeros = np.count_nonzero(mask)
+        eps = total_nonzeros / np.sqrt(m * n)
+        if isinstance(self.n_components, str):
+            if self.n_components.lower() == 'auto':
+                # estimate the rank of the matrix
+                self.n_components = rank_estimate(obs, eps)
+            else:
+                raise ValueError("n-components must be an "
+                                 "integer or 'auto'.")
+        # raise future warning if hard set
+        elif isinstance(self.n_components, int):
+            if self.n_components > (min(n, m) - 1):
+                raise ValueError("n-components must be at most"
+                                 " 1 minus the min. shape of the"
+                                 " input matrix.")
+        # otherwise rase an error.
+        else:
+            raise ValueError("n-components must be "
+                             "an interger or 'auto'")
         # The rescaling factor compensates the smaller average size of
         # the of the missing entries (mask) with respect to obs
         rescal_param = np.count_nonzero(mask) * self.n_components
@@ -113,13 +137,9 @@ class OptSpace(object):
         # Our initial first guess are the loadings generated
         # by the traditional SVD
         U, S, V = svds(obs, self.n_components, which='LM')
-        # save the shape of the matrix
-        n, m = obs.shape
         # the shape and number of non-zero values
         # can set the input perameters for the gradient
         # decent
-        total_nonzeros = np.count_nonzero(mask)
-        eps = total_nonzeros / np.sqrt(m * n)
         rho = eps * n
         U = U * np.sqrt(n)
         V = (V * np.sqrt(m)).T
@@ -208,8 +228,8 @@ def svd_sort(U, S, V):
     # questions/36381356/sort-matrix-based
     # -on-its-diagonal-entries
     S = S[idx, :][:, idx]
-    U = U[:, idx[::-1]]
-    V = V[:, idx[::-1]]
+    U = U[:, idx]
+    V = V[:, idx]
     return U, S, V
 
 
@@ -366,3 +386,74 @@ def grassmann_manifold_two(U, step_size, n_components):
     step = np.multiply(U, repmat(step, 1, n_components)) / \
         (step_size * n_components)
     return step
+
+
+def rank_estimate(obs, eps, k=20, lam=0.05,
+                  min_rank=2, max_iter=5000):
+
+    """
+    This function estimates the rank of a
+    sparse matrix (i.e. with missing values).
+
+    Parameters
+    ----------
+    obs: numpy.ndarray - a rclr preprocessed matrix of shape (M,N)
+        with missing values set to zero or np.nan.
+        N = Features (i.e. OTUs, metabolites)
+        M = Samples
+
+    eps: float - Measure of the level of sparsity
+        Equivalent to obs N-non-zeros / sqrt(obs.shape)
+
+    k: int - Max number of singular values / rank
+
+    lam: float - Step in the iteration
+
+    min_rank: int - The min. rank allowed
+
+    Returns
+    -------
+    The estimated rank of the matrix.
+
+    References
+    ----------
+    .. [1] Part C in Keshavan, R. H., Montanari,
+           A. & Oh, S. Low-rank matrix completion
+           with noisy observations: A quantitative
+           comparison. in 2009 47th Annual Allerton
+           Conference on Communication, Control,
+           and Computing (Allerton) 1216–1222 (2009).
+    """
+
+    # dim. of the data
+    n, m = obs.shape
+    # get N-singular values
+    s = svds(obs,  min(k, n, m) - 1, which='LM',
+             return_singular_vectors=False)[::-1]
+    # get N+1 singular values
+    s_one = s[:-1] - s[1:]
+    # simplify iterations
+    s_one_ = s_one / np.mean(s_one[-10:])
+    # iteration one
+    r_one = 0
+    iter_ = 0
+    while r_one <= 0:
+        cost = []
+        # get the cost
+        for idx in range(s_one_.shape[0]):
+            cost.append(lam * max(s_one_[idx:]) + idx)
+        # estimate the rank
+        r_one = np.argmin(cost)
+        lam += lam
+        iter_ += 1
+        if iter_ > max_iter:
+            break
+
+    # iteration two
+    cost = []
+    # estimate the rank
+    for idx in range(s.shape[0] - 1):
+        cost.append((s[idx + 1] + np.sqrt(idx * eps) * s[0] / eps) / s[idx])
+    r_two = np.argmin(cost)
+    # return the final estimate
+    return max(r_one, r_two, min_rank)

@@ -9,10 +9,10 @@
 import qiime2.plugin
 import qiime2.sdk
 from deicode import __version__
-from deicode.rpca import rpca
+from deicode.rpca import rpca, auto_rpca
 from deicode._rpca_defaults import (DESC_RANK, DESC_MSC, DESC_MFC,
-                                    DESC_ITERATIONS)
-from qiime2.plugin import (Properties, Int)
+                                    DESC_ITERATIONS, DESC_MFF)
+from qiime2.plugin import (Properties, Int, Float)
 from q2_types.feature_table import FeatureTable, Frequency
 from q2_types.distance_matrix import DistanceMatrix
 from q2_types.ordination import PCoAResults
@@ -38,6 +38,7 @@ plugin.methods.register_function(
         'n_components': Int,
         'min_sample_count': Int,
         'min_feature_count': Int,
+        'min_feature_frequency': Float,
         'max_iterations': Int,
     },
     outputs=[
@@ -51,16 +52,52 @@ plugin.methods.register_function(
         'n_components': DESC_RANK,
         'min_sample_count': DESC_MSC,
         'min_feature_count': DESC_MFC,
+        'min_feature_frequency': DESC_MFF,
         'max_iterations': DESC_ITERATIONS,
     },
     output_descriptions={
         'biplot': ('A biplot of the (Robust Aitchison) RPCA feature loadings'),
         'distance_matrix': ('The Aitchison distance of'
-                            'the sample loadings from RPCA.')
+                            ' the sample loadings from RPCA.')
     },
     name='(Robust Aitchison) RPCA Biplot',
     description=("Performs robust center log-ratio transform "
                  "robust PCA and ranks the features by the "
                  "loadings of the resulting SVD."),
+    citations=[]
+)
+
+plugin.methods.register_function(
+    function=auto_rpca,
+    inputs={'table': FeatureTable[Frequency]},
+    parameters={
+        'min_sample_count': Int,
+        'min_feature_count': Int,
+        'min_feature_frequency': Float,
+        'max_iterations': Int,
+    },
+    outputs=[
+        ('biplot', PCoAResults % Properties("biplot")),
+        ('distance_matrix', DistanceMatrix)
+    ],
+    input_descriptions={
+        'table': 'Input table of counts.',
+    },
+    parameter_descriptions={
+        'min_sample_count': DESC_MSC,
+        'min_feature_count': DESC_MFC,
+        'min_feature_frequency': DESC_MFF,
+        'max_iterations': DESC_ITERATIONS,
+    },
+    output_descriptions={
+        'biplot': ('A biplot of the (Robust Aitchison) RPCA feature loadings'),
+        'distance_matrix': ('The Aitchison distance of'
+                            ' the sample loadings from RPCA.')
+    },
+    name='(Robust Aitchison) RPCA Biplot',
+    description=("Performs robust center log-ratio transform "
+                 "robust PCA and ranks the features by the "
+                 "loadings of the resulting SVD. Automatically"
+                 " estimates the underlying rank (i.e. n-components)."),
     citations=[]
 )
