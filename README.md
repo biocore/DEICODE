@@ -15,34 +15,19 @@ To install the most up to date version of deicode, run the following command
 
 **Note**: that deicode is not compatible with python 2, and is compatible with Python 3.4 or later. deicode is currently in alpha. We are actively developing it, and backward-incompatible interface changes may arise.
 
-## Using DEICODE as a standalone tool
-
-```
-$ deicode --help
-Usage: deicode [OPTIONS]
-
-  Runs RPCA with an rclr preprocessing step.
-
-Options:
-  --in-biom TEXT               Input table in biom format.  [required]
-  --output-dir TEXT            Location of output files.  [required]
-  --n_components INTEGER       The underlying low-rank structure (suggested: 1
-                               < rank < 10) [minimum 2]  [default: 3]
-  --min-sample-count INTEGER   Minimum sum cutoff of sample across all
-                               features  [default: 500]
-  --min-feature-count INTEGER  Minimum sum cutoff of features across all
-                               samples  [default: 10]
-  --max_iterations INTEGER         The number of iterations to optimize the
-                               solution (suggested to be below 100; beware of
-                               overfitting) [minimum 1]  [default: 5]
-  --help                       Show this message and exit.
-```
-
 ## Using DEICODE inside [QIIME 2](https://qiime2.org/)
 
 * The QIIME2 forum tutorial can be found [here](https://forum.qiime2.org/t/robust-aitchison-pca-beta-diversity-with-deicode/8333).
 * The official plugin docs and tutorial can be found [here](https://library.qiime2.org/plugins/deicode).
-* The in-repo tutorial can be found [here](https://github.com/biocore/DEICODE/blob/master/ipynb/tutorials/moving-pictures.md).
+* The in-repo tutorial can be found [here](https://nbviewer.jupyter.org/github/biocore/DEICODE/blob/master/ipynb/tutorials/moving-pictures.ipynb).
+
+## Using DEICODE as a standalone tool
+
+There are two commands within deicode. The first is `rpca` and the second is `auto-rpca`. The only difference is that `auto-rpca` automatically estimates the underlying-rank of the matrix and requires no input for the `n_components` parameter. In the `rpca` the `n_components` must be set explicitly. The structure of the commands follows the QIIME2 commands exactly and so questions about the use of the tool can be answered in the tutorial in the `Using DEICODE inside QIIME 2` section above. However, an example analysis without the use of QIIME2 can be found [here](https://nbviewer.jupyter.org/github/biocore/DEICODE/blob/master/ipynb/tutorials/moving-pictures-standalone-cli-and-api.ipynb).
+
+## Using DEICODE as a Python API
+
+The `rpca` functionality of DEICODE is also exposed as a python API. An example analysis without the use of the command line can be found [here](https://nbviewer.jupyter.org/github/biocore/DEICODE/blob/master/ipynb/tutorials/moving-pictures-standalone-cli-and-api.ipynb).
 
 ## Other Resources
 
