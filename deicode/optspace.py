@@ -388,7 +388,8 @@ def grassmann_manifold_two(U, step_size, n_components):
     return step
 
 
-def rank_estimate(obs, eps, k=100, lam=0.05, min_rank=2):
+def rank_estimate(obs, eps, k=20, lam=0.05,
+                  min_rank=2, max_iter=5000):
 
     """
     This function estimates the rank of a
@@ -435,6 +436,7 @@ def rank_estimate(obs, eps, k=100, lam=0.05, min_rank=2):
     s_one_ = s_one / np.mean(s_one[-10:])
     # iteration one
     r_one = 0
+    iter_ = 0
     while r_one <= 0:
         cost = []
         # get the cost
@@ -443,6 +445,10 @@ def rank_estimate(obs, eps, k=100, lam=0.05, min_rank=2):
         # estimate the rank
         r_one = np.argmin(cost)
         lam += lam
+        iter_ += 1
+        if iter_ > max_iter:
+            break
+
     # iteration two
     cost = []
     # estimate the rank
