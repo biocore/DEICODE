@@ -6,7 +6,7 @@ from scipy.spatial import distance
 
 class MatrixCompletion(_BaseImpute):
 
-    def __init__(self, n_components=2, max_iterations=5, tol=1e-5):
+    def __init__(self, n_components=2, max_iterations=5, branch_lengths=1, tol=1e-5):
         """
 
         This form of matrix completion uses OptSpace (1). Furthermore,
@@ -80,6 +80,7 @@ class MatrixCompletion(_BaseImpute):
 
         self.n_components = n_components
         self.max_iterations = max_iterations
+        self.branch_lengths = branch_lengths
         self.tol = tol
 
         return
@@ -130,7 +131,8 @@ class MatrixCompletion(_BaseImpute):
         # return solved matrix
         self.U, self.s, self.V = OptSpace(n_components=self.n_components,
                                           max_iterations=self.max_iterations,
-                                          tol=self.tol).solve(X_sparse)
+                                          tol=self.tol,
+                                          branch_lengths = self.branch_lengths).solve(X_sparse)
         # save the solution (of the imputation)
         self.solution = self.U.dot(self.s).dot(self.V.T)
         self.eigenvalues = np.diag(self.s)

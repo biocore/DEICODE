@@ -28,6 +28,7 @@ class OptSpace(object):
             n_components,
             max_iterations,
             tol,
+            branch_lengths = 1,
             step_size=10000,
             resolution_limit=20,
             sign=-1):
@@ -93,6 +94,7 @@ class OptSpace(object):
         self.n_components = n_components
         self.max_iterations = max_iterations
         self.tol = tol
+        self.branch_lengths = branch_lengths
         self.step_size = step_size
         self.resolution_limit = resolution_limit
         self.sign = sign
@@ -155,7 +157,7 @@ class OptSpace(object):
         # initialize the distortion matrix of line above
         dist = np.zeros(self.max_iterations + 1)
         # starting initialization of the distortion between obs and imputed
-        dist[0] = norm(np.multiply(obs_error, mask), 'fro') / \
+        dist[0] = norm(np.multiply(obs_error, mask) + np.log(self.branch_lengths + 1.0), 'fro') / \
             np.sqrt(total_nonzeros)
         # we will perform gradient decent for at most self.max_iterations
         for i in range(1, self.max_iterations):
@@ -183,7 +185,7 @@ class OptSpace(object):
             # Compute the distortion
             obs_error = obs - U.dot(S).dot(V.T)
             # update the new distortion
-            dist[i + 1] = norm(np.multiply(obs_error, mask),
+            dist[i + 1] = norm(np.multiply(obs_error, mask) + np.log(self.branch_lengths + 1.0),
                                'fro') / np.sqrt(total_nonzeros)
             # if the gradient decent has coverged then break the loop
             # and return the results
