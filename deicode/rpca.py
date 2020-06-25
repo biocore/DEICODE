@@ -168,9 +168,15 @@ def phylo_rpca(table: biom.Table,
     if len(table.ids('observation')) != len(set(table.ids('observation'))):
         raise ValueError('Data-table contains duplicate columns')
     # built table
+    tree_res = tree.copy() # make a copy to no overwrite
     counts_by_node, tree_index, branch_lengths, tids\
-        = fast_unifrac(table, tree, frequency_filter)
+        = fast_unifrac(table, tree_res, frequency_filter)
     rclr_table = phylo_rclr(counts_by_node, branch_lengths)
+    # re-label tree to return with labels
+    tree_relabel = {tid_:tree_index['id_index'][int(tid_[1:])]
+                    for tid_ in tids}
+    for new_id, node_ in tree_relabel.items():
+        node_.name = new_id
     # Robust-clt (rclr) preprocessing and OptSpace (RPCA)
     opt = MatrixCompletion(n_components=n_components,
                            max_iterations=max_iterations,
@@ -228,4 +234,4 @@ def phylo_rpca(table: biom.Table,
     dist_res = skbio.stats.distance.DistanceMatrix(
         opt.distance, ids=sample_loading.index)
 
-    return ord_res, dist_res
+    return ord_res, dist_res, tree_res
