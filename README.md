@@ -3,6 +3,10 @@
 
 DEICODE is a tool box for running Robust Aitchison PCA on sparse compositional omics datasets, linking specific features to beta-diversity ordination. 
 
+# UPDATE
+
+All future development on Robust Aitchison PCA has been moved from this repository to [Gemelli](https://github.com/biocore/gemelli). The code in this respository will be maintained for the current functionality. Merging to Gemelli allows for the matrix and tensor based methods to be accessed in the same location, since they share some functionality. 
+
 ## Installation
 
 To install the most up to date version of deicode, run the following command
