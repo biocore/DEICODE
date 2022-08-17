@@ -4,15 +4,15 @@
 omit =
     */tests*
     */__init__.py
-    */deicode/optspace.py
-    *deicode/scripts/_logratio.py
+    */base.py 
     *deicode/q2/plugin_setup.py
-    *deicode/ratios.py
+    *deicode/testing.py
 source = DEICODE
 branch = True
 include = */deicode/*
 
 [report]
+show_missing = True
 exclude_lines =
     pragma: no cover
     raise NotImplementedError
@@ -20,7 +20,5 @@ exclude_lines =
 omit =
     */tests*
     */__init__.py
-    */deicode/optspace.py
-    *deicode/scripts/_logratio.py
+    */base.py
     *deicode/q2/plugin_setup.py
-    *deicode/ratios.py

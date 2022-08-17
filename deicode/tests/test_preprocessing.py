@@ -1,45 +1,49 @@
 import unittest
 import numpy as np
 import numpy.testing as npt
-from deicode.preprocessing import rclr, inverse_rclr
-from skbio.stats.composition import closure, clr
+from deicode.preprocessing import rclr
+from skbio.stats.composition import clr
 
 
 class Testpreprocessing(unittest.TestCase):
     def setUp(self):
-
         self.cdata1 = np.array([[2, 2, 6],
                                 [4, 4, 2]])
-        self.cdata2 = [[3, 3, 0], [0, 4, 2]]
+        self.cdata2 = np.array([[3, 3, 0],
+                                [0, 4, 2]])
         self.true2 = np.array([[0.0, 0.0, np.nan],
                                [np.nan, 0.34657359, -0.34657359]])
-
         self.bad1 = np.array([1, 2, -1])
-        self.bad1
-        self._rclr = rclr()
-        self._inv = inverse_rclr()
+        self.bad2 = np.array([1, 2, np.inf])
+        self.bad3 = np.array([1, 2, np.nan])
         pass
 
-    def test_rclr(self):
-
+    def test_rclr_dense(self):
+        """Test rclr and clr are the same on dense datasets."""
         # test clr works the same if there are no zeros
-        cmat = self._rclr.fit_transform(self.cdata1)
+        cmat = rclr(self.cdata1)
         npt.assert_allclose(cmat, clr(self.cdata1.copy()))
 
+    def test_rclr_sparse(self):
+        """Test rclr on sparse data."""
         # test a case with zeros :)
-        cmat = self._rclr.fit_transform(self.cdata2)
+        cmat = rclr(self.cdata2)
         npt.assert_allclose(cmat, self.true2)
 
+    def test_rclr_negative_raises(self):
+        """Test rclr ValueError on negative."""
+        # test negatives throw value error
         with self.assertRaises(ValueError):
-            self._rclr.fit_transform(self.bad1)
+            rclr(self.bad1)
 
-    def test_inverse_rclr(self):
+    def test_rclr_inf_raises(self):
+        """Test rclr ValueError on undefined."""
+        # test undefined throw value error
+        with self.assertRaises(ValueError):
+            rclr(self.bad2)
 
-        cmat = self._rclr.fit_transform(self.cdata1)
-        npt.assert_allclose(
-            closure(
-                self.cdata1), np.around(
-                self._inv.fit_transform(cmat), 1))
-        # inverse can not take zero, nan, or inf values (value error)
-
-        pass
+    def test_rclr_nan_raises(self):
+        """Test rclr ValueError on missing (as nan)."""
+        # test nan throw value error
+        with self.assertRaises(ValueError):
+            rclr(self.bad3)
