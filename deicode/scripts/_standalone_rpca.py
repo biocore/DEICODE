@@ -53,12 +53,12 @@ def rpca(in_biom: str,
     # import table
     table = load_table(in_biom)
     # run the RPCA wrapper
-    ord_res, dist_res = _rpca(table,
-                              n_components,
-                              min_sample_count,
-                              min_feature_count,
-                              min_feature_frequency,
-                              max_iterations)
+    ord_res, dist_res, robust_clr = _rpca(table,
+                                          n_components,
+                                          min_sample_count,
+                                          min_feature_count,
+                                          min_feature_frequency,
+                                          max_iterations)
 
     # If it doesn't already exist, create the output directory.
     # Note that there is technically a race condition here: it's ostensibly
@@ -75,6 +75,7 @@ def rpca(in_biom: str,
     # behavior if you specify --output-dir instead).
     ord_res.write(os.path.join(output_dir, 'ordination.txt'))
     dist_res.write(os.path.join(output_dir, 'distance-matrix.tsv'))
+    robust_clr.to_csv(os.path.join(output_dir, 'rclr.tsv'), '\t')
 
 
 @deicode.command('auto-rpca')
@@ -116,11 +117,11 @@ def auto_rpca(in_biom: str,
     # import table
     table = load_table(in_biom)
     # run the RPCA wrapper
-    ord_res, dist_res = _auto_rpca(table,
-                                   min_sample_count,
-                                   min_feature_count,
-                                   min_feature_frequency,
-                                   max_iterations)
+    ord_res, dist_res, robust_clr = _auto_rpca(table,
+                                               min_sample_count,
+                                               min_feature_count,
+                                               min_feature_frequency,
+                                               max_iterations)
 
     # If it doesn't already exist, create the output directory.
     # Note that there is technically a race condition here: it's ostensibly
@@ -137,6 +138,7 @@ def auto_rpca(in_biom: str,
     # behavior if you specify --output-dir instead).
     ord_res.write(os.path.join(output_dir, 'ordination.txt'))
     dist_res.write(os.path.join(output_dir, 'distance-matrix.tsv'))
+    robust_clr.to_csv(os.path.join(output_dir, 'rclr.tsv'), '\t')
 
 
 if __name__ == '__main__':

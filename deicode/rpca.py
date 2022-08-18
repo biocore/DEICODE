@@ -70,6 +70,7 @@ def rpca(table: biom.Table,
     p = p[:n_components]
     s = s[:n_components]
     # save the loadings
+    robust_clr = pd.DataFrame(X, index=table.index, columns=table.columns)
     feature_loading = pd.DataFrame(v, index=table.columns,
                                    columns=rename_cols)
     sample_loading = pd.DataFrame(u, index=table.index,
@@ -104,7 +105,7 @@ def rpca(table: biom.Table,
     dist_res = skbio.stats.distance.DistanceMatrix(
         opt.distance, ids=sample_loading.index)
 
-    return ord_res, dist_res
+    return ord_res, dist_res, robust_clr
 
 
 def auto_rpca(table: biom.Table,
@@ -117,10 +118,10 @@ def auto_rpca(table: biom.Table,
     """Runs RPCA but with auto estimation of the
        rank peramater.
     """
-    ord_res, dist_res = rpca(table,
-                             n_components='auto',
-                             min_sample_count=min_sample_count,
-                             min_feature_count=min_feature_count,
-                             min_feature_frequency=min_feature_frequency,
-                             max_iterations=max_iterations)
-    return ord_res, dist_res
+    ord_res, dist_res, robust_clr = rpca(
+        table, n_components='auto',
+        min_sample_count=min_sample_count,
+        min_feature_count=min_feature_count,
+        min_feature_frequency=min_feature_frequency,
+        max_iterations=max_iterations)
+    return ord_res, dist_res, robust_clr
